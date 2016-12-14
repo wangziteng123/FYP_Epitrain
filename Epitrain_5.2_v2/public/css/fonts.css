@@ -1,0 +1,35 @@
+@font-face {
+	font-family: 'aleo';
+	src: url('fonts/aleo-regular-webfont.eot');
+	src: url('fonts/aleo-regular-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('fonts/aleo-regular-webfont.woff2') format('woff2'),
+		 url('fonts/aleo-regular-webfont.woff') format('woff'),
+		 url('fonts/aleo-regular-webfont.ttf') format('truetype'),
+		 url('fonts/aleo-regular-webfont.svg') format('svg');
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'aleo';
+	src: url('fonts/aleo-light-webfont.eot');
+	src: url('fonts/aleo-light-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('fonts/aleo-light-webfont.woff2') format('woff2'),
+		 url('fonts/aleo-light-webfont.woff') format('woff'),
+		 url('fonts/aleo-light-webfont.ttf') format('truetype'),
+		 url('fonts/aleo-light-webfont.svg') format('svg');
+	font-weight: 300;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'fontello';
+	src: url('fonts/fontello.eot?94754643');
+	src: url('fonts/fontello.eot?94754643#iefix') format('embedded-opentype'),
+		url('fonts/fontello.woff2?94754643') format('woff2'),
+		url('fonts/fontello.woff?94754643') format('woff'),
+		url('fonts/fontello.ttf?94754643') format('truetype'),
+		url('fonts/fontello.svg?94754643#fontello') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
