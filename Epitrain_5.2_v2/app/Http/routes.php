@@ -41,13 +41,19 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('users/{id}', 'UserController@update');
 	//For file upload and download
 	Route::get('fileentry', 'FileEntryController@index');
+
 	Route::get('fileentry/get/{filename}', [
 		'as'=>'getentry', 'uses'=>'FileEntryController@get']);
+
+	Route::get('fileentry/getViewer/{filename}', [
+		'as'=>'getviewer', 'uses'=>'FileEntryController@getPdfViewer']);
+
 	Route::post('fileentry/add', [
 		'as'=>'addentry', 'uses'=>'FileEntryController@add']);
 
 	Route::get('mylibrary', 'MyLibraryController@index');
-	Route::get('pdfreader', 'MyLibraryController@getViewer');
+	Route::get('pdfreader', [
+		'as'=>'pdfreader', 'uses'=>'MyLibraryController@getViewer']);
 
 });
 

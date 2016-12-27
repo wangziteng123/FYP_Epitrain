@@ -20,8 +20,7 @@ class MyLibraryController extends Controller
 
     public function getViewer() 
     {
-    	$pdfUrl = "";
-    	return view('mylibrary.pdfreader', compact('pdfUrl'));
+    	return view('mylibrary.pdfreader');
     }
 }
 

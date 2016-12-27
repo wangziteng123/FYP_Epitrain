@@ -52,7 +52,7 @@
 
                         <p>This is the description of the ebook.</p>
                         <p>
-                            <a href="{{route('getentry', $entry->filename)}}" class="btn btn-primary">View</a> 
+                            <a href="{{route('getviewer', $entry->filename)}}" class="btn btn-primary">View</a> 
                         </p>
                     </div>
                 </div>

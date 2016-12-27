@@ -14,48 +14,37 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-Adobe CMap resources are covered by their own copyright but the same license:
-
-    Copyright 1990-2015 Adobe Systems Incorporated.
-
-See https://github.com/adobe-type-tools/cmap-resources
+Adobe CMap resources are covered by their own copyright and license:
+http://sourceforge.net/adobe/cmap/wiki/License/
 -->
 <html dir="ltr" mozdisallowselectionprint moznomarginboxes>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="google" content="notranslate">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>PDF.js viewer</title>
 
 
-    <!-- <link rel="stylesheet" href="viewer.css"> -->
-    <link rel="stylesheet" href="css/viewer.css" type="text/css">
+    <link rel="stylesheet" href="pdf/viewer.css"/>
 
-    <script src="js/compatibility.js"></script>
+    <script src="pdf/compatibility.js"></script>
 
 
 
 <!-- This snippet is used in production (included from viewer.html) -->
-<link rel="resource" type="application/l10n" href="locale/locale.properties">
-<script src="js/l10n.js"></script>
-<script src="js/pdf.js"></script>
-<!-- <script src="js/pdf.worker.js"></script> -->
+<link rel="resource" type="application/l10n" href="pdf/locale/locale.properties"/>
+<script src="pdf/l10n.js"></script>
+<script src="pdf/build/pdf.js"></script>
 
 
 
-    <script src="js/debugger.js"></script>
-    <script src="js/viewer2.js"></script>
+    <script src="pdf/debugger.js"></script>
+    <script src="pdf/viewer.js"></script>
 
   </head>
 
-  <body tabindex="1" class="loadingInProgress" style="background-color: #DCDCDC">
-
-    
-    
-   <div style="position: relative;border: 3px solid #73AD21;">
-    <div style="position: absolute;top: 0px;left: 0;width: 1300px;height: 28px;border: 3px solid #73AD21;"></div>
-   <div id="outerContainer" style="position: absolute;top: 30px;left: 0;width: 1000px;height: 595px;border: 3px solid #73AD21;">
+  <body tabindex="1" class="loadingInProgress">
+    <div id="outerContainer">
 
       <div id="sidebarContainer">
         <div id="toolbarSidebar">
@@ -94,11 +83,10 @@ See https://github.com/adobe-type-tools/cmap-resources
               <span data-l10n-id="find_next_label">Next</span>
             </button>
           </div>
-          <input type="checkbox" id="findHighlightAll" class="toolbarField" tabindex="94">
-          <label for="findHighlightAll" class="toolbarLabel" data-l10n-id="find_highlight">Highlight all</label>
-          <input type="checkbox" id="findMatchCase" class="toolbarField" tabindex="95">
-          <label for="findMatchCase" class="toolbarLabel" data-l10n-id="find_match_case_label">Match case</label>
-          <span id="findResultsCount" class="toolbarLabel hidden"></span>
+          <input type="checkbox" id="findHighlightAll" class="toolbarField">
+          <label for="findHighlightAll" class="toolbarLabel" tabindex="94" data-l10n-id="find_highlight">Highlight all</label>
+          <input type="checkbox" id="findMatchCase" class="toolbarField">
+          <label for="findMatchCase" class="toolbarLabel" tabindex="95" data-l10n-id="find_match_case_label">Match case</label>
           <span id="findMsg" class="toolbarLabel"></span>
         </div>  <!-- findbar -->
 
@@ -260,7 +248,6 @@ See https://github.com/adobe-type-tools/cmap-resources
         <div id="viewerContainer" tabindex="0">
           <div id="viewer" class="pdfViewer"></div>
         </div>
-        <!--This is for displaying the pdf-->
 
         <div id="errorWrapper" hidden='true'>
           <div id="errorMessageLeft">
@@ -289,8 +276,7 @@ See https://github.com/adobe-type-tools/cmap-resources
               <p id="passwordText" data-l10n-id="password_label">Enter the password to open this PDF file:</p>
             </div>
             <div class="row">
-              <!-- The type="password" attribute is set via script, to prevent warnings in Firefox for all http:// documents. -->
-              <input id="password" class="toolbarField">
+              <input type="password" id="password" class="toolbarField" />
             </div>
             <div class="buttonRow">
               <button id="passwordCancel" class="overlayButton"><span data-l10n-id="password_cancel">Cancel</span></button>
@@ -345,10 +331,7 @@ See https://github.com/adobe-type-tools/cmap-resources
         </div>
       </div>  <!-- overlayContainer -->
 
-   </div>
-   <div style="position: absolute;top: 30px;left: 1000px;width: 300px;height: 595px;border: 3px solid #73AD21;"></div>
-   </div>  
-    <!-- outerContainer -->
+    </div> <!-- outerContainer -->
     <div id="printContainer"></div>
 <div id="mozPrintCallback-shim" hidden>
   <style>
@@ -396,7 +379,7 @@ See https://github.com/adobe-type-tools/cmap-resources
   border-radius: 2px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 
-  background-color: "#474747";
+  background-color: #474747;
 
   color: hsl(0, 0%, 85%);
   font-size: 16px;
@@ -430,6 +413,12 @@ See https://github.com/adobe-type-tools/cmap-resources
   </div>
 </div>
 
+  <script src="//hypothes.is/embed.js"></script>
+
   </body>
 </html>
+
+
+
+
 

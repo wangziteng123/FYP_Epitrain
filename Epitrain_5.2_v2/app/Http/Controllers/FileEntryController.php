@@ -54,9 +54,19 @@ class FileEntryController extends Controller
 	public function get($filename){
 		$entry = Fileentry::where('filename', '=', $filename)->firstOrFail();
 		$file = Storage::disk('local')->get($entry->filename);
- 
+ 		
 		return (new Response($file, 200))
-              ->header('Content-Type', $entry->mime);
+               ->header('Content-Type', $entry->mime);
+		//return redirect()->route('pdfreader', ['filename' => $filename]);
+
+		
+	}
+
+	public function getPdfViewer($filename) {
+		$add = "fileentry/get/".$filename; 
+		$baseUrl = url($add);
+		$pdfUrl = "http://localhost:8000/fileentry/get/php8D98.tmp.pdf";
+		return redirect()->route('pdfreader', array('file' => $baseUrl));
 	}
 
 	public function getPreview($filename){
