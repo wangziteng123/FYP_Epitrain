@@ -40,11 +40,28 @@ http://sourceforge.net/adobe/cmap/wiki/License/
 
     <script src="pdf/debugger.js"></script>
     <script src="pdf/viewer.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+      function goBack() {
+          var url = window.location.href;
+          var n = url.indexOf("pdfreader");
+          url = url.substring(0,n);
+          url = url.concat("mylibrary");
+          window.location.replace(url);
+          //window.location.replace("http://localhost:8000/mylibrary");
+          //window.alert(url);
+      }       
+    </script>
 
   </head>
 
   <body tabindex="1" class="loadingInProgress">
-    <div id="outerContainer">
+    
+    <button id="backButton" onclick="goBack()" type="button" class="btn btn-default" aria-label="Left Align">
+      <span class="glyphicon glyphicon-align-left" aria-hidden="true">Back</span>
+    </button>
+
+    <div id="outerContainer" style="width:1325px">
 
       <div id="sidebarContainer">
         <div id="toolbarSidebar">
@@ -70,7 +87,7 @@ http://sourceforge.net/adobe/cmap/wiki/License/
         </div>
       </div>  <!-- sidebarContainer -->
 
-      <div id="mainContainer">
+      <div id="mainContainer" >
         <div class="findbar hidden doorHanger hiddenSmallView" id="findbar">
           <label for="findInput" class="toolbarLabel" data-l10n-id="find_label">Find:</label>
           <input id="findInput" class="toolbarField" tabindex="91">
