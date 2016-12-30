@@ -100,6 +100,7 @@
                                 <li><a href="{{ url('/mylibrary') }}"><i class="fa fa-btn fa-sign-out"></i>My Library</a></li>
                                 <li><a href="{{ url('#') }}"><i class="fa fa-btn fa-sign-out"></i>SpreadSheets</a></li>
                                 <li><a href="{{ url('#') }}"><i class="fa fa-btn fa-sign-out"></i>Discussion Forum</a></li>
+																<li><a href="{{ url('/shop') }}"><i class="fa fa-btn fa-sign-out"></i>Shop</a></li>
                                 <li><a href="{{ url('/update') }}"><i class="fa fa-btn fa-sign-out"></i>Update Personal Info</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
                             </ul>

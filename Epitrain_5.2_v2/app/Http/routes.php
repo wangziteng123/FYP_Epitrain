@@ -52,6 +52,11 @@ Route::group(['middleware' => 'auth'], function() {
 		'as'=>'addentry', 'uses'=>'FileEntryController@add']);
 
 	Route::get('mylibrary', 'MyLibraryController@index');
+	Route::get('shop', 'HomeController@shop');
+	Route::get('buy/{book_id}', 
+ ['as'=>'buy', 'uses'=>'LibraryController@buy']);
+ 
+ 
 	Route::get('pdfreader', [
 		'as'=>'pdfreader', 'uses'=>'MyLibraryController@getViewer']);
 

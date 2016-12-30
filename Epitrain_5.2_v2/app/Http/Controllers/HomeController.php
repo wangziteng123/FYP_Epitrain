@@ -31,9 +31,15 @@ class HomeController extends Controller
         return view('home', compact('entries'));
        
     }
-
     public function create()
     {
         return view('usermanage.create');
+    }
+		
+		public function shop()
+    {
+        $books = Fileentry::all();
+ 
+        return view('books.index', compact('books'));
     }
 }
