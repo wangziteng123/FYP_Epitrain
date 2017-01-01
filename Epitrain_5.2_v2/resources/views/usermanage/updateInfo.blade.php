@@ -24,7 +24,7 @@
                                 @endif
                             </div>
                         </div>
-                        <!-- <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-md-4 control-label"><font color="black">E-Mail Address</font></label>
 
                             <div class="col-md-6">
@@ -36,7 +36,7 @@
                                     </span>
                                 @endif
                             </div>
-                        </div> -->
+                        </div>
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
@@ -51,4 +51,162 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+<div>
+<script>
+
+var users = '<?php echo json_encode($users); ?>';
+var usersArray = JSON.parse(users);
+
+
+
+//sorting name
+function sortName() {
+console.log("start for loop");
+    for(count = 1; count<usersArray.length;count++){
+        for(num=count; num>0; num--){
+        var prevElement = usersArray[num-1];
+        var currentElement = usersArray[num];
+
+        var n = usersArray[num].name.localeCompare(usersArray[num-1].name);
+        if(n == -1){
+            usersArray[num] = prevElement;
+            usersArray[num-1]= currentElement;
+
+        }else{
+            num = 0;
+        }
+
+        }
+
+    }
+
+
+    //print out the sorted data into html table
+    var arrayLength= usersArray.length;
+
+    for(i=0; i<arrayLength;i++){
+
+        var idName = i + "name";
+        var idEmail = i + "email";
+        var isAdmin = i +"admin";
+
+        document.getElementById(idEmail).innerHTML = usersArray[i].email;
+        document.getElementById(idName).innerHTML = usersArray[i].name;
+        if(usersArray[i].isAdmin ===1){
+              document.getElementById(isAdmin).innerHTML = "Yes";
+        }
+        else{
+            document.getElementById(isAdmin).innerHTML = "No";
+        }
+
+     }
+
+
+
+}
+
+//sorting email
+function sortEmail() {
+console.log("start for loop");
+    for(count = 1; count<usersArray.length;count++){
+        for(num=count; num>0; num--){
+        var prevElement = usersArray[num-1];
+        var currentElement = usersArray[num];
+
+        var n = usersArray[num].email.localeCompare(usersArray[num-1].email);
+        if(n == -1){
+            usersArray[num] = prevElement;
+            usersArray[num-1]= currentElement;
+
+        }else{
+            num = 0;
+        }
+
+        }
+
+    }
+
+
+    //print out the sorted data into html table
+    var arrayLength= usersArray.length;
+
+    for(i=0; i<arrayLength;i++){
+        console.log(i + "  i ");
+        var idName = i + "name";
+        var idEmail = i + "email";
+        var isAdmin = i +"admin";
+        console.log(idName);
+        console.log(idEmail);
+        console.log(isAdmin);
+        document.getElementById(idEmail).innerHTML = usersArray[i].email;
+        document.getElementById(idName).innerHTML = usersArray[i].name;
+        if(usersArray[i].isAdmin ===1){
+              document.getElementById(isAdmin).innerHTML = "Yes";
+        }
+        else{
+            document.getElementById(isAdmin).innerHTML = "No";
+        }
+
+     }
+
+
+
+}
+</script>
+@if ($users->count())
+<div class="container">
+    <h1>All Users</h1>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+
+        <th onclick="sortEmail()">Email</th>
+        <th onclick="sortName()">Name</th>
+        <th>Admin</th>
+            </tr>
+        </thead>
+
+       <tbody>
+           <script>
+
+
+               for(i=0; i<usersArray.length;i++){
+                   document.write(" <tr>");
+                   var idEmail = i + "email";
+                   var sentence =  "<td style='color:black' id=" + idEmail + ">"+ usersArray[i].email +"</td>"
+                   document.write(sentence);
+                   var idName = i + "name";
+                   sentence = "<td style='color:black' id=" + idName + ">"+ usersArray[i].name +"</td>"
+                   document.write(sentence);
+                   var isAdmin = i +"admin";
+                   if(usersArray[i].isAdmin ==1){
+                       document.write("  <td style='color:black' id=" + isAdmin+ ">Yes</td>");
+                   }else{
+                   document.write("  <td style='color:black'id=" + isAdmin+ ">No</td>");
+                   }
+                   document.write(" </tr>");
+
+               }
+
+
+           </script>
+
+       </tbody>
+
+
+
+    </table>
+</div>
+@else
+    There are no users
+@endif
+
+
+</div>
+
 @endsection
