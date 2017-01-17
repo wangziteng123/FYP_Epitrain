@@ -142,7 +142,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+public function update(Request $request, $id)
         {
 
           //  return \View::make('usermanage.updateInfo', compact('users'));
@@ -154,9 +154,6 @@ class UserController extends Controller
 
             $error = "";
 
-
-
-
              try{
               $name = $request->input('name');
                      $email= $request->input('email');
@@ -167,20 +164,30 @@ class UserController extends Controller
                      $user = User::find($id);
                      $user->name = $name;
 
-                     if($password == $confirmPassword && $password != "" && $confirmPassword !=""){
-                         echo "entered";
+                    if($password == $confirmPassword && $password != "" && $confirmPassword !="" && $name !=""){
+                     echo "entered";
+                     $user->password = bcrypt($request->input('password'));
+                     $user->name = $request->input('name');
+                     $error = "changeAll";
+                     $data = array('error'  => $error);
+
+                    }
+
+                    else if($password == $confirmPassword && $password != "" && $confirmPassword !=""){
                          $user->password = bcrypt($request->input('password'));;
 
-                          $error = "success";
-                          $data = array('error'  => $error);
+                         $error = "changePW";
+                         $data = array('error'  => $error);
+                    }
+
+                    else if($password == $confirmPassword && $password == "" && $confirmPassword =="" && $name !="" ){
+                        $user->name =$name;
+                        $error = "changeName";
+                        $data = array('error'  => $error);
+
                     }
 
 
-                     echo gettype($password);
-                     echo gettype($confirmPassword);
-                    echo $request->input('password');
-
-                     echo $user;
 
                      $user->save();
 
@@ -193,10 +200,18 @@ class UserController extends Controller
                           );
                       }
                       finally{
-                      if($error =="success"){
-                         flash('Password Change Successful!', 'success');
-                      }else{
-                         flash('Password Change failed!', 'danger');
+                      if($error == "changeAll"){
+                        flash('Name and Password Changed Successful!', 'success');
+                      }
+
+                      else if($error =="changePW"){
+                         flash('Password Changed Successful!', 'success');
+                      }
+                      else if($error =="changeName"){
+                         flash('Name Changed Successful!', 'success');
+                      }
+                      else{
+                         flash('Update failed!', 'danger');
                       }
                         return redirect('update');
                       //return redirect('home');
@@ -209,11 +224,8 @@ class UserController extends Controller
 
 
 
-
-
-
-
         }
+
 
     /**
      * Remove the specified resource from storage.
