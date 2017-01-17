@@ -2,31 +2,27 @@
 
 @section('content')
 
+<?php
+        $entries2 = \DB::table('libraries')
+            ->where('user_id', Auth::user()->id)
+            ->join('fileentries', 'libraries.fileentry_id', '=', 'fileentries.id')
+            ->select('libraries.*', 'fileentries.category', 'fileentries.price', 'fileentries.description','fileentries.original_filename','fileentries.id','fileentries.filename')
+            ->get();
 
-<div class="container">
+?>
+<div class="col-lg-12" style="position:relative">
 
-        <div class="row">
-
-            <!-- Blog Post Content Column -->
-            <div class="col-lg-8">
+ <div class="col-lg-10" style="position:relative; left:90px">
 
                 <!-- Blog Post -->
 
                 <!-- Title -->
-                <h1>MyLibrary</h1>
-
-     
+                <h1 style="position: absolute;left: 14px;">My Library</h1>
+                <br/><br/><br/>
                 <hr>
+                        
 
-                <!-- Date/Time -->
-                <p><span class="glyphicon glyphicon-time"></span> Posted on August 24, 2013 at 9:00 PM</p>
-
-                <hr>
-
-                <div class="row text-center">
-
-
-            @foreach($entries as $entry)
+            @foreach($entries2 as $entry)
                    <?php
                         $imgSrc = $entry->filename;
                         $pos = strpos($imgSrc, "pdf");
@@ -60,98 +56,11 @@
                 </div>
             @endforeach
 
-        </div>
+        
 
-                <hr>
-
-                <!-- Post Content -->
-                
-                <hr>
-
-                <!-- Blog Comments -->
-
-                <!-- Comments Form -->
-                <div class="well">
-                    <h4>Leave a Comment:</h4>
-                    <form role="form">
-                        <div class="form-group">
-                            <textarea class="form-control" rows="3"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                </div>
-
-                <hr>
-
-                <!-- Posted Comments -->
-
-               
-            </div>
-
-            <!-- Blog Sidebar Widgets Column -->
-            <div class="col-md-4">
-
-                <!-- Blog Search Well -->
-                <div class="well">
-                    <h4 style="color:black">MyLibrary Search</h4>
-                    <div class="input-group">
-                        <input type="text" class="form-control">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
-                                <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                        </span>
-                    </div>
-                    <!-- /.input-group -->
-                </div>
-
-                <!-- Blog Categories Well -->
-                <div class="well">
-                    <h4 style="color:black">New Posts</h4>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <ul class="list-unstyled">
-                                
-                            </ul>
-                        </div>
-                        <div class="col-lg-6">
-                            <ul class="list-unstyled">
-                                
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- /.row -->
-                </div>
-
-                <!-- Side Widget Well -->
-                <div class="well">
-                    <h4 style="color:black">Board</h4>
-                    <p style="color:black">This is Empty now.</p>
-                </div>
-
-            </div>
-
-        </div>
-        <!-- /.row -->
-
-        <hr>
-
-        <!-- Footer -->
-        <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p>Copyright &copy; Your Website 2014</p>
-                </div>
-            </div>
-            <!-- /.row -->
-        </footer>
-
-    </div>
-    <!-- /.container -->
-
-
-
-
+    
+ </div>
+</div>
 
 
 

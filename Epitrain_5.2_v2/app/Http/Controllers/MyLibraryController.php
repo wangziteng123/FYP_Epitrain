@@ -19,9 +19,14 @@ class MyLibraryController extends Controller
 				//$books = DB::table('libraries')->where('user_id', '=', $user_id)->select('book_id');
         //$entries = Fileentry::all();
 				$entries = DB::table('fileentries')
-										->join('libraries', 'fileentries.id', '=', 'libraries.book_id')
+										->join('libraries', 'fileentries.id', '=', 'libraries.fileentry_id')
 										->where('user_id', '=', $user_id)
 										->get();
         return view('mylibrary.index', compact('entries'));
+    }
+    public function getViewer() 
+    {
+    	$pdfUrl = "";
+    	return view('mylibrary.pdfreader', compact('pdfUrl'));
     }
 }

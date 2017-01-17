@@ -26,7 +26,8 @@ class FileEntryController extends Controller
  
 		$file = Request::file('filefield');
 		$extension = $file->getClientOriginalExtension();
-		Storage::disk('local')->put($file->getFilename().'.'.$extension,  File::get($file));
+		echo($file->getFilename().'.'.$extension);
+		Storage::disk('s3')->put('/ebooks/'.$file->getFilename().'.'.$extension,  File::get($file), 'public');
 		$entry = new Fileentry();
 		$entry->mime = $file->getClientMimeType();
 		$entry->original_filename = $file->getClientOriginalName();
@@ -35,16 +36,21 @@ class FileEntryController extends Controller
 		$entry->save();
 
 		//generate a picture 
-		$filename = $file->getFilename();
+		$fileName = $file->getFilename();
 
-		$root = $_SERVER['DOCUMENT_ROOT'];
+		/*$root = $_SERVER['DOCUMENT_ROOT'];
 		//echo $root;
 		$pos = strpos($root, "app");
 		$root = substr($root, 0, $pos);
-		$root .= "storage/app/";
+		$root .= "storage/app/";*/
+		$path = $file->getRealPath();
+		$pos = strpos($path, 'ebooks');
+		$imgPath = substr($path, 0, $pos).'img/';
 		
 		//$out = shell_exec("convert ".$root.$filename.".pdf[0] ".$root.$filename.".jpg 2>&1");
-		$out = shell_exec("convert C:/wamp64/www/Epitrain_5.2_v2/storage/app/".$filename.".pdf[0] C:/wamp64/www/Epitrain_5.2_v2/public/img/".$filename.".jpg 2>&1");
+		/*$out = shell_exec("convert C:/wamp64/www/Epitrain_5.2_v2/storage/app/".$filename.".pdf[0] C:/wamp64/www/Epitrain_5.2_v2/public/img/".$filename.".jpg 2>&1");*/
+		//$out = shell_exec("convert ".$path.$fileName.".pdf[0] ".$imgPath.$fileName.".jpg 2>&1");
+		$out = shell_exec("aws s3 convert ".$path."[0] ".$imgPath.$fileName.".jpg 2>&1");
 		echo $out;
  
 		return redirect('fileentry');
@@ -52,14 +58,23 @@ class FileEntryController extends Controller
 	}
 
 	public function get($filename){
-		$entry = Fileentry::where('filename', '=', $filename)->firstOrFail();
-		$file = Storage::disk('local')->get($entry->filename);
- 		
+		//$entry = Fileentry::where('filename', '=', $filename)->firstOrFail();
+		//$file = Storage::disk('s3')->get($filename);
+		// $url = "s3".env('S3_REGION')."amazonaws.com/".env('S3_BUCKET')."/ebooks/".$filename;
+ 	// 	echo $url;
+		/*return (new Response($file, 200))
+              ->header('Content-Type', $file->getClientMimeType());*/
+        //return redirect($url);
+
+        
+        //version 3.6
+        $entry = Fileentry::where('filename', '=', $filename)->firstOrFail();
+        $url = "s3-".env('S3_REGION')."amazonaws.com/".env('S3_BUCKET')."/ebooks/".$entry->filename;
+		//$file = Storage::disk('s3')->get("http://sample-env-1.2uqmcfeudi.us-west-2.elasticbeanstalk.com/ebook/".$entry->filename.".pdf");
+ 		$file = Storage::disk('s3')->get('/ebooks/'.$entry->filename);
 		return (new Response($file, 200))
                ->header('Content-Type', $entry->mime);
-		//return redirect()->route('pdfreader', ['filename' => $filename]);
 
-		
 	}
 
 	public function getPdfViewer($filename) {
@@ -68,6 +83,7 @@ class FileEntryController extends Controller
 		//$pdfUrl = "http://localhost:8000/fileentry/get/php8D98.tmp.pdf";
 		return redirect()->route('pdfreader', array('file' => $baseUrl));
 	}
+
 
 	public function getPreview($filename){
 		// $im = new \Imagick( "" );
@@ -83,16 +99,20 @@ class FileEntryController extends Controller
 		$entry = Fileentry::where('filename', '=', $filename)->firstOrFail();
 
 		if($entry) {
-			$file = Storage::disk('local')->delete($entry->filename);
+			//$file = Storage::disk('s3')->delete($entry->filename);
+			//version 3.6
 			$entry->delete();
+			$url = "s3-".env('S3_REGION')."amazonaws.com/".env('S3_BUCKET')."/ebooks/".$entry->filename;
+			echo $url;
+			Storage::disk('s3')->delete('/ebooks/'.$entry->filename);
 	 		return redirect('fileentry');
 			// return (new Response("Delete Successfully", 200))
 	  //             ->header('Content-Type', "text/html");
-	          }else {
+	    } else {
 	          	return redirect('fileentry');
 	          	// return (new Response("No such file", 200))
 	           //    ->header('Content-Type', "text/html");
-	          }
+	    } 
 		
 	}
 }

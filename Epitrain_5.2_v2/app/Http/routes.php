@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Route::auth();
 
-Route::get('/home', 'HomeController@index');
+Route::get('/home',  ['as'=>'home', 'uses'=>'HomeController@index']);
 
 Route::get('user/activation/{token}', 'Auth\AuthController@activateUser')->name('user.activate');
 
@@ -31,6 +31,7 @@ Route::group(['middleware' => ['auth','admin']], function() {
 	
 	Route::post('/store', 'UserController@store');
 	Route::get('um/tocreate', 'HomeController@create');
+	Route::get('/viewAllUsers', 'UserController@viewAllUsers');
 	Route::delete('fileentry/delete/{filename}', [
 	'as'=>'deleteentry', 'uses'=>'FileEntryController@delete']);
 });
@@ -59,6 +60,17 @@ Route::group(['middleware' => 'auth'], function() {
  
 	Route::get('pdfreader', [
 		'as'=>'pdfreader', 'uses'=>'MyLibraryController@getViewer']);
+
+	Route::get('find', 'SearchController@find');
+	Route::get('searchresult', 'SearchController@index');
+
+	Route::get('shoppingcart',  [
+		'as'=>'shoppingcart', 'uses'=>'ShoppingController@index']);
+	Route::post('shoppingcart/add', [
+		'as'=>'addShoppingcart', 'uses'=>'ShoppingController@add']);
+	Route::post('shoppingcart/deleteShoppcart', 'ShoppingController@delete');
+
+	Route::post('shoppingcart/addtolibrary', 'ShoppingController@addToLibrary');
 
 });
 

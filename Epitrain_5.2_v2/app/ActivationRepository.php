@@ -36,7 +36,7 @@ class ActivationRepository
 
     private function regenerateToken($user)
     {
-
+		$table = 'user_activations';
         $token = $this->getToken();
         $this->db->table($table)->where('user_id', $user->id)->update([
             'token' => $token,

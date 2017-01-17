@@ -24,6 +24,13 @@ class UserController extends Controller
         return \View::make('usermanage.updateInfo', compact('users'));
     }
 
+    public function viewAllUsers(){
+        //
+        $users = User::all();
+
+        return \View::make('usermanage.viewAllUsers', compact('users'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -136,29 +143,77 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        $name = $request->input('name');
-        $email= $request->input('email');
-        
-        $user = User::find($id);
-        $user->name = $name;
-        $user->save();
-        
-        return redirect('home');
-        //return \View::make('usermanage.updateInfo');
-        //$validation = Validator::make($input, User::$rules);
+        {
 
-        //if ($validation->passes())
-        //{
-           // $user = User::find($id);
-            //$user->update($input);
-            //return Redirect::route('usermanage.updateInfo', $id);
-        //}
-        //return Redirect::route('usermanage.updateInfo', $id)
-          //  ->withInput()
-            //->withErrors($validation)
-            //->with('message', 'There were validation errors.');
-    }
+          //  return \View::make('usermanage.updateInfo', compact('users'));
+           // return redirect()->back();
+    //return redirect('home');
+          //  return redirect('home');
+            //return \View::make('usermanage.updateInfo');
+            //$validation = Validator::make($input, User::$rules);
+
+            $error = "";
+
+
+
+
+             try{
+              $name = $request->input('name');
+                     $email= $request->input('email');
+                     $password = $request->input('password');
+                     $confirmPassword = $request->input('password_confirmation');
+                     echo $confirmPassword + " confirm pw";
+
+                     $user = User::find($id);
+                     $user->name = $name;
+
+                     if($password == $confirmPassword && $password != "" && $confirmPassword !=""){
+                         echo "entered";
+                         $user->password = bcrypt($request->input('password'));;
+
+                          $error = "success";
+                          $data = array('error'  => $error);
+                    }
+
+
+                     echo gettype($password);
+                     echo gettype($confirmPassword);
+                    echo $request->input('password');
+
+                     echo $user;
+
+                     $user->save();
+
+
+
+             } catch(\Exception $e){
+                          $error = "failed";
+                          $data = array(
+                              'error'  => $error
+                          );
+                      }
+                      finally{
+                      if($error =="success"){
+                         flash('Password Change Successful!', 'success');
+                      }else{
+                         flash('Password Change failed!', 'danger');
+                      }
+                        return redirect('update');
+                      //return redirect('home');
+                      //return \View::make('usermanage.updateInfo', array('error' => $error));
+                         //return view('usermanage.create', $data) ;
+                          //return \View::make('usermanage.create');
+
+                      }
+
+
+
+
+
+
+
+
+        }
 
     /**
      * Remove the specified resource from storage.
