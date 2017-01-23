@@ -14,16 +14,16 @@ use App\Fileentry;
 class ShoppingController extends Controller
 {
     public function index() {
-    	return view('shoppingcart.index');
+        return view('shoppingcart.index');
     }
 
     public function add(Request $request) {
-    	$user_id = $request->get('uid');
-    	$fileentry_id = $request->get('fid');
+        $user_id = $request->get('uid');
+        $fileentry_id = $request->get('fid');
 
-    	DB::table('shoppingcarts') ->insert(
-		    ['fileentry_id' => $fileentry_id, 'user_id' => $user_id]
-		);
+        DB::table('shoppingcarts') ->insert(
+            ['fileentry_id' => $fileentry_id, 'user_id' => $user_id]
+        );
  
         return redirect()->route('home');
     }
@@ -36,13 +36,32 @@ class ShoppingController extends Controller
 
     public function delete(Request $request) {
         $fileentry_id = $request->get('fid');
-        DB::table('shoppingcarts')->where('fileentry_id', '=', $fileentry_id)->delete();
+        $user_id = $request->get('uid');
+        DB::table('shoppingcarts')
+            ->where('fileentry_id', '=', $fileentry_id)
+            ->where('user_id', '=', $user_id)
+            ->delete();
         return redirect()->route('shoppingcart');  
     }
 
     public function addToLibrary(Request $request) {
         $user_id = $request->get('uid');
         $fileentry_id = $request->get('fid');
+
+        $shoppingcartExist = \DB::table('shoppingcarts')
+                        ->where('user_id', $user_id)
+                        ->where('fileentry_id', $fileentry_id)
+                        ->get();
+
+        if(count($shoppingcartExist)) {
+             DB::table('libraries') ->insert(
+                ['fileentry_id' => $fileentry_id, 'user_id' => $user_id]
+            );
+             DB::table('shoppingcarts')
+                ->where('fileentry_id', '=', $fileentry_id)
+                ->where('user_id', '=',$user_id )
+                ->delete();
+        }
 
         DB::table('libraries') ->insert(
             ['fileentry_id' => $fileentry_id, 'user_id' => $user_id]
@@ -51,4 +70,25 @@ class ShoppingController extends Controller
         return redirect()->route('home');
     }
 
+    public function checkout(Request $request) {
+        $user_id = $request->get('uid');
+        $count = $request->get('count');
+
+        for($i = 1; $i <= $count; $i++) {
+            $fid = $request->get("fid".$i);
+            
+            DB::table('libraries') ->insert(
+                ['fileentry_id' => $fid, 'user_id' => $user_id]
+            );
+            DB::table('shoppingcarts')
+                ->where('fileentry_id', '=', $fid)
+                ->where('user_id', '=',$user_id )
+                ->delete();
+        }
+        return view('mylibrary.index');
+    }
+
+    public function test() {
+        return view('mylibrary.index');
+    }
 }

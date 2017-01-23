@@ -166,13 +166,13 @@
     @if ($users->count())
     <div class="container">
         <h1>All Users</h1>
-        <table class="table table-striped table-bordered">
+        <table class="table table-bordered" style="background-color:white">
             <thead>
                 <tr>
 
-            <th onclick="sortEmail()">Email</th>
-            <th onclick="sortName()">Name</th>
-            <th>Admin</th>
+            <th onclick="sortEmail()" style="color:black;text-align:center">Email</th>
+            <th onclick="sortName()" style="color:black;text-align:center">Name</th>
+            <th style="color:black;text-align:center">Admin</th>
                 </tr>
             </thead>
 

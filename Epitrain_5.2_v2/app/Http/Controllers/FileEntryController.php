@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Request;
+use Illuminate\Http\Request;
 use App\Fileentry;
 
 use App\Http\Requests;
@@ -22,36 +22,28 @@ class FileEntryController extends Controller
 		return view('fileentries.index', compact('entries'));
 	}
  
-	public function add() {
+	public function add(Request $request) {
  
-		$file = Request::file('filefield');
+		//get category, price and description
+		$category = $request->input('category');
+		$price = $request->input('price');
+		$description = $request->input('description');
+
+ 		//create record in fileentry table
+		//$file = Request::file('filefield');
+		$file = $request->file('filefield');
 		$extension = $file->getClientOriginalExtension();
-		echo($file->getFilename().'.'.$extension);
-		Storage::disk('s3')->put('/ebooks/'.$file->getFilename().'.'.$extension,  File::get($file), 'public');
+		Storage::disk('s3')->put($file->getFilename().'.'.$extension,  File::get($file));
 		$entry = new Fileentry();
 		$entry->mime = $file->getClientMimeType();
 		$entry->original_filename = $file->getClientOriginalName();
 		$entry->filename = $file->getFilename().'.'.$extension;
+
+		$entry->category = $category;
+		$entry->price = $price;
+		$entry->description = $description;
  
 		$entry->save();
-
-		//generate a picture 
-		$fileName = $file->getFilename();
-
-		/*$root = $_SERVER['DOCUMENT_ROOT'];
-		//echo $root;
-		$pos = strpos($root, "app");
-		$root = substr($root, 0, $pos);
-		$root .= "storage/app/";*/
-		$path = $file->getRealPath();
-		$pos = strpos($path, 'ebooks');
-		$imgPath = substr($path, 0, $pos).'img/';
-		
-		//$out = shell_exec("convert ".$root.$filename.".pdf[0] ".$root.$filename.".jpg 2>&1");
-		/*$out = shell_exec("convert C:/wamp64/www/Epitrain_5.2_v2/storage/app/".$filename.".pdf[0] C:/wamp64/www/Epitrain_5.2_v2/public/img/".$filename.".jpg 2>&1");*/
-		//$out = shell_exec("convert ".$path.$fileName.".pdf[0] ".$imgPath.$fileName.".jpg 2>&1");
-		$out = shell_exec("aws s3 convert ".$path."[0] ".$imgPath.$fileName.".jpg 2>&1");
-		echo $out;
  
 		return redirect('fileentry');
 		

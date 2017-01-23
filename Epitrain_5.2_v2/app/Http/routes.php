@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return Redirect::action('Auth\AuthController@showLoginForm');
 });
 
 Route::auth();
@@ -71,7 +71,7 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::post('shoppingcart/deleteShoppcart', 'ShoppingController@delete');
 
 	Route::post('shoppingcart/addtolibrary', 'ShoppingController@addToLibrary');
-
+	Route::post('shoppingcart/checkout', 'ShoppingController@checkout');
 });
 
 // // Download Route

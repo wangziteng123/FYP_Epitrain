@@ -1,6 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
+
+@if (session()->has('flash_notification.message'))
+       <div class="alert alert-{{ session('flash_notification.level') }}">
+           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+
+           {!! session('flash_notification.message') !!}
+       </div>
+@endif
+
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -68,7 +77,7 @@
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-sign-in"></i> <font color="black">Login</font>
+                                    <i class="fa fa-btn fa-sign-in"></i> <font color="white">Login</font>
                                 </button>
 
                                 <a class="btn btn-link" href="{{ url('/password/reset') }}"><font color="black">Forgot Your Password?</font></a>

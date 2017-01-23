@@ -20,22 +20,23 @@
                 <h1 style="position: absolute;left: 14px;">My Library</h1>
                 <br/><br/><br/>
                 <hr>
-                        
+            <?php
+                $countNum = 0;
+                $filenameArr = array();
+            ?>
 
             @foreach($entries2 as $entry)
                    <?php
-                        $imgSrc = $entry->filename;
-                        $pos = strpos($imgSrc, "pdf");
-                        $imgSrc = substr($imgSrc, 0, $pos);
-                        $imgSrc = "img/".$imgSrc."jpg";
+                        $countNum ++;
+                        array_push($filenameArr,$entry->filename);
+                        $container = "container".$countNum;
                     ?>
 
                 <div class="col-md-3 col-sm-6 hero-feature" >
 
                 <div class="thumbnail" style="height:300px">
-                    <img src=<?php echo $imgSrc?> width="100" height="100" alt="ALT NAME" class="img-responsive" />
-                    <!-- <embed width="100%" height="100%" name="plugin" src="http://localhost:8000/fileentry/get/php73AF.tmp.pdf" type="application/pdf"> -->
-                     
+                    <div id=<?php echo $container?> style=""></div>
+
                     <div class="caption">
                        <!--  <h3>{{$entry->original_filename}}</h3> -->
 
@@ -64,7 +65,81 @@
 
 
 
+<script>
+    function getPreview(url, divId) {
+        PDFJS.getDocument(url)
+        .then(function(pdf) {
+                    // Get div#container and cache it for later use
+                    //var container = document.getElementById(divId);
+                    var container = document.getElementById(divId);
 
+                    // Loop from 1 to total_number_of_pages in PDF document
+                    var i = 1;
+
+                        // Get desired page
+                        pdf.getPage(i).then(function(page) {
+
+                          // Create a new Canvas element
+                          var canvas = document.createElement("canvas");
+
+                          var scale = 1.5;
+                          var viewport = page.getViewport(canvas.width / page.getViewport(2.7).width);
+                          var div = document.createElement("div");
+
+                          // Set id attribute with page-#{pdf_page_number} format
+                          div.setAttribute("id", "page-" + (page.pageIndex + 1));
+
+                          // This will keep positions of child elements as per our needs
+                          div.setAttribute("style", "position: relative");
+
+                          // Append div within div#container
+                          container.appendChild(div);
+
+                          
+
+                          // Append Canvas within div#page-#{pdf_page_number}
+                          div.appendChild(canvas);
+
+                          var context = canvas.getContext('2d');
+                          canvas.height = viewport.height;  //1188
+                          canvas.width = viewport.width;   //918
+                          var renderContext = {
+                            canvasContext: context,
+                            viewport: viewport
+                          };
+
+                          // Render PDF page
+                          page.render(renderContext)
+                          .then(function() {
+                            // Get text-fragments
+                            return page.getTextContent();
+                          })
+                        });
+                    
+                      });
+
+
+
+    }
+
+</script>
+   
+ <script>
+    <?php
+        $js_array = json_encode($filenameArr);
+        echo "var filename_array = ". $js_array . ";\n";
+    ?>
+    var countEntries = <?php echo count($entries2)?>;        
+    // URL of PDF document
+    var mainUrl = window.location.hostname;
+           
+    for(y = 1; y <= countEntries; y++) {
+        var url = "http://" + mainUrl + "/fileentry/get/" + filename_array[y - 1];
+        var divId = "container" + y;
+        getPreview(url, divId);
+    }             
+               
+</script> 
 
 
 @endsection

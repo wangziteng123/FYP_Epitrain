@@ -31,10 +31,40 @@
     <!-- Custom CSS -->
     <link href="css/heroic-features.css" rel="stylesheet">
 
+    <!-- font-awesome-->
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+
+     <!--pdf.js for displaying preview image-->
+    <script src="pdf/build/pdf.js"></script>
+
+     <!-- jQuery (necessary for Bootstrap's JavaScript plugins and Typeahead) -->
+     <!-- popup window-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/vast-engineering/jquery-popup-overlay/1.7.13/jquery.popupoverlay.js"></script>
+
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js" integrity="sha384-I6F5OKECLVtK/BL+8iSLDEHowSAfUo76ZL9+kGAgTRdiByINKJaqTPH/QVNS1VDb" crossorigin="anonymous"></script> -->
     
+    <!--tooltip tipsy-->
+    <script src="js/jquery.tipsy.js"></script>
+    <link rel="stylesheet" href="css/tipsy.css" type="text/css">
+
+    <script type='text/javascript'>
+     $(function() {
+       $('.tooltipTipsy').tipsy({fade: true, gravity: 'n'});
+     });
+    </script>
+
     <!--typehead smart search-->
-    <style>
+    <script>
+    $(document).ready(function() {
+
+      // Initialize the plugin
+      $('#my_popup').popup();
+
+    });
+  </script>
+    
+    <style type="text/css">
         body {
             font-family: 'Lato';
         }
@@ -88,12 +118,26 @@
 
         .btn-four{font-weight: 700;background: #aad122; color: #fff; border-color: transparent;}
         .btn-four:hover{color: #aad122; background: transparent; border: 1px solid #aad122;}
+
     </style>
 
     <!--Search functuion-->
     
 </head>
 <body id="app-layout">
+<?php
+    $count = 0;
+    if(Auth::check()) {
+        $shoppingcartExist = \DB::table('shoppingcarts')
+                ->where('user_id', Auth::user()->id)
+                ->get();
+
+        if(count($shoppingcartExist)) {
+            $count = count($shoppingcartExist);
+        } 
+    }
+   
+?>
     <header>
     <nav class="navbar navbar-default navbar-static-top">
         <div class="container">
@@ -142,7 +186,7 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/fileentry') }}"><i class="fa fa-btn fa-sign-out"></i>Manage Library</a></li>
                                 <li><a href="{{ url('um/tocreate') }}"><i class="fa fa-btn fa-sign-out"></i>Create User</a></li>
-                                 <li><a href="{{ url('/viewAllUsers') }}"><i class="fa fa-btn fa-sign-out"></i>View All Users</a></li>
+                                <li><a href="{{ url('/viewAllUsers') }}"><i class="fa fa-btn fa-sign-out"></i>View All Users</a></li>
                                 <li><a href="{{ url('/update') }}"><i class="fa fa-btn fa-sign-out"></i>Update Personal Info</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
                             </ul>
@@ -151,6 +195,7 @@
                         <li>
                             <a href="{{ url('/shoppingcart') }}">
                                 <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+                                <span class="badge" style="font-size:6.5px;"><?php echo $count;?></span>
                             </a>
                         </li>
                         <li class="dropdown">
@@ -165,7 +210,7 @@
                                 <li><a href="{{ url('/update') }}"><i class="fa fa-btn fa-sign-out"></i>Update Personal Info</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
                             </ul>
-                        </li/
+                        </li>
                     @endif
                 </ul>
             </div>
@@ -182,8 +227,7 @@
     {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
 
 
-     <!-- jQuery (necessary for Bootstrap's JavaScript plugins and Typeahead) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
     <!-- Bootstrap JS -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <!-- Typeahead.js Bundle -->

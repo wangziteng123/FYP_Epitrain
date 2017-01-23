@@ -54,11 +54,11 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => 'localhost',//env('DB_HOST', 'localhost'),
-            'port' => '3306',//env('DB_PORT', '3306'),
-            'database' => 'fyp'/*env('DB_DATABASE', 'forge')*/,
+            'host' => 'aa5ao1tzxieyr5.cg7enxusbmkm.us-west-2.rds.amazonaws.com',
+            'port' => '3306',
+            'database' => 'ebdb',
             'username' => 'root'/**env('DB_USERNAME', 'forge')*/,
-            'password' => ''/*env('DB_PASSWORD', '')*/,
+            'password' => 'epitrain'/*env('DB_PASSWORD', '')*/,
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
