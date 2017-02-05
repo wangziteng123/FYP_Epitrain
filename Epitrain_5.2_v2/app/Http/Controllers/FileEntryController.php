@@ -33,7 +33,7 @@ class FileEntryController extends Controller
 		//$file = Request::file('filefield');
 		$file = $request->file('filefield');
 		$extension = $file->getClientOriginalExtension();
-		Storage::disk('s3')->put($file->getFilename().'.'.$extension,  File::get($file));
+		Storage::disk('s3')->put('ebooks/'.$file->getFilename().'.'.$extension,  File::get($file));
 		$entry = new Fileentry();
 		$entry->mime = $file->getClientMimeType();
 		$entry->original_filename = $file->getClientOriginalName();

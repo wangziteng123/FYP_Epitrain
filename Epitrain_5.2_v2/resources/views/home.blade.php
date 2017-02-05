@@ -83,13 +83,9 @@
                 <div class="col-md-3 col-sm-6 hero-feature">
 
                 <div class="thumbnail" style="height:300px">
-                    <!-- <div id="container"></div>
-                        <img src=<?php echo $imgSrc?> width="100" height="100" alt="ALT NAME" class="img-responsive" /> 
-                     -->
                     <div id=<?php echo $container?> style=""></div>
                      
                     <div class="caption" style="position:relative;height:150px">
-                        <!-- <h3>{{$entry->original_filename}}</h3> -->
                         <?php $fileName = $entry->original_filename; ?>
                             @if(strlen($fileName) > 30)
                             <p>{{substr($fileName,0,30)."..." }}</p>
@@ -103,7 +99,7 @@
                             <form action=<?php echo url('#');?> method="post" style="position:absolute;right:120px;top:70px;border:none">
                                 <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
                                 <input type="hidden" name="fid" value=<?php echo $fid?>>
-                                <button type="submit" style="border:none;background-color: Transparent">
+                                <button type="button" style="border:none;background-color: Transparent">
                                    <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Bought already."></i>
                                 </button>
                             </form>
@@ -123,7 +119,7 @@
                             <form action=<?php echo url('#');?> method="post" style="position:absolute;right:121px;top:94px">
                                 <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
                                 <input type="hidden" name="fid" value=<?php echo $fid?>>
-                                <button type="submit" style="border:none;background-color: Transparent">
+                                <button type="button" style="border:none;background-color: Transparent">
                                    <i class="fa fa-shopping-cart fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Added already."></i>
                                 </button>
                             </form>
@@ -138,13 +134,7 @@
                             </form>                
                         @endif
                         
-                               <!-- <a href="#" style="position:absolute;right:120px;top:95px">
-                                <span id="shoppingcartSpan" onclick="addToShoppingCart()" class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
-                        </a> -->
-
-                        <!-- <a href=<?php echo url('shoppingcart/add?uid='+Auth::user()->id+'&fid='+$fid) ?> style="position:absolute;right:120px;top:70px">
-                                <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
-                        </a> -->
+                               
                         <p style="position:absolute;right:20px;top:77px">
                             <button  class="btn btn-three" style="height:38px">
                                 More Info

@@ -9,6 +9,10 @@ use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
 use App\ActivationService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use DB;
+use Log;
 
 class AuthController extends Controller
 {
@@ -62,7 +66,15 @@ class AuthController extends Controller
 
         return redirect('/login')->with('status', 'We sent you an activation code. Check your email.');
     }
-
+    public function logout(Request $request) {
+        DB::table('sessions')->where('user_id', auth()->user()->id) //change login status in DB to logged out
+            ->update(
+                ['loggedIn' => 0]
+            );
+        Auth::logout();
+        Session::flush();
+        return redirect('/');
+    }
     /**
      * Get a validator for an incoming registration request.
      *
@@ -99,6 +111,21 @@ class AuthController extends Controller
                 $this->activationService->sendActivationMail($user);
                 auth()->logout();
                 return back()->with('warning', 'You need to confirm your account. We have sent you an activation code, please check your email.');
+            }
+            $user_id = auth()->user()->id;
+            $session_id = \Session::getId();
+            $last_activity = time();
+
+            $user_record = DB::table('sessions')->where('user_id', $user_id)->first();
+            if ($user_record == null) {
+                DB::table('sessions')->insert(
+                    ['user_id' => $user_id, 'id' => $session_id, 'old_id' => '0','last_activity' => $last_activity, 'loggedIn' => 1]
+                );
+            } else {
+                DB::table('sessions')->where('user_id', $user_id)
+                ->update(
+                    ['user_id' => $user_id, 'id' => $session_id, 'old_id' => $user_record->id,'last_activity' => $last_activity, 'loggedIn' => 1]
+                );
             }
             return redirect()->intended($this->redirectPath());
         }

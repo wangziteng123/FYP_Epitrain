@@ -159,12 +159,20 @@ public function update(Request $request, $id)
                      $email= $request->input('email');
                      $password = $request->input('password');
                      $confirmPassword = $request->input('password_confirmation');
+                     $currentPasswordInput = $request->input('currentPassword'); // current password that is retrieve from the form
+
+
                      echo $confirmPassword + " confirm pw";
 
                      $user = User::find($id);
-                     $user->name = $name;
 
-                    if($password == $confirmPassword && $password != "" && $confirmPassword !="" && $name !=""){
+                    $currentPassword = $request->input('passwordCheck'); //hashed password from db
+
+                     //$user->name = $name;
+                    //$currentPassword = bcrypt('123456');
+
+
+                    if(password_verify($currentPasswordInput,$currentPassword) && $password == $confirmPassword && $password != "" && $confirmPassword !="" && $name !=""){
                      echo "entered";
                      $user->password = bcrypt($request->input('password'));
                      $user->name = $request->input('name');
@@ -173,14 +181,14 @@ public function update(Request $request, $id)
 
                     }
 
-                    else if($password == $confirmPassword && $password != "" && $confirmPassword !=""){
+                    else if(password_verify($currentPasswordInput,$currentPassword) && $password == $confirmPassword && $password != "" && $confirmPassword !=""){
                          $user->password = bcrypt($request->input('password'));;
 
                          $error = "changePW";
                          $data = array('error'  => $error);
                     }
 
-                    else if($password == $confirmPassword && $password == "" && $confirmPassword =="" && $name !="" ){
+                    else if(password_verify($currentPasswordInput,$currentPassword) && $password == $confirmPassword && $password == "" && $confirmPassword =="" && $name !="" ){
                         $user->name =$name;
                         $error = "changeName";
                         $data = array('error'  => $error);
@@ -201,23 +209,22 @@ public function update(Request $request, $id)
                       }
                       finally{
                       if($error == "changeAll"){
-                        flash('Name and Password Changed Successful!', 'success');
+                        flash('Name and Password Changed Successfully!', 'success');
                       }
 
                       else if($error =="changePW"){
-                         flash('Password Changed Successful!', 'success');
+                         flash('Password Changed Successfully!', 'success');
                       }
                       else if($error =="changeName"){
-                         flash('Name Changed Successful!', 'success');
+                         flash('Name Changed Successfully!', 'success');
                       }
                       else{
-                         flash('Update failed!', 'danger');
+                         flash('Update failed! Incorrect current password or mismatch confirmation of new password', 'danger');
                       }
                         return redirect('update');
                       //return redirect('home');
                       //return \View::make('usermanage.updateInfo', array('error' => $error));
-                         //return view('usermanage.create', $data) ;
-                          //return \View::make('usermanage.create');
+
 
                       }
 

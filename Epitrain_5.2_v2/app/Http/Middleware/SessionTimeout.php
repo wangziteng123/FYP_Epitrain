@@ -5,11 +5,11 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Session\Store;
 use Illuminate\Support\Facades\Log;
+use Auth;
 
 class SessionTimeout {
 
-    protected $session;
-    protected $timeout = 900;
+    protected $timeout = 1800; //session timeout after 30 mins
 
     public function __construct(Store $session){
         //$request->session() = $session;
@@ -23,30 +23,25 @@ class SessionTimeout {
      */
     public function handle($request, Closure $next)
     {
-        $isLoggedIn = $request->path() != 'login';
-        //error_log($request->path());
-        //console.log($request->path());
-        Log::info($request->path());
+        //$isLoggedIn = $request->path() != 'login';
+        //Log::info($request->path());
 
         if(!$request->session()->has('lastActivityTime')) {
             $request->session()->put('lastActivityTime', time());
-            //Log::alert("Case A");
-            //Log::notice($request->session()->get('lastActivityTime'));
         } elseif (time() - $request->session()->get('lastActivityTime') > $this->timeout){
-            //Log::alert("Case B");
-            //Log::notice($request->session()->get('lastActivityTime'));
             $request->session()->forget('lastActivityTime');
-            //$cookie = cookie('intend', $isLoggedIn ? url()->current() : 'dashboard');
-            //$email = $request->user()->email;
             auth()->logout();
-            flash('You were inactive for '.$this->timeout/60 .' minutes. This platform will automatically log you out after 15 minutes.', 'danger');
-            //Log::debug(session()->has('flash_notification.message'));
+
+            flash('You were inactive for more than 30 minutes. This platform will automatically log you out after 30 minutes.', 'danger');
             return redirect('home');
-            //return message('You had not activity in '.$this->timeout/60 .' minutes ago.', 'warning', 'login')->withInput(compact('email'))->withCookie($cookie);
+        } elseif (Auth::check()) {
+            $request->session()->put('lastActivityTime', time());
+        } else {
+            $request->session()->forget('lastActivityTime');
         }
-        $isLoggedIn ? $request->session()->put('lastActivityTime', time()) : $request->session()->forget('lastActivityTime');
-        if (session()->has('flash_notification.message') == 1) {
-            flash('You were inactive for '.ceil($this->timeout/60) .' minutes. This platform will automatically log you out after 15 minutes.', 'danger');
+        //$isLoggedIn ? $request->session()->put('lastActivityTime', time()) : $request->session()->forget('lastActivityTime');
+        if (strcmp(session()->get('flash_notification.message'),'You were inactive for more than 30 minutes. This platform will automatically log you out after 30 minutes.') == 0) {
+            flash('You were inactive for more than 30 minutes. This platform will automatically log you out after 30 minutes.', 'danger');
         }
         //Log::warning(session()->has('flash_notification.message'). " here");
         return $next($request);

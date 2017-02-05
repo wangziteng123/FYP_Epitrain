@@ -38,6 +38,7 @@ Route::group(['middleware' => ['auth','admin']], function() {
 
 
 Route::group(['middleware' => 'auth'], function() {
+	Route::get('/', 'HomeController@index');
 	Route::get('/update', 'UserController@index');
 	Route::get('users/{id}', 'UserController@update');
 	//For file upload and download

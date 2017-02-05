@@ -38,7 +38,7 @@
                             <label for="email" class="col-md-4 control-label"><font color="black">E-Mail Address</font></label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{Auth::user()->email}}">
+                                <input id="email" type="email" class="form-control" name="email" value="{{Auth::user()->email}}" disabled>
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -53,6 +53,34 @@
 
 
 
+  <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                            <label for="password" class="col-md-4 control-label"><font color="black"> Current Password</font></label>
+
+                            <div class="col-md-6">
+                                <input id="currentPassword" type="password" class="form-control" name="currentPassword">
+
+                                @if ($errors->has('password'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('password') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+
+                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+
+
+                                <div class="col-md-6">
+                                    <input id="passwordCheck" type="hidden" class="form-control" name="passwordCheck" value="{{Auth::user()->password}}">
+
+                                    @if ($errors->has('password'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('password') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
 
 
 
@@ -61,7 +89,7 @@
 
 
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label"><font color="black">Password</font></label>
+                            <label for="password" class="col-md-4 control-label"><font color="black"> New Password</font></label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control" name="password">
@@ -75,7 +103,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                            <label for="password-confirm" class="col-md-4 control-label"><font color="black">Confirm Password</font></label>
+                            <label for="password-confirm" class="col-md-4 control-label"><font color="black">Confirm New Password</font></label>
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
@@ -91,26 +119,10 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-user"></i> <font color="black">Update</font>
+                                    <i class="fa fa-btn fa-user"></i> <font color="white">Update</font>
                                 </button>
                             </div>
                         </div>
