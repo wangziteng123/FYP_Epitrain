@@ -1,0 +1,53 @@
+.forumMenu{
+float:left;
+}
+
+.forumDiscussion{
+width:800px;
+float:right;
+height:90px;
+display:in-line block;
+position:absolute;
+}
+
+@media screen and (max-width: 750px) { /* width at which layout changes  */
+  .forumDiscussion {
+    //float:none;
+    width:80%;
+    position: relative;
+    //vertical-align: bottom;
+    /* width: 90px; -- set to the smaller value you want */
+  }
+  .forumMenu{
+    vertical-align: top;
+
+  }
+}
+
+.responsiveSize{
+    margin-left: 150px;
+    margin-right: 150px;
+}
+ #responsiveSize{
+    margin:auto;
+    width:70%;
+ }
+
+@media screen and (max-width: 750px) {
+    .responsiveSize{
+
+        margin-left: 60px;
+        margin-right: 60px;
+        //vertical-align: bottom;
+
+
+    }
+    #responsiveSize{
+        //for the textarea in forum
+        margin:auto;
+        width:80%;
+    }
+
+
+
+}

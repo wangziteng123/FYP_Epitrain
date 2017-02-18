@@ -20,7 +20,7 @@
                 <div class="well" style="width:400px; margin:0 auto;">
                     <h4 style="color:black; float: left">Choose the file to upload</h4>
                     <div class="input-group">
-                        <input type="file" name="filefield" value="{{ csrf_token() }}" style="color:black" required>
+                        <input type="file" name="filefield" value="{{ csrf_token() }}" style="color:black" accept="application/pdf" required>
                     </div>
                     <!-- /.input-group -->
                 </div>
@@ -36,7 +36,7 @@
                     <option value="Fiance">Finance</option>
                     <option value="BusinessManagement">Business Management</option>
                     <option value="Leadership">Leadership</option>
-                    <option value="FincialMarkets">Financial markets</option>
+                    <option value="FincialMarket">Financial market</option>
                   </select>
 
                 </div>

@@ -73,6 +73,13 @@ Route::group(['middleware' => 'auth'], function() {
 
 	Route::post('shoppingcart/addtolibrary', 'ShoppingController@addToLibrary');
 	Route::post('shoppingcart/checkout', 'ShoppingController@checkout');
+	
+	
+	Route::get('/forum', ['as'=>'forum', 'uses'=>'ForumController@index']);
+	Route::get('/forumpage', ['as'=>'forumpage', 'uses'=>'ForumController@toPage']);
+	Route::get('/forumResponsePage', ['as'=>'forumResponsePage', 'uses'=>'ForumController@showAllResponse']);
+	Route::post('/createDiscussion', ['as' => 'createDiscussion', 'uses' => 'ForumController@createDiscussion']);
+	Route::post('/createResponse', ['as' => 'createResponse', 'uses' => 'ForumController@createResponse']);
 });
 
 // // Download Route

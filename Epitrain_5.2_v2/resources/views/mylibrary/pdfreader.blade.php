@@ -26,9 +26,16 @@ http://sourceforge.net/adobe/cmap/wiki/License/
 
 
     <link rel="stylesheet" href="pdf/viewer.css"/>
-
+    
     <script src="pdf/compatibility.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+           $('.disableEvent').bind('cut copy paste', function (e) {
+            e.preventDefault();
+        });
+        });
+    </script>
 
 
 <!-- This snippet is used in production (included from viewer.html) -->
@@ -53,13 +60,36 @@ http://sourceforge.net/adobe/cmap/wiki/License/
       }       
     </script>
 
+
+    <style> 
+      .download
+      {
+          display:none !important;    
+      }
+
+      .print
+      {
+          display:none !important;
+      }
+
+      .openFile
+      {
+         display:none !important;
+      }
+
+      .btn-four{font-weight: 700;background: #aad122; color: #fff; border-color: transparent;}
+      .btn-four:hover{color: #aad122; background: transparent; border: 1px solid #aad122;}
+
+    </style>
+
   </head>
 
   <body tabindex="1" class="loadingInProgress">
-    
-    <button id="backButton" onclick="goBack()" type="button" class="btn btn-default" aria-label="Left Align">
-      <span class="glyphicon glyphicon-align-left" aria-hidden="true">Back</span>
+
+    <button id="backButton" onclick="goBack()" type="button" class="btn btn-four" style="position:absolute;top:150px;right:0px;z-index:2000;height:40px">
+      <i class="fa fa-arrow-circle-left" aria-hidden="true"></i><span class="glyphicon glyphicon-align-left" aria-hidden="true">Back</span>
     </button>
+
 
     <div id="outerContainer" style="width:1325px">
 
@@ -262,7 +292,7 @@ http://sourceforge.net/adobe/cmap/wiki/License/
                     data-l10n-id="page_rotate_ccw"></menuitem>
         </menu>
 
-        <div id="viewerContainer" tabindex="0">
+        <div class="disableEvent" id="viewerContainer" tabindex="0">
           <div id="viewer" class="pdfViewer"></div>
         </div>
 

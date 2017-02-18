@@ -25,6 +25,10 @@
     <script src="js/libs.js"></script>
    <!--   <script src="js/script.js"></script> -->
 
+    <!--added in feb by cathy for forum-->
+    <link rel="stylesheet" href="css/forForum.css" type="text/css">
+
+
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
@@ -37,10 +41,17 @@
      <!--pdf.js for displaying preview image-->
     <script src="pdf/build/pdf.js"></script>
 
+     <!--back to Top arrow-->
+    <script src="backtoTop/float-panel.js"></script>
+
      <!-- jQuery (necessary for Bootstrap's JavaScript plugins and Typeahead) -->
      <!-- popup window-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://cdn.rawgit.com/vast-engineering/jquery-popup-overlay/1.7.13/jquery.popupoverlay.js"></script>
+
+    <!--ninja slider-->
+    <script src="ninja_slider/ninja-slider.js"></script>
+    <link rel="stylesheet" href="ninja_slider/ninja-slider.css" type="text/css">
 
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js" integrity="sha384-I6F5OKECLVtK/BL+8iSLDEHowSAfUo76ZL9+kGAgTRdiByINKJaqTPH/QVNS1VDb" crossorigin="anonymous"></script> -->
     
@@ -119,12 +130,40 @@
         .btn-four{font-weight: 700;background: #aad122; color: #fff; border-color: transparent;}
         .btn-four:hover{color: #aad122; background: transparent; border: 1px solid #aad122;}
 
+         #backtop {
+            position: fixed;
+            left:auto;right: 20px;top:auto;bottom: 20px;
+            outline: none;
+            overflow:hidden;
+            color:#fff;
+            text-align:center;
+            background-color:rgba(49,79,96,0.84);
+            height:40px;
+            width:40px;
+            line-height:40px;
+            font-size:14px;
+            border-radius:2px;
+            cursor:pointer;
+            transition:all 0.3s linear;
+            z-index:999999;
+
+            opacity:1;
+            display:none;
+        }
+        #backtop:hover {
+            background-color:#27CFC3;
+        }
+        #backtop.mcOut {
+            opacity:0;
+        }
+
     </style>
 
     <!--Search functuion-->
     
 </head>
 <body id="app-layout">
+     <div id="backtop">&#9650;</div>
 <?php
     $count = 0;
     if(Auth::check()) {
@@ -206,7 +245,7 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/mylibrary') }}"><i class="fa fa-btn fa-sign-out"></i>My Library</a></li>
                                 <li><a href="{{ url('#') }}"><i class="fa fa-btn fa-sign-out"></i>SpreadSheets</a></li>
-                                <li><a href="{{ url('#') }}"><i class="fa fa-btn fa-sign-out"></i>Discussion Forum</a></li>
+                                <li><a href="{{ url('/forum') }}"><i class="fa fa-btn fa-sign-out"></i>Discussion Forum</a></li>
                                 <li><a href="{{ url('/update') }}"><i class="fa fa-btn fa-sign-out"></i>Update Personal Info</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
                             </ul>

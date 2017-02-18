@@ -24,11 +24,13 @@ class DisallowConcurrentDevice {
     {
         if (Auth::check()) {
             $user_record = DB::table('sessions')->where('user_id', auth()->user()->id)->first();
-            if (strcmp($user_record->old_id,\Session::getId()) == 0 && $user_record->loggedIn == 1) {
-                auth()->logout();
-                flash('Someone logged in to your account on another browser/device. You were automatically logged out.', 'danger');
+            if ($user_record != null) {
+                if (strcmp($user_record->old_id,\Session::getId()) == 0 && $user_record->loggedIn == 1) {
+                    auth()->logout();
+                    flash('Someone logged in to your account on another browser/device. You were automatically logged out.', 'danger');
 
-            }
+                }
+            }  
         } 
 
         //$isLoggedIn ? $request->session()->put('lastActivityTime', time()) : $request->session()->forget('lastActivityTime');
