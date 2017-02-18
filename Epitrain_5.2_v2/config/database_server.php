@@ -54,7 +54,7 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => 'aa1a2tgxmoktdqm.cg7enxusbmkm.us-west-2.rds.amazonaws.com',
+            'host' => 'aa5ao1tzxieyr5.cg7enxusbmkm.us-west-2.rds.amazonaws.com',
             'port' => '3306',
             'database' => 'ebdb',
             'username' => 'root'/**env('DB_USERNAME', 'forge')*/,
