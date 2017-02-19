@@ -27,7 +27,7 @@
 
 <div class="form-group" style="width:90%; margin:auto">
     {!! Form::label('Your Name') !!}
-    {!! Form::text('name', null, 
+    {!! Form::text('name', Auth::check() ? auth()->user()->name : null, 
         array('required', 
               'class'=>'form-control', 
               'placeholder'=>'Your name')) !!}
@@ -35,7 +35,7 @@
 <br/>
 <div class="form-group" style="width:90%; margin:auto">
     {!! Form::label('Your E-mail Address') !!}
-    {!! Form::text('email', null, 
+    {!! Form::text('email', Auth::check() ? auth()->user()->email : null, 
         array('required', 
               'class'=>'form-control', 
               'placeholder'=>'Your e-mail address')) !!}
