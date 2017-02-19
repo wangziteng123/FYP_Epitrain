@@ -4,8 +4,8 @@
 
 <?php
 	$categories = \DB::table('forumcategory') ->get();
-	
-	$discussions = \DB::table('forumdiscussion') 
+
+	$discussions = \DB::table('forumdiscussion')
 		->join('forumcategory', 'forumdiscussion.category_id', '=', 'forumcategory.id')
 		->join('users', 'forumdiscussion.user_id', '=', 'users.id')
         ->select('forumdiscussion.*', 'forumcategory.categoryname', 'users.name')
@@ -14,12 +14,11 @@
 
 
 
-
 ?>
 
 <div class="col-lg-12 forumMenu" >
     <div class="col-lg-11 " style="position:relative; left:70px; " >
-    <h1 style="position: absolute;left: 14px;">Discussion Forum</h1>
+    <h1 style="position: absolute;left: 14px;">Discussion Forum (Admin)</h1>
     <br/><br/><br/>
     <hr>
         <div class="col-lg-3" style="position:absolute;left:15px;">
@@ -41,7 +40,9 @@
 	    	$forumpageUrl = URL::route('forumpage');
 	    	$forumpageUrl = $forumpageUrl."?id=".$discussion->id;
 
+
             $isOpen= $discussion->isOpen; // needed to see if the discussion is still open for reply
+
 	    	$showResponsePageUrl = URL::route('forumResponsePage');
 	    	$showResponsePageUrl= $showResponsePageUrl."?id=".$discussion->id;
 
@@ -73,6 +74,9 @@
 
 
 	    			<font color='grey'><?php  $creationDate= $discussion->created_at;
+
+	    			$discussionId = $discussion->id;
+
                     $d= strtotime($creationDate);
 
                     $convertD = date("Y-m-d h:i:sa", $d);
@@ -94,28 +98,33 @@
                                ;?></font><br/>
 	    			<font color='black'><?php echo $discussion->description;?></font> <br/>
 
-
-                    <?php
+	    			<?php
                         //check if the discussion has been closed or not
                         if ($isOpen == 0){ ?>
                             <a style="display:block" href=<?php echo $forumpageUrl?>>
-                         	Reply <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                         	    			</font><br/>
+                            Reply <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                            </font><br/>
+                            <!-- this is to close the discussion-->
+                            <form method="post" action=<?php echo URL::route('closeDiscussion');?>>
+                            <input type="hidden" name="discussionId" value=<?php echo $discussionId;?>>
+                            <button type="submit" class="btn btn-warning">Close Discussion</button>
+                            </form></br>
 
-                         <?php
+                            <?php
 
                         }else{ ?>
-                           <font color='red'> This discussion has been closed </font>
+                            <font color='red'> This discussion has been closed </font>
 
                         <?php
-
                         }
 
-                    ?>
+                        ?>
 
 
-
-
+	    			<form method="post" id="deleteForm" action=<?php echo URL::route('deleteDiscussion');?> onsubmit="return confirmDelete()">
+	    			<input type="hidden" name="discussionId" value=<?php echo $discussionId;?>>
+	    			<input type="submit" value="Delete Discussion" class="btn btn-danger"></button>
+	    			</form>
 
 
 
@@ -172,6 +181,19 @@ $(document).ready(function () {
     });
 
 });
+
+function confirmDelete(){
+    var result = confirm("Are you sure you want to delete this discussion?");
+    console.log(result);
+    if (result == false) {
+        //window.location.reload();
+       // document.getElementById("deleteForm").innerHTML = "";
+       return false;
+    }
+
+}
+
+
 </script>
 
 

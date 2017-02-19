@@ -18,6 +18,10 @@ class ForumController extends Controller
     	return view('forum.forum');
     }
 
+    public function indexAdmin(){
+        return view('forum.forumAdmin');
+    }
+
 
     public function createDiscussion(Request $request) {
     	$user_id = \Auth::user()->id;
@@ -30,8 +34,11 @@ class ForumController extends Controller
     	DB::table('forumdiscussion') ->insert(
                 ['user_id' => $user_id, 'category_id' => $category_id, 'title' => $title, 'description' => $description, 'created_at' => $mytime->toDateTimeString()]
         );
+        if (\Auth::user()->isAdmin){
+            return view('forum.forumAdmin');
 
-        return redirect()->route('forum');
+        }else{
+        return redirect()->route('forum.forum');}
     }
 
     public function toPage(Request $request) {
@@ -62,11 +69,32 @@ class ForumController extends Controller
 
     	$mytime = Carbon::now() ->timezone(\Config::get('app.timezone'));
 
-    	DB::table('forumresponse') ->insert(
+    	DB::table('forumresponse')->insert(
                 ['user_id' => $user_id, 'discussion_id' => $discussion_id, 'content' => $content, 'created_at' => $mytime->toDateTimeString()]
         );
 
         //return redirect()->route('forumpage')->with('discussionId',$discussion_id);
         return \View::make('forum.forumpage')->with('discussionId',$discussion_id);
     }
+
+    public function deleteDiscussion(Request $request){
+        $discussion_id = $request->get('discussionId');
+
+        DB::table('forumdiscussion')->where('id','=', $discussion_id)->delete();
+
+        return view('forum.forumAdmin');
+    }
+    public function closeDiscussion(Request $request){
+
+         $discussion_id = $request->get('discussionId');
+         DB::table('forumdiscussion')->where('id','=', $discussion_id)->update(['isOpen' => "1"]);
+
+
+          return view('forum.forumAdmin');
+
+
+
+    }
+
+
 }

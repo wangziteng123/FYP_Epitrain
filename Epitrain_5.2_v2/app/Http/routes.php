@@ -37,6 +37,10 @@ Route::group(['middleware' => ['auth','admin']], function() {
 	Route::get('/viewAllUsers', 'UserController@viewAllUsers');
 	Route::delete('fileentry/delete/{filename}', [
 	'as'=>'deleteentry', 'uses'=>'FileEntryController@delete']);
+	
+	Route::get('/forumAdmin', ['as'=>'forum', 'uses'=>'ForumController@indexAdmin']);
+	Route::post('/deleteDiscussion', ['as' => 'deleteDiscussion', 'uses' => 'ForumController@deleteDiscussion']);
+	Route::post('/closeDiscussion', ['as' => 'closeDiscussion', 'uses' => 'ForumController@closeDiscussion']);
 });
 
 

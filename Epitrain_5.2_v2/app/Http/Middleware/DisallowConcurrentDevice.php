@@ -10,6 +10,8 @@ use Auth;
 
 class DisallowConcurrentDevice {
 
+    //protected $timeout = 1800; //session timeout after 30 mins
+
     public function __construct(Store $session){
         //$request->session() = $session;
     }
@@ -23,20 +25,27 @@ class DisallowConcurrentDevice {
     public function handle($request, Closure $next)
     {
         if (Auth::check()) {
-            $user_record = DB::table('sessions')->where('user_id', auth()->user()->id)->first();
-            if ($user_record != null) {
-                if (strcmp($user_record->old_id,\Session::getId()) == 0 && $user_record->loggedIn == 1) {
-                    auth()->logout();
-                    flash('Someone logged in to your account on another browser/device. You were automatically logged out.', 'danger');
-
-                }
-            }  
-        } 
-
-        //$isLoggedIn ? $request->session()->put('lastActivityTime', time()) : $request->session()->forget('lastActivityTime');
-        if (strcmp(session()->get('flash_notification.message'),'Someone logged in to your account on another browser/device. You were automatically logged out.') == 0) {
-            flash('Someone logged in to your account on another browser/device. You were automatically logged out.', 'danger');
+            DB::table('sessions')->where('user_id', auth()->user()->id)
+            ->update(
+                ['loggedIn' => 1]
+            );
         }
+        $user_records = DB::table('sessions')->where('loggedIn', '=', 1)->get();
+        //print_r($user_records);
+        if ($user_records != null) {
+            foreach ($user_records as $user_record) {
+                if (time() - $user_record->last_activity > 1800) {
+                    DB::table('sessions')->where('user_id', $user_record->user_id)
+                    ->update(
+                        ['loggedIn' => 0]
+                    );
+                } 
+            }
+        }  
+
+        /*if (strcmp(session()->get('flash_notification.message'),'Someone logged in to your account on another browser/device. You were automatically logged out.') == 0) {
+            flash('Someone logged in to your account on another browser/device. You were automatically logged out.', 'danger');
+        }*/
         //Log::warning(session()->has('flash_notification.message'). " here");
         return $next($request);
     }

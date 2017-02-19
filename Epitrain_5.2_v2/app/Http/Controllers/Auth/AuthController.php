@@ -122,10 +122,16 @@ class AuthController extends Controller
                     ['user_id' => $user_id, 'id' => $session_id, 'old_id' => '0','last_activity' => $last_activity, 'loggedIn' => 1]
                 );
             } else {
-                DB::table('sessions')->where('user_id', $user_id)
-                ->update(
-                    ['user_id' => $user_id, 'id' => $session_id, 'old_id' => $user_record->id,'last_activity' => $last_activity, 'loggedIn' => 1]
-                );
+            	if ($user_record->loggedIn == 0) {
+            		DB::table('sessions')->where('user_id', $user_id)
+	                ->update(
+	                    ['user_id' => $user_id, 'id' => $session_id, 'old_id' => $user_record->id,'last_activity' => $last_activity, 'loggedIn' => 1]
+	                );
+            	} else {
+            		auth()->logout();
+            		return back()->with('danger', 'Someone is using your account. You cannot login until the person logs out. Please contact admin if you need help.');
+            	}
+                
             }
             return redirect()->intended($this->redirectPath());
         }

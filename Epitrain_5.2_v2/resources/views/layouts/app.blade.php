@@ -226,7 +226,8 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/fileentry') }}"><i class="fa fa-btn fa-sign-out"></i>Manage Library</a></li>
                                 <li><a href="{{ url('um/tocreate') }}"><i class="fa fa-btn fa-sign-out"></i>Create User</a></li>
-                                <li><a href="{{ url('/viewAllUsers') }}"><i class="fa fa-btn fa-sign-out"></i>View All Users</a></li>
+                                <li><a href="{{ url('/forumAdmin') }}"><i class="fa fa-btn fa-sign-out"></i>Discussion Forum</a></li>
+								<li><a href="{{ url('/viewAllUsers') }}"><i class="fa fa-btn fa-sign-out"></i>View All Users</a></li>
                                 <li><a href="{{ url('/update') }}"><i class="fa fa-btn fa-sign-out"></i>Update Personal Info</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
                             </ul>
