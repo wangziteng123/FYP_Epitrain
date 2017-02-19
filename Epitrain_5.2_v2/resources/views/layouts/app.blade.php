@@ -216,6 +216,7 @@
                     @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">Login</a></li>
                         <li><a href="{{ url('/register') }}">Register</a></li>
+                        <li><a href="{{ url('/contact') }}">Contact Admin</a></li>
                     @elseif (Auth::user()->isAdmin)
                          <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -247,6 +248,7 @@
                                 <li><a href="{{ url('#') }}"><i class="fa fa-btn fa-sign-out"></i>SpreadSheets</a></li>
                                 <li><a href="{{ url('/forum') }}"><i class="fa fa-btn fa-sign-out"></i>Discussion Forum</a></li>
                                 <li><a href="{{ url('/update') }}"><i class="fa fa-btn fa-sign-out"></i>Update Personal Info</a></li>
+                                <li><a href="{{ url('/contact') }}"><i class="fa fa-btn fa-sign-out"></i>Contact Admin</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
                             </ul>
                         </li>
