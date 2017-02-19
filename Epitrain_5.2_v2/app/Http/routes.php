@@ -21,6 +21,9 @@ Route::get('/home',  ['as'=>'home', 'uses'=>'HomeController@index']);
 
 Route::get('user/activation/{token}', 'Auth\AuthController@activateUser')->name('user.activate');
 
+Route::get('contact', ['as' => 'contact', 'uses' => 'AboutController@create']);
+
+Route::post('contact', ['as' => 'contact_store', 'uses' => 'AboutController@store']);
 //Route::get('/update', ['middleware' => 'auth', 'uses=>UserController@index', function() {
 	//return view('usermanage.updateInfo');
 //}]);
@@ -55,8 +58,7 @@ Route::group(['middleware' => 'auth'], function() {
 
 	Route::get('mylibrary', 'MyLibraryController@index');
 	Route::get('shop', 'HomeController@shop');
-	Route::get('buy/{book_id}', 
- ['as'=>'buy', 'uses'=>'LibraryController@buy']);
+	Route::get('buy/{book_id}', ['as'=>'buy', 'uses'=>'LibraryController@buy']);
  
  
 	Route::get('pdfreader', [
