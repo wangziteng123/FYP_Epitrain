@@ -11,7 +11,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Response;
+use Illuminate\Encryption\Encrypter;
+use Illuminate\Filesystem\Filesystem;
 use Imagick;
+use Crypt;
 
 class FileEntryController extends Controller
 {
@@ -28,12 +31,16 @@ class FileEntryController extends Controller
 		$category = $request->input('category');
 		$price = $request->input('price');
 		$description = $request->input('description');
-
- 		//create record in fileentry table
-		//$file = Request::file('filefield');
+		
 		$file = $request->file('filefield');
+		$n_file = File::get($file);
 		$extension = $file->getClientOriginalExtension();
-		Storage::disk('s3')->put('ebooks/'.$file->getFilename().'.'.$extension,  File::get($file));
+		if($extension === 'xlsm' || $extension === 'xls' || $extension === 'xlsx'){
+	      	$encrypted = Crypt::encrypt($n_file);
+	      	Storage::disk('s3')->put('spreadsheets/'.$file->getFilename().'.'.$extension,  $encrypted);
+	    } else {
+	    	Storage::disk('s3')->put('ebooks/'.$file->getFilename().'.'.$extension,  $n_file);
+	    }	
 		$entry = new Fileentry();
 		$entry->mime = $file->getClientMimeType();
 		$entry->original_filename = $file->getClientOriginalName();
@@ -68,7 +75,55 @@ class FileEntryController extends Controller
                ->header('Content-Type', $entry->mime);
 
 	}
+	public function getDownload($filename)
+	{
+	    //PDF file is stored under project/public/download/info.pdf
+	     /*$file_path = storage_path() .'\\app\\'. $filename;
+	     echo $file_path;*/
+	    $entry = Fileentry::where('filename', '=', $filename)->firstOrFail();
+        $url = "s3-".env('S3_REGION')."amazonaws.com/".env('S3_BUCKET')."/spreadsheets/".$entry->filename;
+		//$file = Storage::disk('s3')->get("http://sample-env-1.2uqmcfeudi.us-west-2.elasticbeanstalk.com/ebook/".$entry->filename.".pdf");
+ 		$file = Storage::disk('s3')->get('/spreadsheets/'.$entry->filename);
+ 		$mime_type = "";
+ 		
+	    if ($file != null)
+	     {      
+	     	if (strpos($entry->filename,'xls') !== false) {
+	     		$mime_type = "application/vnd.ms-excel";
+	     	} else if (strpos($entry->filename,'xlsx') !== false) {
+	     		$mime_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+	     	} else if (strpos($entry->filename,'xlsm') !== false) {
+	     		$mime_type = "application/vnd.ms-excel.sheet.macroEnabled.12";
+	     	}
+	        return $this->respondDownload($file,$entry->filename,$mime_type);
+	         //return response()->download($file, 'download.pdf', $headers);
+	     }
+	     else
+	     {
+	         // Error
+	         exit('Requested file does not exist on our server!');
+	     }
+	  }
+	/**
+	 * Respond with a file download.
+	 *
+	 * @param $fileContent
+	 * @param $fileName
+	 * @param $mime
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 */
+	public function respondDownload($fileContent, $fileName, $mime)
+	{
+	    $response = response($fileContent, 200, [
+            'Content-Type' => $mime,
+            'Content-Description' => 'File Transfer',
+            'Content-Disposition' => "attachment; filename={$fileName}",
+        ]);
 
+        ob_end_clean(); 
+
+        return $response;
+	}
 	public function getPdfViewer($filename) {
 		$add = "fileentry/get/".$filename; 
 		$baseUrl = url($add);

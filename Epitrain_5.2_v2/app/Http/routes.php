@@ -54,12 +54,15 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('fileentry/get/{filename}', [
 		'as'=>'getentry', 'uses'=>'FileEntryController@get']);
 
+	Route::get('fileentry/downloadSpreadsheet/{filename}', [
+  'as'=>'downloadspreadsheet', 'uses'=>'FileEntryController@getDownload']);
+
 	Route::get('fileentry/getViewer/{filename}', [
 		'as'=>'getviewer', 'uses'=>'FileEntryController@getPdfViewer']);
 
 	Route::post('fileentry/add', [
 		'as'=>'addentry', 'uses'=>'FileEntryController@add']);
-
+	
 	Route::get('mylibrary', 'MyLibraryController@index');
 	Route::get('shop', 'HomeController@shop');
 	Route::get('buy/{book_id}', ['as'=>'buy', 'uses'=>'LibraryController@buy']);

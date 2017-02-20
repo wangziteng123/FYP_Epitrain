@@ -102,7 +102,12 @@
                     @else
                     <p>{{$fileName}}</p>
                     @endif
+                    @if(strpos($fileName,'xls') !== false || strpos($fileName,'xlsx') !== false || strpos($fileName,'xlsm'))
+                    <a href="{{route('downloadspreadsheet', $entry->filename)}}">Download</a><br/>
+                    @else
                     <a href="{{route('getentry', $entry->filename)}}">View</a><br/>
+                    @endif
+
                     @if (Auth::user()->isAdmin)
                     {{ Form::open(array('method'
                     => 'DELETE', 'route' => array('deleteentry', $entry->filename))) }}
