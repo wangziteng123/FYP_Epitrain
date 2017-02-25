@@ -225,7 +225,7 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/fileentry') }}"><i class="fa fa-btn fa-sign-out"></i>Manage Library</a></li>
-                                <li><a href="{{ url('um/tocreate') }}"><i class="fa fa-btn fa-sign-out"></i>Create User</a></li>
+                                <li><a href="{{ url('/createUser') }}"><i class="fa fa-btn fa-sign-out"></i>Create User</a></li>
                                 <li><a href="{{ url('/forumAdmin') }}"><i class="fa fa-btn fa-sign-out"></i>Discussion Forum</a></li>
 								<li><a href="{{ url('/viewAllUsers') }}"><i class="fa fa-btn fa-sign-out"></i>View All Users</a></li>
                                 <li><a href="{{ url('/update') }}"><i class="fa fa-btn fa-sign-out"></i>Update Personal Info</a></li>
@@ -233,13 +233,19 @@
                             </ul>
                         </li>
                     @else
-                        <li>
+                         <li style="border-left:solid 1px #85929E;">
+                            <a href="{{ url('/mylibrary') }}" role="button" aria-expanded="false">
+                               <i class="fa fa-book" aria-hidden="true"></i> My Library 
+                            </a>
+                        </li>
+
+                        <li style="border-left:solid 1px #85929E;">
                             <a href="{{ url('/shoppingcart') }}">
                                 <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
                                 <span class="badge" style="font-size:6.5px;"><?php echo $count;?></span>
                             </a>
                         </li>
-                        <li class="dropdown">
+                        <li class="dropdown" style="border-left:solid 1px #85929E;">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 {{ Auth::user()->name }} <span class="caret"></span>
                             </a>

@@ -2,14 +2,16 @@
 
 @section('content')
 
-@if(Session::has('danger'))
-<p class="alert alert-danger">{{ Session::get('danger') }}</p>
+@if(Session::has('message'))
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <p>{{ Session::get('message') }}</p>
+    </div>
 @endif
 
 @if (session()->has('flash_notification.message'))
        <div class="alert alert-{{ session('flash_notification.level') }}">
            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-
            {!! session('flash_notification.message') !!}
        </div>
 @endif

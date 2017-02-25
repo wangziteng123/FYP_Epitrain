@@ -1,10 +1,10 @@
 console.log("ready");
 
 $('#register').click(function(){
-		console.log("enter");
+		//console.log("enter");
 		var div = document.getElementById("dom-target");
 		var myData = div.textContent.toString().trim();
-		console.log(myData);
+		//console.log(myData);
 
 
 			//	var error = (<?php echo $error ?>).toString();

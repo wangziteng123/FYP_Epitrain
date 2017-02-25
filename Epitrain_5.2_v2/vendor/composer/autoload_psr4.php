@@ -46,5 +46,6 @@ return array(
     'ClassPreloader\\' => array($vendorDir . '/classpreloader/classpreloader/src'),
     'Carbon\\' => array($vendorDir . '/nesbot/carbon/src/Carbon'),
     'Aws\\' => array($vendorDir . '/aws/aws-sdk-php/src'),
+    'Askedio\\Laravel5ProfanityFilter\\' => array($vendorDir . '/askedio/laravel5-profanity-filter/app'),
     'App\\' => array($baseDir . '/app'),
 );

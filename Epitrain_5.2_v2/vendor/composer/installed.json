@@ -3828,5 +3828,46 @@
             "search",
             "searchable"
         ]
+    },
+    {
+        "name": "askedio/laravel5-profanity-filter",
+        "version": "1.0.5",
+        "version_normalized": "1.0.5.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Askedio/Laravel5-Profanity-Filter.git",
+            "reference": "eeea82bfe4bb25e5b487536142be364e66f62d73"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Askedio/Laravel5-Profanity-Filter/zipball/eeea82bfe4bb25e5b487536142be364e66f62d73",
+            "reference": "eeea82bfe4bb25e5b487536142be364e66f62d73",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5.9"
+        },
+        "require-dev": {
+            "laravel/laravel": "5.*",
+            "phpunit/phpunit": "~5.0",
+            "symfony/css-selector": "3.1.*",
+            "symfony/dom-crawler": "3.1.*"
+        },
+        "time": "2016-11-23 16:52:13",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Askedio\\Laravel5ProfanityFilter\\": "app/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "AGPL-3.0"
+        ],
+        "description": "A Vendor Package Example",
+        "keywords": [
+            "laravel"
+        ]
     }
 ]

@@ -16,6 +16,15 @@
 
 ?>
 
+@if (session()->has('flash_notification.message'))
+       <div class="alert alert-{{ session('flash_notification.level') }}">
+           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+
+           {!! session('flash_notification.message') !!}
+       </div>
+@endif
+
+
 <div class="col-lg-12 forumMenu" >
     <div class="col-lg-11 " style="position:relative; left:70px; " >
     <h1 style="position: absolute;left: 14px;">Discussion Forum (Admin)</h1>
@@ -24,12 +33,73 @@
         <div class="col-lg-3" style="position:absolute;left:15px;">
     	<button class="btn btn-four btn-lg initialism slide_open"><i class="fa fa-plus-circle" aria-hidden="true"></i>  NEW DISCUSSION</button>
     	<br/><br/>
-    	<a href="#"><font size="3" style="color:white">All Discussion</font></a>
+
+
+
+
+
+
+
+
+</br>
+
+
+
+<!-- Button trigger modal for adding category -->
+<button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#myModal">
+     Add Category
+</button>
+
+<!-- Modal for adding category -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <font color='black'> <h4 class="modal-title" id="myModalLabel">Add Category</h4></font>
+      </div>
+      <div class="modal-body">
+        <!-- Add a form inside the add category modal-->
+           <font color='black'> <form method="post" id="addCategory" action=<?php echo URL::route('addCategory');?>>
+            Category Name: <input type="text" name="categoryName" class="form-control" >
+
+
+        <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+        <input type="submit" value="Add Category" class="btn btn-primary"></button>
+
+        </div>
+        </form></font>
+
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    	<!--
+    	<a href="#"><font size="3" style="color:white">All Discussion</font></a> -->
     	<br/>
     	<br/>
+    	<!--
     	@foreach($categories as $category)
     		<a href="#"><font size="3" style="color:white"><?php echo $category->categoryname?></font></a><br/>
-    	@endforeach
+    	@endforeach -->
         </div></div>
 </div>
 <div class="col-lg-12" >
@@ -55,7 +125,6 @@
 
             $numOfResponses = count($responses);
            //echo var_dump($numOfResponses);
-
 	    ?>
 
 
@@ -66,11 +135,13 @@
                 <div class="col-sm-8"><font color='black'><h2>
                     <b><?php echo $discussion->title;?></b></h2></font>
 
+                    <font color='black'><h4><b>Category:</b> <?php 
+                    echo $discussion->categoryname; 
+                    ?></h4></font>
 
 
 
-
-	    		    <font color='black'>Posted by: <?php echo $discussion->name;?></font>
+	    		    <font color='black'><b>Posted by:</b> <?php echo $discussion->name;?></font>
 
 
 	    			<font color='grey'><?php  $creationDate= $discussion->created_at;
@@ -95,7 +166,7 @@
 
                                }
 
-                               ;?></font><br/>
+                               ;?></font><br/><br/>
 	    			<font color='black'><?php echo $discussion->description;?></font> <br/>
 
 	    			<?php
@@ -119,12 +190,65 @@
                         }
 
                         ?>
-
+<!--
 
 	    			<form method="post" id="deleteForm" action=<?php echo URL::route('deleteDiscussion');?> onsubmit="return confirmDelete()">
 	    			<input type="hidden" name="discussionId" value=<?php echo $discussionId;?>>
 	    			<input type="submit" value="Delete Discussion" class="btn btn-danger"></button>
 	    			</form>
+
+
+-->
+
+
+</br>
+<!-- Button trigger modal for adding category -->
+<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModalDeleteDiscussion">
+     Delete Discussion
+</button>
+
+<!-- Modal for adding category -->
+<div class="modal fade" id="myModalDeleteDiscussion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <font color='black'> <h4 class="modal-title" id="myModalLabel"><b>Delete Discussion</b></h4></font>
+      </div>
+      <div class="modal-body">
+        <!-- Add a form inside the add category modal-->
+           <font color='black'> <form method="post" id="deleteForm" action=<?php echo URL::route('deleteDiscussion');?>>
+            Are you sure you want to delete this discussion?
+            <input type="hidden" name="discussionId" value=<?php echo $discussionId;?>>
+
+        <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+
+        <input type="submit" value="Delete" class="btn btn-primary"></button>
+
+        </div>
+        </form></font>
+
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -192,6 +316,13 @@ function confirmDelete(){
     }
 
 }
+
+
+
+
+
+
+
 
 
 </script>

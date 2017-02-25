@@ -70,13 +70,13 @@
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary" id="register">
-                                    <i class="fa fa-btn fa-user"></i> <font color="black">Register</font>
+                                    <i class="fa fa-btn fa-user"></i> <font color="white">Register</font>
                                 </button>
                             </div>
                         </div>
                     </form>
                     <h5> <div id="createUserMesage"></div></h5>
-                    <p id="dom-target">
+                    <p hidden id="dom-target">
                     <?php //if( $data['error'] != null){
                         if(isset($error)){
                             echo $error;

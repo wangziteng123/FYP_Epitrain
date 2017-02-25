@@ -38,7 +38,24 @@ class ForumController extends Controller
             return view('forum.forumAdmin');
 
         }else{
-        return redirect()->route('forum.forum');}
+        return redirect()->route('forum');}
+    }
+    
+    public function liked($discussionId, $userId){
+        if($discussionId!=null){
+                $discussionUserId = DB::table('discussionUserLike')
+                -> where ('discussion_id', '=', $discussionId)
+                -> where ('user_id', '=', $userId)
+                -> get();
+                
+                if($discussionUserId == null){
+                    DB::table('discussionUserLike') ->insert(
+                            ['discussion_id' => $discussionId,'user_id' => $userId]
+                    );
+                }
+        return redirect()->route('forum');
+        //return \View::make('forum.forum')->with('discussionId',$discussionId);
+        }
     }
 
     public function toPage(Request $request) {
@@ -47,6 +64,10 @@ class ForumController extends Controller
     		return \View::make('forum.forumpage')->with('discussionId',$discussionId);
     	} else {
     		$discussionId = $request->get('id');
+            $views = DB::table('forumdiscussion') -> where('id', $discussionId) -> get();
+            ++$views;
+            DB::table('forumdiscussion') ->where('id', $discussionId) -> 
+                increment('views');
     		return \View::make('forum.forumpage')->with('discussionId',$discussionId);
     	}
 
@@ -57,6 +78,10 @@ class ForumController extends Controller
         		return \View::make('forum.forumResponsePage')->with('discussionId',$discussionId);
         	} else {
         		$discussionId = $request->get('id');
+                $views = DB::table('forumdiscussion') -> where('id', $discussionId) -> get();
+                ++$views;
+                DB::table('forumdiscussion') ->where('id', $discussionId) -> 
+                    increment('views');
         		return \View::make('forum.forumResponsePage')->with('discussionId',$discussionId);
         	}
 
@@ -95,6 +120,61 @@ class ForumController extends Controller
 
 
     }
+	
+	public function addCategory(Request $request){
+	    $error="";
+	    try{
+	        $categoryName = $request->get('categoryName');
+                $allCategory = DB::table('forumcategory') -> get();
+                    $noOfCategories = sizeof($allCategory);
+                     $categoryID = $noOfCategories + 1;
+
+            foreach($allCategory as $category){
+                $categoryNamefromDB = $category->categoryname;
+                if($categoryName == $categoryNamefromDB ){
+                   $error = "failed";
+
+                }
+
+
+            }
+
+            if ($error == ""){
+                 DB::table('forumcategory')->insert(['id' => $categoryID, 'categoryname' => $categoryName]);
+
+                 $error = "Category successfully added";
+            }
+
+
+	    }catch (\Exception $e){
+
+	         $error = "failed";
+             $data = array(
+                'error'  => $error
+             );
+
+
+
+	    }finally{
+	        if($error == "Category successfully added"){
+                flash('Category added Successfully!', 'success');
+            }
+
+
+            else{
+                flash('Category was not added!', 'danger');
+            }
+            return redirect('forumAdmin');
+
+
+	    }
+
+
+    }
+
+
+	
+	
 
 
 }

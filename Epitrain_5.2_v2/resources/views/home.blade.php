@@ -3,24 +3,121 @@
 @section('content')
 
 
+<script>
+
+function categoryButton(category) {
+  var mainUrl = window.location.hostname;
+  var url = "http://" + mainUrl + "/category?category=" + category;
+
+  window.location = url;
+}
+
+</script>
+
     <!-- Split button -->
 
    <!-- Page Content -->
     <div class="container" style="positon:relatvie">
-        <div style="position:absolute;left:120px;top:105px">
+
+        @if (Auth::user()->isAdmin)
+        @else
+           <nav class="navbar navbar-default navbar-static-top" style="position:absolute;top:51px;left:0px;width:1380px;z-index:0;">
+          <div class="container" style="position:relative">
+            <div style="position:absolute;top:15px">
+            <font color="#85929E">
+              <button class="btn-five" style="background-color: Transparent;border:none" onclick="categoryButton('Trading')">
+                <i class="fa fa-money" aria-hidden="true"></i> Trading &nbsp&nbsp&nbsp&nbsp  
+              </button>
+              <button class="btn-five" style="background-color: Transparent;border:none" onclick="categoryButton('RiskManagemnt')">
+                <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Risk Management &nbsp &nbsp&nbsp&nbsp
+              </button>
+              <button class="btn-five" style="background-color: Transparent;border:none" onclick="categoryButton('Fintech')">
+              <i class="fa fa-credit-card-alt" aria-hidden="true"></i> Fintech&nbsp&nbsp&nbsp&nbsp  
+              </button>
+              <button class="btn-five" style="background-color: Transparent;border:none" onclick="categoryButton('ProjectManagement')"> 
+              <i class="fa fa-tasks" aria-hidden="true"></i> Project Management &nbsp&nbsp&nbsp&nbsp  
+              </button>
+              <button class="btn-five" style="background-color: Transparent;border:none" onclick="categoryButton('Finance')"> 
+              <i class="fa fa-usd" aria-hidden="true"></i> Finance&nbsp&nbsp&nbsp&nbsp  
+              </button>
+              <button class="btn-five" style="background-color: Transparent;border:none" onclick="categoryButton('BusinessManagement')">
+              <i class="fa fa-list-alt" aria-hidden="true"></i> Business Management &nbsp&nbsp&nbsp&nbsp  
+              </button>
+              <button class="btn-five" style="background-color: Transparent;border:none" onclick="categoryButton('Leadership')">
+              <i class="fa fa-users" aria-hidden="true"></i> Leadership &nbsp&nbsp&nbsp&nbsp  
+              </button>
+              <button class="btn-five" style="background-color: Transparent;border:none" onclick="categoryButton('FinancialMarket')">
+              <i class="fa fa-university" aria-hidden="true"></i> Financial market &nbsp&nbsp&nbsp&nbsp
+              </button>
+              <button class="btn-five" style="background-color: Transparent;border:none" onclick="categoryButton('All')">
+                View All
+              </button>
+            </font>
+            </div>
+          </div>
+        </nav>
+
+        @endif
+
+        <div style="position:absolute;left:120px;top:145px">
           <font size="3">WELCOME TO EPITRAIN</font><br/><br/>
         </div>
-        <div style="position:absolute;left:120px;top:125px">
+        <div style="position:absolute;left:120px;top:165px">
           <h2>Epitrain provides training, resource development & consultancy</h2>
         </div>
           <br/>
           <br/>
-        <div style="position:absolute;left:135px;;top:175px">
-          <hr style="width:65px">
+        <div style="position:absolute;left:118px;;top:215px">
+          <hr style="width:105px">
         </div>
+
+
+        <?php
+         use Carbon\Carbon;
+
+         $isSubscribe = Auth::user()->subscribe;
+       ?>
+
+      @if (!Auth::user()->isAdmin)
       
 
-      <div style="position:absolute;top:250px">
+        @if($isSubscribe)
+          <?php
+            $currentTime = Carbon::now();
+            $userSubscribe = \DB::table('subscription')
+              ->where('user_id', Auth::user()->id)
+              ->first();
+
+            $end_Date = Carbon::createFromFormat('Y-m-d H:i:s', $userSubscribe->end_date);
+            $expireOrnot = $currentTime->lt($end_Date);
+          ?>
+          @if($expireOrnot)
+            <div style="position:absolute;left:125px;top:245px">
+            Your subscription plan will end at <?php echo $end_Date->toDateTimeString();?>.
+            </div>
+          @else
+          <div style="position:absolute;left:125px;top:245px">
+           Want to start a subscription? &nbsp&nbsp
+          <button  class="btn btn-four initialism basic_open" style="width:150px;">
+            SUBSCRIBE
+          </button>
+         </div>
+
+          @endif
+        @else
+          <div style="position:absolute;left:125px;top:245px">
+           Want to start a subscription? &nbsp&nbsp
+          <button  class="btn btn-four initialism basic_open" style="width:150px;">
+            SUBSCRIBE
+          </button>
+         </div>
+
+        @endif
+      @endif
+
+        
+
+      <div style="position:absolute;top:290px">
         <!--Trending-->
         <div style="position:relative">
         <font style="font-family:Book Antiqua;font-weight:10;position:absolute;left:40px;top:0px" size="6">Trending </font>
@@ -884,6 +981,22 @@
              
           </div>
 
+      <!-- Basic Slider-->
+
+    <div id="basic" class="well" style="max-width:74em;">
+        <h4>Choose a subscribtion plan:</h4>
+      <form action=<?php echo url('/subscribe');?>  method="post">
+        <p><input type="radio" name="period" value="1" checked> 1 month</p>
+        <p><input type="radio" name="period" value="6"> 6 months</p>
+        <p><input type="radio" name="period" value="12"> 1 year</p>
+        <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+        <button type="submit" class="btn-default btn">Subscribe</button>
+        <button class="basic_close btn btn-default">Cancel</button>
+      </form>
+    </div>
+    <!--end of basic slider-->
+
+
 <script>
     function getPreview(url, divId) {
         PDFJS.getDocument(url)
@@ -956,11 +1069,6 @@
     }
 
 </script>
-   
- <script>
-    
-               
-</script> 
 
 <script>
     <?php
@@ -1074,6 +1182,8 @@ $(document).ready(function () {
         outline: true,
         vertical: 'top'
     });
+
+    $('#basic').popup();
 
 });
 </script>

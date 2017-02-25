@@ -11,7 +11,7 @@
         ->select('forumdiscussion.*', 'forumcategory.categoryname', 'users.name')
         ->get();
 
-
+        $user = \DB::table('users')->where('id', Auth::user()->id)->value('id');
 
 
 
@@ -25,12 +25,7 @@
         <div class="col-lg-3" style="position:absolute;left:15px;">
     	<button class="btn btn-four btn-lg initialism slide_open"><i class="fa fa-plus-circle" aria-hidden="true"></i>  NEW DISCUSSION</button>
     	<br/><br/>
-    	<a href="#"><font size="3" style="color:white">All Discussion</font></a>
-    	<br/>
-    	<br/>
-    	@foreach($categories as $category)
-    		<a href="#"><font size="3" style="color:white"><?php echo $category->categoryname?></font></a><br/>
-    	@endforeach
+    	
         </div></div>
 </div>
 <div class="col-lg-12" >
@@ -45,6 +40,10 @@
 	    	$showResponsePageUrl = URL::route('forumResponsePage');
 	    	$showResponsePageUrl= $showResponsePageUrl."?id=".$discussion->id;
 
+            $likes = DB::table('discussionUserLike')
+                -> where ('discussion_id', '=', $discussion->id)
+                -> count();
+            
 	    	$discussionId = $discussion->id;
 
 
@@ -63,13 +62,12 @@
 
 
                 <div class="col-sm-8"><font color='black'><h2>
-                    <b><?php echo $discussion->title;?></b></h2></font>
-
-
-
-
-
-	    		    <font color='black'>Posted by: <?php echo $discussion->name;?></font>
+                    <?php $title = app('profanityFilter')->filter($discussion->title);?>
+                    <b><?php echo $title;?></b></h2></font>
+                    <font color='black'><h4><b>Category:</b> <?php 
+                    echo $discussion->categoryname; 
+                    ?></h4></font>
+	    		    <font color='black'><b>Posted by:</b> <?php echo $discussion->name;?></font>
 
 
 	    			<font color='grey'><?php  $creationDate= $discussion->created_at;
@@ -91,9 +89,12 @@
 
                                }
 
-                               ;?></font><br/>
-	    			<font color='black'><?php echo $discussion->description;?></font> <br/>
-
+                               ;?></font><br/><br/>
+                    <?php $desc = app('profanityFilter')->filter($discussion->description);?>
+	    			<font color='black'><?php echo $desc;?></font> <br/>
+                    <font color='black'>Views: <?php echo $discussion->views;?></font>
+                    </br>
+                    <font color='black'>Likes: <?php echo $likes;?></font>
 
                     <?php
                         //check if the discussion has been closed or not
@@ -124,6 +125,14 @@
 	    	    <div class="col-sm-4">
                     <font color='black'><a style="text-decoration: none" href=<?php echo $showResponsePageUrl?>><h2>
                     <i class="fa fa-comment-o"></i><?php echo $numOfResponses ?></h2></a> </font>
+	    	    </div>
+                <div class="col-sm-4">
+                    <font color='black'><a style="text-decoration: none" href="{!! route('like', ['discussionId' => $discussion->id, 'userId' => $user]) !!}">
+                    <h2>
+                    <i class="fa fa-thumbs-up black" style="color:black" aria-hidden="true"></i>
+                    </h2>
+                    </a>
+                    </font>
 	    	    </div>
 	    	<br/>
 

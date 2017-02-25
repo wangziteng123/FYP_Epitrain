@@ -54,7 +54,7 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-        public function store(Request $request)
+    public function store(Request $request)
     {
         try{
                 //echo "you are at the storing function";
@@ -63,6 +63,11 @@ class UserController extends Controller
                 //$name = $request->input('name');
         //$email= $request->input('email');
                 //$password= $password->input('password');
+                $this->validate($request, [
+                    'name' => 'required|max:255',
+                    'email' => 'required|email|max:255|unique:users',
+                    'password' => 'required|min:6|confirmed',
+                ]);
                 $user = new User;
                 
                 $user->name = $request->name;

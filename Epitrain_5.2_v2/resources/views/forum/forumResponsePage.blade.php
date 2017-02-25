@@ -16,8 +16,10 @@
 
 @foreach($discussion as $disc)
 <div class="jumbotron" style='margin-left: 50px; margin-right: 50px'>
-	<font color='black'><h2><b><?php echo $disc->title;?></b></h2></font> <br/>
-	<font color='black'><?php echo $disc->description;?></font> <br/>
+    <?php $title = app('profanityFilter')->filter($disc->title);?>
+	<font color='black'><h2><b><?php echo $title;?></b></h2></font> <br/>
+    <?php $desc = app('profanityFilter')->filter($disc->description);?>
+	<font color='black'><?php echo $desc;?></font> <br/>
 </div>
 @endforeach
 
@@ -29,8 +31,8 @@
 
 <div class="jumbotron responsiveSize" >
 
-
-    <font color='black'><?php echo $response->content;?> <br/>
+    <?php $cont = app('profanityFilter')->filter($response->content);?>
+    <font color='black'><?php echo $cont;?> <br/>
 
 
 	<?php

@@ -104,14 +104,15 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
-
-    public function authenticated(Request $request, $user)
+    /**
+     * This method handles what happens after users keyed in the correct username and password
+     *
+     * @param  Request  $request
+     * @param  User  $user
+     * @return chosen page or login page if encounters error
+     */
+    public function authenticated(Request $request, $user) 
         {
-            if (!$user->activated) {
-                $this->activationService->sendActivationMail($user);
-                auth()->logout();
-                return back()->with('warning', 'You need to confirm your account. We have sent you an activation code, please check your email.');
-            }
             $user_id = auth()->user()->id;
             $session_id = \Session::getId();
             $last_activity = time();
@@ -119,21 +120,22 @@ class AuthController extends Controller
             $user_record = DB::table('sessions')->where('user_id', $user_id)->first();
             if ($user_record == null) {
                 DB::table('sessions')->insert(
-                    ['user_id' => $user_id, 'id' => $session_id, 'old_id' => '0','last_activity' => $last_activity, 'loggedIn' => 1]
+                    ['user_id' => $user_id, 'id' => $session_id,'last_activity' => $last_activity, 'loggedIn' => 1]
                 );
             } else {
             	if ($user_record->loggedIn == 0) {
             		DB::table('sessions')->where('user_id', $user_id)
 	                ->update(
-	                    ['user_id' => $user_id, 'id' => $session_id, 'old_id' => $user_record->id,'last_activity' => $last_activity, 'loggedIn' => 1]
+	                    ['user_id' => $user_id, 'id' => $session_id,'last_activity' => $last_activity, 'loggedIn' => 1]
 	                );
             	} else {
             		auth()->logout();
-            		return back()->with('danger', 'Someone is using your account. You cannot login until the person logs out. Please contact admin if you need help.');
+            		return back()->with('message', 'Someone is using your account. You cannot login until the person logs out. Please contact admin if you need help.');
             	}
                 
             }
-            return redirect()->intended($this->redirectPath());
+            //redirect to home page or the page that corresponds to the URL users typed in
+            return redirect()->intended($this->redirectPath()); 
         }
 
     public function activateUser($token)

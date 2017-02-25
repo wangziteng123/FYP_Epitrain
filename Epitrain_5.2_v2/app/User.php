@@ -27,4 +27,32 @@ class User extends Authenticatable
     public function isAdmin() {
         return $this->isAdmin;
     }
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+            'password-confirm' => 'required',
+          ];
+    }
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'name.required' => 'Name field is blank',
+            'email.required'  => 'Email address is missing',
+            'email.email'  => 'Email is not in correct format',
+            'password.required'  => 'Password field is blank',
+        ];
+    }
 }

@@ -1,0 +1,26 @@
+{
+    "name": "askedio/laravel5-profanity-filter",
+    "description": "A Vendor Package Example",
+    "keywords": ["laravel"],
+    "license": "AGPL-3.0",
+    "type": "library",
+    "require": {
+        "php": ">=5.5.9"
+     },
+     "require-dev": {
+        "laravel/laravel": "5.*",
+        "phpunit/phpunit": "~5.0",
+        "symfony/css-selector": "3.1.*",
+        "symfony/dom-crawler": "3.1.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Askedio\\Laravel5ProfanityFilter\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Askedio\\Laravel5ProfanityFilter\\Tests\\" : "tests"
+        }
+    }
+}

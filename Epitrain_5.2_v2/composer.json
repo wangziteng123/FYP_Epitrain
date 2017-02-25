@@ -10,7 +10,8 @@
         "laravelcollective/html": "^5.2.0",
         "league/flysystem-aws-s3-v3": "^1.0",
         "laracasts/flash": "^2.0",
-        "nicolaslopezj/searchable": "^1.9"
+        "nicolaslopezj/searchable": "^1.9",
+        "askedio/laravel5-profanity-filter": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

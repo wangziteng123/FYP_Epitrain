@@ -75,16 +75,48 @@ function callApi(url) {
     
  </div>
 
+ <?php
+    use Carbon\Carbon;
+
+    $isSubscribe = Auth::user()->subscribe;
+ ?>
+
+
  <div class="col-lg-3" style="position:relative;left:90px;top:72px;">
  <table style="border:1px solid #aad122;">
  	<div style="position:absolute;left:40px;top:10px">
  		<font style="font-size:20px">Total:</font><br/>
  	</div>
 
- 	<div style="position:absolute;left:40px;top:35px" id="total-price">
- 		<font style="font-size:40px;color:#aad122">S$<span class="total-price"></span></font><br/>
- 	</div>
+ 	 @if($isSubscribe)
 
+ 	 <?php
+            $currentTime = Carbon::now();
+            $userSubscribe = \DB::table('subscription')
+              ->where('user_id', Auth::user()->id)
+              ->first();
+
+            $end_Date = Carbon::createFromFormat('Y-m-d H:i:s', $userSubscribe->end_date);
+            $expireOrnot = $currentTime->lt($end_Date);
+     ?>
+
+     	@if($expireOrnot)
+     		<div style="position:absolute;left:40px;top:35px" id="total-price">
+	 		<font style="font-size:40px;color:#aad122">S$0</font><br/>
+	 		</div>
+     	@else
+     		<div style="position:absolute;left:40px;top:35px" id="total-price">
+	 		<font style="font-size:40px;color:#aad122">S$<span class="total-price"></span></font><br/>
+	 		</div>
+     	@endif
+
+ 	 @else
+ 	 	<div style="position:absolute;left:40px;top:35px" id="total-price">
+ 		<font style="font-size:40px;color:#aad122">S$<span class="total-price"></span></font><br/>
+ 		</div>
+
+ 	 @endif
+ 	
  	<div style="position:absolute;left:40px;top:90px">
  		<button  class="btn btn-four initialism slide_open" style="width:200px;">
 	  	  		Checkout
@@ -112,7 +144,28 @@ function callApi(url) {
 		<div class="panel panel-default" style="position:relative;height:50px">
 			<div class="panel-body">
 				<font style="color:black;position:absolute;left:25px"><span class="final-count"></span>&nbsp ebooks</font>
-			    <font style="color:black;position:absolute;right:35px">Total: S$<span class="final-checkout"></span></font>
+				 @if($isSubscribe)
+
+			 	 <?php
+			            $currentTime = Carbon::now();
+			            $userSubscribe = \DB::table('subscription')
+			              ->where('user_id', Auth::user()->id)
+			              ->first();
+
+			            $end_Date = Carbon::createFromFormat('Y-m-d H:i:s', $userSubscribe->end_date);
+			            $expireOrnot = $currentTime->lt($end_Date);
+			     ?>
+
+			     	@if($expireOrnot)
+			     		<font style="color:black;position:absolute;right:35px">Total: S$0</span></font>
+			     	@else
+			     		<font style="color:black;position:absolute;right:35px">Total: S$<span class="final-checkout"></span></font>
+			     	@endif
+
+			 	 @else
+			 	 	<font style="color:black;position:absolute;right:35px">Total: S$<span class="final-checkout"></span></font>
+
+			 	 @endif
 			</div>
 		</div>
 	</form>

@@ -33,7 +33,7 @@ Route::post('contact', ['as' => 'contact_store', 'uses' => 'AboutController@stor
 Route::group(['middleware' => ['auth','admin']], function() {
 	
 	Route::post('/store', 'UserController@store');
-	Route::get('um/tocreate', 'HomeController@create');
+	Route::get('/createUser', 'HomeController@create');
 	Route::get('/viewAllUsers', 'UserController@viewAllUsers');
 	Route::delete('fileentry/delete/{filename}', [
 	'as'=>'deleteentry', 'uses'=>'FileEntryController@delete']);
@@ -41,6 +41,7 @@ Route::group(['middleware' => ['auth','admin']], function() {
 	Route::get('/forumAdmin', ['as'=>'forum', 'uses'=>'ForumController@indexAdmin']);
 	Route::post('/deleteDiscussion', ['as' => 'deleteDiscussion', 'uses' => 'ForumController@deleteDiscussion']);
 	Route::post('/closeDiscussion', ['as' => 'closeDiscussion', 'uses' => 'ForumController@closeDiscussion']);
+    Route::post('/addCategory', ['as' => 'addCategory', 'uses' => 'ForumController@addCategory']);
 });
 
 
@@ -83,12 +84,19 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::post('shoppingcart/addtolibrary', 'ShoppingController@addToLibrary');
 	Route::post('shoppingcart/checkout', 'ShoppingController@checkout');
 	
-	
+	Route::get('/forum/{discussionId}/{userId}',[
+        'uses' => 'ForumController@liked',
+        'as' => 'like'
+    ]);
 	Route::get('/forum', ['as'=>'forum', 'uses'=>'ForumController@index']);
 	Route::get('/forumpage', ['as'=>'forumpage', 'uses'=>'ForumController@toPage']);
 	Route::get('/forumResponsePage', ['as'=>'forumResponsePage', 'uses'=>'ForumController@showAllResponse']);
 	Route::post('/createDiscussion', ['as' => 'createDiscussion', 'uses' => 'ForumController@createDiscussion']);
 	Route::post('/createResponse', ['as' => 'createResponse', 'uses' => 'ForumController@createResponse']);
+
+	Route::get('/category', ['as' => 'category', 'uses' => 'CategoryController@index']);
+
+	Route::post('/subscribe', ['as' => 'subscribe', 'uses' => 'SubscriptionController@addSubscription']);
 });
 
 // // Download Route
