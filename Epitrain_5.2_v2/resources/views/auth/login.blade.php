@@ -18,12 +18,12 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 col-sm-offset-2 col-xs-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
+                <div class="panel-heading" style="font-size:18px"><strong>Login</strong></div>
 
                     <div class="panel-body" style="">
-                        {{ Html::image('img/Epitrain_logo.jpg', 'Epitrain Logo', array('class'=>'epitrainLogo')) }}
+                        {{ Html::image('img/Epitrain_logo.png', 'Epitrain Logo', array('class'=>'epitrainLogo')) }}
                     </div>
 
 
@@ -32,10 +32,10 @@
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label"><font color="black">E-Mail Address</font></label>
+                            <label for="email" class="col-md-4 control-label"><font color="black" size="3px">E-Mail Address</font></label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}">
+                                <input id="email" type="email" class="form-control" name="email"  style="font-size:18px" value="{{ old('email') }}" placeholder="Enter your email">
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -57,10 +57,10 @@
                         @endif
 
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label"><font color="black">Password</font></label>
+                            <label for="password" class="col-md-4 control-label" ><font color="black" size="3px">Password</font></label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password">
+                                <input id="password" type="password" class="form-control" name="password" style="font-size:18px" placeholder="Enter your password">
 
                                 @if ($errors->has('password'))
                                     <span class="help-block">
@@ -71,22 +71,25 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
+                            <div class="col-md-6 col-md-offset-3">
                                 <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember"> <font color="black">Remember Me</font>
+                                    <label for="remember">
+                                        <input type="checkbox" id="remember"> 
+                                        <span class="checkbox-material"></span>
+                                        <font color="black" size="3px">Remember Me</font>
                                     </label>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-sign-in"></i> <font color="white">Login</font>
+                            <div class="col-sm-offset-3 col-xs-7 col-sm-6 col-md-offset-3 col-lg-offset-3 col-xs-offset-2">
+                                <button type="submit" class="btn btn-raised" style="background-color: darkblue">
+                                    <i class="fa fa-btn fa-sign-in img-responsive" style="color:white"></i> <font color="white" class = "small">Login</font>
                                 </button>
-
-                                <a class="btn btn-link" href="{{ url('/password/reset') }}"><font color="black">Forgot Your Password?</font></a>
+                            </div>
+                            <div class="col-sm-offset-3 col-xs-7 col-sm-6 col-md-offset-3 col-lg-offset-3">
+                                <a class="btn btn-link text-center" href="{{ url('/password/reset') }}" style="font-size:18px"><font color="black" class = "small">Forgot Your Password?</font></a>
                             </div>
                         </div>
                     </form>
@@ -95,4 +98,6 @@
         </div>
     </div>
 </div>
+
+
 @endsection

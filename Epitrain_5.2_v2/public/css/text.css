@@ -1,0 +1,85 @@
+
+        body {
+            font-family: 'Arial';
+            color: white;
+        }
+
+        .fa-btn {
+            margin-right: 6px;
+        }
+
+        .tt-query {
+          -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+             -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+                  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        }
+
+        .tt-hint {
+          color: #666
+        }
+        .tt-input {
+          color: #fff
+        }
+
+        .tt-menu { 
+          width: 435px;
+          margin-top: 4px;
+          padding: 4px;
+          background-color: #00008B;
+          border: 1px solid #ccc;
+          border: 1px solid rgba(0, 0, 0, 0.2);
+          -webkit-border-radius: 4px;
+             -moz-border-radius: 4px;
+                  border-radius: 4px;
+          -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+             -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+                  box-shadow: 0 5px 10px rgba(0,0,0,.2);
+        }
+
+        .tt-suggestion {
+          padding: 3px 10px;
+          line-height: 3px;
+        }
+
+        .tt-suggestion.tt-cursor,.tt-suggestion:hover {
+          color: #fff;
+          background-color: #0097cf;
+
+        }
+
+        .tt-suggestion p {
+          margin: 0;
+        }
+
+        .btn-three{font-weight: 700; color: #aad122; background: transparent; border: 1px solid #aad122;}
+        .btn-three:hover{background: #aad122; color: #fff; border-color: transparent;}
+
+        .btn-four{font-weight: 700;background: #aad122; color: #fff; border-color: transparent;}
+        .btn-four:hover{color: #aad122; background: transparent; border: 1px solid #aad122;}
+
+         #backtop {
+            position: fixed;
+            left:auto;right: 20px;top:auto;bottom: 20px;
+            outline: none;
+            overflow:hidden;
+            color:#fff;
+            text-align:center;
+            background-color:rgba(49,79,96,0.84);
+            height:40px;
+            width:40px;
+            line-height:40px;
+            font-size:14px;
+            border-radius:2px;
+            cursor:pointer;
+            transition:all 0.3s linear;
+            z-index:999999;
+
+            opacity:1;
+            display:none;
+        }
+        #backtop:hover {
+            background-color:#27CFC3;
+        }
+        #backtop.mcOut {
+            opacity:0;
+        }

@@ -1,7 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-
+<div class="row">
+    <div class="col-sm-6">
+        <ul class="breadcrumb pull-left" style="margin-bottom: 5px;font-size:20px">
+            <li style="font-size:16px"><a href="/">Home</a></li>
+            <li style="font-size:16px" class="active">Discussion Forum</li>
+        </ul>
+    </div>
+</div>
 <?php
 	$categories = \DB::table('forumcategory') ->get();
 	
@@ -17,20 +24,15 @@
 
 ?>
 
-<div class="col-lg-12 forumMenu" >
-    <div class="col-lg-11 " style="position:relative; left:70px; " >
-    <h1 style="position: absolute;left: 14px;">Discussion Forum</h1>
-    <br/><br/><br/>
-    <hr>
-        <div class="col-lg-3" style="position:absolute;left:15px;">
-    	<button class="btn btn-four btn-lg initialism slide_open"><i class="fa fa-plus-circle" aria-hidden="true"></i>  NEW DISCUSSION</button>
-    	<br/><br/>
-    	
-        </div></div>
+<div class="col-md-3 col-s-12 center-block">
+  <h1 style="position: static;left: 14px;">Discussion Forum</h1>
+  <hr>
+    <div style="position:static;left:15px;">
+    	<button class="btn btn-raised btn-primary initialism slide_open" style = "font-size:14px"><i class="fa fa-plus-circle" aria-hidden="true"></i> NEW DISCUSSION</button>
+    </div>
 </div>
-<div class="col-lg-12" >
-        <div class="forumDiscussion" style="border-style:solid;border-width:1px;right:20px;background-color:white;">
-    	@foreach($discussions as $discussion)
+<div class="col-md-9 col-s-12 center-block">
+    @foreach($discussions as $discussion)
 
     	<?php
 	    	$forumpageUrl = URL::route('forumpage');
@@ -40,9 +42,9 @@
 	    	$showResponsePageUrl = URL::route('forumResponsePage');
 	    	$showResponsePageUrl= $showResponsePageUrl."?id=".$discussion->id;
 
-            $likes = DB::table('discussionUserLike')
-                -> where ('discussion_id', '=', $discussion->id)
-                -> count();
+        $likes = DB::table('discussionUserLike')
+            -> where ('discussion_id', '=', $discussion->id)
+            -> count();
             
 	    	$discussionId = $discussion->id;
 
@@ -55,94 +57,93 @@
            //echo var_dump($numOfResponses);
 
 	    ?>
+    <div class="jumbotron">
+      <div class="row center-block">
 
+        <div class="col-sm-8 center-block"><font color='black'><h2>
+            <?php $title = app('profanityFilter')->filter($discussion->title);?>
+            <b><?php echo $title;?></b></h2></font>
+            <font color='black'>
+              <h4><b>Category:</b> 
+                <?php 
+                  echo $discussion->categoryname; 
+                ?>
+              </h4>
+            </font>
+  		      <font color='black' size="3"><b>Posted by:</b> <?php echo $discussion->name;?></font>
+            <font color='grey' size="3"><?php  $creationDate= $discussion->created_at;
+              $d= strtotime($creationDate);
 
-	    <div class="jumbotron" >
-	        <div class="row">
+              $convertD = date("Y-m-d h:i:sa", $d);
+              $convertDToDateFormat= date_create($convertD);
+              $currentDate = date("Y-m-d h:i:sa");
+              $currentDateToDateFormat= date_create($currentDate);
+              $dateDifference=date_diff($convertDToDateFormat,$currentDateToDateFormat);
+              $dateDiff=   $dateDifference ->format("%a days ago ");
 
-
-                <div class="col-sm-8"><font color='black'><h2>
-                    <?php $title = app('profanityFilter')->filter($discussion->title);?>
-                    <b><?php echo $title;?></b></h2></font>
-                    <font color='black'><h4><b>Category:</b> <?php 
-                    echo $discussion->categoryname; 
-                    ?></h4></font>
-	    		    <font color='black'><b>Posted by:</b> <?php echo $discussion->name;?></font>
-
-
-	    			<font color='grey'><?php  $creationDate= $discussion->created_at;
-                    $d= strtotime($creationDate);
-
-                    $convertD = date("Y-m-d h:i:sa", $d);
-                    $convertDToDateFormat= date_create($convertD);
-                     $currentDate = date("Y-m-d h:i:sa");
-                                      $currentDateToDateFormat= date_create($currentDate);
-                            $dateDifference=date_diff($convertDToDateFormat,$currentDateToDateFormat);
-                             $dateDiff=   $dateDifference ->format("%a days ago ");
-
-                              if($dateDiff == "0 days ago "){
-                              $timeDiffInMinutues = $dateDifference ->format("%i minutes ago ");
-                                   echo $timeDiffInMinutues;
-                              }
-                               else{
-                                   echo $dateDiff;
-
-                               }
-
-                               ;?></font><br/><br/>
-                    <?php $desc = app('profanityFilter')->filter($discussion->description);?>
-	    			<font color='black'><?php echo $desc;?></font> <br/>
-                    <font color='black'>Views: <?php echo $discussion->views;?></font>
-                    </br>
-                    <font color='black'>Likes: <?php echo $likes;?></font>
-
-                    <?php
-                        //check if the discussion has been closed or not
-                        if ($isOpen == 0){ ?>
-                            <a style="display:block" href=<?php echo $forumpageUrl?>>
-                         	Reply <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                         	    			</font><br/>
-
-                         <?php
-
-                        }else{ ?>
-                           <font color='red'> This discussion has been closed </font>
-
-                        <?php
-
-                        }
-
-                    ?>
-
-
-
-
-
-
-
-
-	    	    </div>
-	    	    <div class="col-sm-4">
-                    <font color='black'><a style="text-decoration: none" href=<?php echo $showResponsePageUrl?>><h2>
-                    <i class="fa fa-comment-o"></i><?php echo $numOfResponses ?></h2></a> </font>
-	    	    </div>
-                <div class="col-sm-4">
-                    <font color='black'><a style="text-decoration: none" href="{!! route('like', ['discussionId' => $discussion->id, 'userId' => $user]) !!}">
-                    <h2>
-                    <i class="fa fa-thumbs-up black" style="color:black" aria-hidden="true"></i>
-                    </h2>
+              if ($dateDiff == "0 days ago "){
+              $timeDiffInMinutues = $dateDifference ->format("%i minutes ago ");
+                   echo $timeDiffInMinutues;
+              }
+              else {
+                   echo $dateDiff;
+              }
+            ;?></font><br/><br/><br/>
+            <?php $desc = app('profanityFilter')->filter($discussion->description);?>
+              @if(strlen($desc) < 170)
+    			      <font color='black' size='4'><?php echo $desc;?></font>
+              @else
+                <font color='black' size='4'>{{substr($desc,0,170)}}</font>
+                <a style="font-size:20px" href=<?php echo $forumpageUrl?> data-toggle="tooltip" data-placement="bottom" title="Click here to view the whole post">
+                    ...
+                </a>
+              @endif
+              <br/>
+              </br>
+            <?php
+                //check if the discussion has been closed or not
+                if ($isOpen == 0){ ?>
+                    <a style="display:block; font-size:20px" href=<?php echo $forumpageUrl?>>
+                 	      Reply 
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>  
                     </a>
-                    </font>
-	    	    </div>
-	    	<br/>
+                 	  <br/>
+                 <?php
 
+                }else{ ?>
+                   <font color='red'> This discussion has been closed </font>
 
-	    	</div>
-</div>
-    	@endforeach
+                <?php
+
+                }
+
+            ?>
+  	    </div>
+  	    <div class="col-sm-4 center-block">
+            <font color='black' style="font-size:34px">
+              <a href="#" data-toggle="tooltip" data-placement="bottom" title="Number of views" style="color:black">
+                <i class="fa fa-eye" aria-hidden="true" style="color:navy"></i>
+                <?php echo $discussion->views; ?>
+              </a>
+            </font>
+
+            <font color='black' style="font-size:34px"><a style="color:black" href=<?php echo $showResponsePageUrl?> data-toggle="tooltip" data-placement="bottom" title="Number of responses">
+              <i class="fa fa-comment-o" style="color:navy"></i>
+                <?php echo '' + $numOfResponses ?>
+              </a> 
+            </font>
+
+            <font color='black' style="font-size:34px"><a style="color:black" href="{!! route('like', ['discussionId' => $discussion->id, 'userId' => $user]) !!}" data-toggle="tooltip" data-placement="bottom" title="Number of likes">
+              <i class="fa fa-thumbs-up" style="color:navy" aria-hidden="true"></i>
+              <?php echo $likes ?>
+              </a>
+            </font>
         </div>
 
+  	  </div>
     </div>
+    @endforeach
+</div>
 
 
 
@@ -164,9 +165,9 @@
     		@endforeach
 		</select>
 		<br/><br/>
-		<textarea name="description" rows="4" cols="50" required></textarea><br/>
+		<textarea class="materialize-textarea" name="description" rows="4" cols="50" required></textarea><br/>
 		<input type="submit" value="Submit" style="position:absolute;right:35px;"><br/><br/>
-		<button class="btn btn-default slide_close" style="position:absolute;right:30px;width:70px">Cancel</button>
+		<button class="btn btn-default slide_close" style="float:right">Cancel</button>
 	</form>
 </div>
 

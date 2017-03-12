@@ -37,9 +37,9 @@ class ForumController extends Controller
         if (\Auth::user()->isAdmin){
             return view('forum.forumAdmin');
 
-        }else{
-        return redirect()->route('forum');}
-    }
+        } else{
+            return redirect()->route('forum');}
+        }
     
     public function liked($discussionId, $userId){
         if($discussionId!=null){
@@ -52,8 +52,18 @@ class ForumController extends Controller
                     DB::table('discussionUserLike') ->insert(
                             ['discussion_id' => $discussionId,'user_id' => $userId]
                     );
+                } else {
+                    DB::table('discussionUserLike')
+                    -> where ('discussion_id', '=', $discussionId)
+                    -> where ('user_id', '=', $userId)
+                    -> delete();
                 }
-        return redirect()->route('forum');
+            if (\Auth::user()->isAdmin){
+                return view('forum.forumAdmin');
+
+            } else{
+                return redirect()->route('forum');}
+            }
         //return \View::make('forum.forum')->with('discussionId',$discussionId);
         }
     }

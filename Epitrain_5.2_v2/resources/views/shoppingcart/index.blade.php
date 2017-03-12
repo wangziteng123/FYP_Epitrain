@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="row">
+    <div class="col-sm-6">
+        <ul class="breadcrumb pull-left" style="margin-bottom: 5px;font-size:20px">
+            <li style="font-size:16px"><a href="/">Home</a></li>
+            <li style="font-size:16px" class="active">Shopping Cart</li>
+        </ul>
+    </div>
+</div>
 <?php
 
 		$shoppingcarts = \DB::table('shoppingcarts')
@@ -22,24 +30,21 @@ function callApi(url) {
 
 </script>
 
-
-<div class="col-lg-12" style="position:relative">
-
- <div class="col-lg-8" style="position:relative; left:90px">
-
-                <!-- Blog Post -->
-
-                <!-- Title -->
-                <h1 style="position: absolute;left: 14px;">Shopping Cart</h1>
+<h1 style="position: absolute;left: 14px;">Shopping Cart</h1>
                 <br/><br/><br/>
                 <hr>
 
+<div class="col-sm-12 col-xs-12" style="position:relative">
+                <!-- Blog Post -->
+
+                <!-- Title -->
          <?php
          	$countNum = 0;
             $filenameArr = array();
          ?>
 
         @foreach($shoppingcarts as $shoppingcart)
+        <div class="col-sm-10 col-xs-10" style="position:relative">
         <?php
 
 	        $totalprice += $shoppingcart->price;
@@ -51,23 +56,55 @@ function callApi(url) {
             $container = "container".$countNum;
 
         ?>
-      	  <div class="jumbotron" style="position:relative;height:180px;background:#E1DFDE">
-      	  	  <div id=<?php echo $container?> style="position:absolute;left:5px;top:7px;"></div>
-			  	  <div  style="position:absolute;left:120px;top:18px;"><input type="checkbox" id=<?php echo $checkid?> style="width:16px;height:16px" onclick="countTotalprice()" checked></div>
-				  <div  style="position:absolute;left:140px;top:10px;"><font color="#aad122" style="font-size: 25px;font-weight: bold;"><?php echo $shoppingcart->original_filename;?></font></div>
-				  <div  style="position:absolute;left:132px;top:43px;"><font color="black">category: <?php echo $shoppingcart->category;?></font></div>
-				  <div  style="position:absolute;left:130px;top:71px;"><font color="black"><?php echo $shoppingcart->description;?></font></div>
-			  
-			  	  <div style="position:absolute;right:170px;top:15px;"><font color="black" style="font-size:20px">S$<?php echo $shoppingcart->price?></font></div>
-			  	  <div style="position:absolute;right:105px;top:20px;">
-			  	  	<form action=<?php echo url('shoppingcart/deleteShoppcart');?> method="post">
-			  	  		<input type="hidden" name="fid" value=<?php echo $shoppingcart->fileentry_id;?>>
+      	  <div class="jumbotron" style="background:#E1DFDE">
+      	  	  <div class = "row">
+      	  	      <form action=<?php echo url('shoppingcart/deleteShoppcart');?> method="post">
+	      	  	  <div id=<?php echo $container?> class="col-md-1 hidden-xs hidden-sm"></div>
+			  	  <div class="form-group">
+			  	  	<div class="col-md-1">
+			  	  		<div class="checkbox">
+				  	  		<label>
+					  	  		<input type="checkbox" id=<?php echo $checkid?> onclick="countTotalprice()" checked/>
+					  	  		
+					  	  	</label>
+					  	 </div>
+				  	</div>
+			  	  </div>
+				  <div class="col-md-6 col-sm-10 col-xs-10 col-xs-offset-1 text-xs-center"><font color="darkblue" style="font-size: 25px;font-weight: bold;"><?php echo $shoppingcart->original_filename;?></font></div>
+			  	  
+			  	  <div class="col-md-1 hidden-xs hidden-sm"><font color="black" style="font-size:28px">S$<?php echo $shoppingcart->price?></font>    </div>
+			  	  <div class="col-md-1 hidden-xs hidden-sm">
+				  	  	<input type="hidden" name="fid" value=<?php echo $shoppingcart->fileentry_id;?>>
 			  	  		<input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                        <button type="submit" style="border:none;background-color: Transparent">
-                            <font style="color:#3079C1">Remove</font>
-                        </button>
+	                    <button type="submit" class="btn btn-raised btn-warning">
+                        <font style="">Remove</font>
+                    </button>
+			  	  </form>
+			  	  </div>
+			  </div>
+			  <div class = "row">
+			  	  <div class="col-md-6 col-sm-9 col-xs-9 col-md-offset-3 col-xs-offset-1 col-sm-offset-1"><font color="black" size='4'><strong>Category:</strong>  <?php echo $shoppingcart->category;?></font></div>
+				  <div class="col-sm-6 col-sm-offset-3 hidden-xs"><font color="black" size='4'><strong>Description:</strong>  <?php 
+					if (strlen($shoppingcart->description) == 0) {
+						echo "No description";
+					} else {
+						echo $shoppingcart->description;
+					} 
+				  ?></font></div> 	  	
+	  	  	  </div>
+	  	  	  <div class = "row center-block">
+	  	  	  	  <div class="col-xs-12 col-sm-12 visible-xs visible-sm center-block"><font color="black" style="font-size:28px">S$<?php echo $shoppingcart->price?></font>    
+	  	  	  	  </div>
+			  	  <div class="col-xs-12 col-sm-12 visible-xs visible-sm center-block">
+			  	  	<form action=<?php echo url('shoppingcart/deleteShoppcart');?> method="post">
+			  	  	<input type="hidden" name="fid" value=<?php echo $shoppingcart->fileentry_id;?>>
+			  	  		<input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+	                    <button type="submit" class="btn btn-raised btn-warning">
+	                        <font style="">Remove</font>
+	                    </button>
 			  	  	</form>
-			  	  	
+			  	  </div>
+	  	  	  </div>
 	  	  </div>
 	  
 		</div>
@@ -82,7 +119,7 @@ function callApi(url) {
  ?>
 
 
- <div class="col-lg-3" style="position:relative;left:90px;top:72px;">
+ <div class="col-md-3 col-xs-3">
  <table style="border:1px solid #aad122;">
  	<div style="position:absolute;left:40px;top:10px">
  		<font style="font-size:20px">Total:</font><br/>
@@ -102,23 +139,23 @@ function callApi(url) {
 
      	@if($expireOrnot)
      		<div style="position:absolute;left:40px;top:35px" id="total-price">
-	 		<font style="font-size:40px;color:#aad122">S$0</font><br/>
+	 		<font style="font-size:40px;color:darkblue">S$0</font><br/>
 	 		</div>
      	@else
      		<div style="position:absolute;left:40px;top:35px" id="total-price">
-	 		<font style="font-size:40px;color:#aad122">S$<span class="total-price"></span></font><br/>
+	 		<font style="font-size:40px;color:darkblue">S$<span class="total-price"></span></font><br/>
 	 		</div>
      	@endif
 
  	 @else
  	 	<div style="position:absolute;left:40px;top:35px" id="total-price">
- 		<font style="font-size:40px;color:#aad122">S$<span class="total-price"></span></font><br/>
+ 		<font style="font-size:40px;color:darkblue">S$<span class="total-price"></span></font><br/>
  		</div>
 
  	 @endif
  	
  	<div style="position:absolute;left:40px;top:90px">
- 		<button  class="btn btn-four initialism slide_open" style="width:200px;">
+ 		<button  class="btn btn-raised btn-primary" style="width:200px;">
 	  	  		Checkout
 	  	</button>
  	</div>

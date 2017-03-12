@@ -20,7 +20,7 @@ http://sourceforge.net/adobe/cmap/wiki/License/
 <html dir="ltr" mozdisallowselectionprint moznomarginboxes>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, height = device-height">
     <meta name="google" content="notranslate">
     <title>PDF.js viewer</title>
 
@@ -39,10 +39,11 @@ http://sourceforge.net/adobe/cmap/wiki/License/
 
 
 <!-- This snippet is used in production (included from viewer.html) -->
-<link rel="resource" type="application/l10n" href="pdf/locale/locale.properties"/>
-<script src="pdf/l10n.js"></script>
-<script src="pdf/build/pdf.js"></script>
-
+    <link rel="resource" type="application/l10n" href="pdf/locale/locale.properties"/>
+    <script src="pdf/l10n.js"></script>
+    <script src="pdf/build/pdf.js"></script>
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
 
     <script src="pdf/debugger.js"></script>
@@ -85,12 +86,15 @@ http://sourceforge.net/adobe/cmap/wiki/License/
   </head>
 
   <body tabindex="1" class="loadingInProgress">
-
-    <button id="backButton" onclick="goBack()" type="button" class="btn btn-four" style="position:absolute;top:150px;right:0px;z-index:2000;height:40px">
-      <i class="fa fa-arrow-circle-left" aria-hidden="true"></i><span class="glyphicon glyphicon-align-left" aria-hidden="true">Back</span>
-    </button>
-
-
+  <div class="row">
+    <div class="col-sm-6">
+        <ul class="breadcrumb pull-left" style="margin-bottom: 5px;font-size:20px">
+            <li style="font-size:16px"><a href="/">Home</a></li>
+            <li style="font-size:16px"><a href="/mylibrary">My Library</a></li>
+            <li style="font-size:16px" class="active">Ebook Reader</li>
+        </ul>
+    </div>
+  </div>
     <div id="outerContainer" style="width:1325px">
 
       <div id="sidebarContainer">
@@ -292,8 +296,8 @@ http://sourceforge.net/adobe/cmap/wiki/License/
                     data-l10n-id="page_rotate_ccw"></menuitem>
         </menu>
 
-        <div class="disableEvent" id="viewerContainer" tabindex="0">
-          <div id="viewer" class="pdfViewer"></div>
+        <div class="disableEvent" id="viewerContainer" tabindex="0"  class="col-sm-12">
+          <div id="viewer" class="pdfViewer col-sm-12"></div>
         </div>
 
         <div id="errorWrapper" hidden='true'>
@@ -459,9 +463,10 @@ http://sourceforge.net/adobe/cmap/wiki/License/
     </div>
   </div>
 </div>
-
-  <script src="//hypothes.is/embed.js"></script>
-
+  
+  <div class = "col-sm-6">
+    <script src="//hypothes.is/embed.js"></script>
+  </div>
   </body>
 </html>
 

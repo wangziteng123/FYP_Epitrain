@@ -1,5 +1,10 @@
 /* HEADER / FOOTER */
-header{background: url('../img/header_bg.png') no-repeat center / cover; color: #fff; text-align: center; position: relative; max-height: auto; min-height: 700px; transition: all 1s; -moz-transition: all 1s; -webkit-transition: all 1s;}
+header{color: #000; text-align: center; position: relative; max-height: auto; min-height: 700px; transition: all 1s; -moz-transition: all 1s; -webkit-transition: all 1s;}
+img {
+  width: auto ;
+  max-width: 100% ;
+  height: auto ;
+}
 /*header .wrap{width: 85%; max-width: 980px; padding-bottom: 50px;}
 header .wrap .animated{position: relative; z-index: 999;}
 header .top-row{position: relative; overflow: hidden;}

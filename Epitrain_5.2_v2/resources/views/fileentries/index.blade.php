@@ -1,7 +1,17 @@
+
+
 @extends('layouts.app')
 
+<link type="text/css" rel="stylesheet" href="css/fileentry.css"/>
 @section('content')
-
+<div class="row">
+    <div class="col-sm-6">
+        <ul class="breadcrumb pull-left" style="margin-bottom: 5px;font-size:20px">
+            <li style="font-size:16px"><a href="/">Home</a></li>
+            <li style="font-size:16px" class="active">Manage Library</li>
+        </ul>
+    </div>
+</div>
 @if (session()->has('flash_notification.message'))
        <div class="alert alert-{{ session('flash_notification.level') }}">
            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -11,53 +21,64 @@
 @endif
 
 
-<h1><font color='white'>Manage Library</h1>
+<h1><font color='black'>Manage Library</h1>
 
     <!-- Jumbotron Header -->
-        <header class="jumbotron hero-spacer" style="position:relative;width:500px; margin:0 auto; min-height: 480px; border-radius: 10px;">
-            <h3><font color="black">Upload New File</font></h3>
-            <form action="fileentry/add" id="uploadform" method="post" enctype="multipart/form-data" style="width: 400px; margin:0 auto;border: 0px solid white;" onsubmit="">
-                <div class="well" style="width:400px; margin:0 auto;">
-                    <h4 style="color:black; float: left">Choose the file to upload</h4>
-                    <div class="input-group">
-                        <input type="file" name="filefield" value="{{ csrf_token() }}" style="color:black" accept="application/pdf" required>
-                    </div>
-                    <!-- /.input-group -->
-                </div>
-                  <br/>
-
-                <div style="position:absolute;left:55px">
-                  <font style="font-weight:bold;color:black">Choose Category:</font>
-                  <select name="category" style="color:black">
-                    <option value="Trading" selected="selected">Trading</option>
-                    <option value="RiskManagement">Risk Management</option>
-                    <option value="Fintech">Fintech</option>
-                    <option value="ProjectManagement">Project Management</option>
-                    <option value="Fiance">Finance</option>
-                    <option value="BusinessManagement">Business Management</option>
-                    <option value="Leadership">Leadership</option>
-                    <option value="FincialMarket">Financial market</option>
-                  </select>
-
-                </div>
-                 <br/><br/>
-                <div style="position:absolute;left:55px">
-                  <font style="font-weight:bold;color:black">Add Price:&nbsp</font> <input type="number" name="price" step="any" style="color:black">
-                </div>
-                <br/><br/>
-                 
-                 <div style="position:absolute;left:55px">
-                    <font style="font-weight:bold;color:black;position:absolute;left:0px">Add description to the book:&nbsp</font><br/>
-                  <textarea rows="4" cols="50" name="description" form="uploadform" style="color:black" ></textarea>
-                 </div>
-                
-                <div style="position:absolute;left:0px;bottom:15px">
-                  <span class="input-group-btn">
-                      <button type="submit" class="btn btn-four"><font style="font-weight:bold;">Upload</font></button>
-                  </span>
-                </div>
-            </form>
+        <header class="jumbotron col-md-6 col-md-offset-3">
+          <div class="container">
+            <form action="fileentry/add" id="uploadform" method="post" enctype="multipart/form-data" style="max-width: 100%; min-height: 480px;margin:0 auto; border: 0px solid white;" onsubmit="" class="form-horizontal">
+              <legend><strong>Upload New File</strong></legend>
             
+                <div class="form-group is-empty is-fileinput">
+                  <!--<div class="btn" style="padding-top:0px !important">-->
+                  <label for="inputFile" class="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Upload</label>   
+                    <!--<span size = "3" >Upload</span>-->
+                    <div class = "col-md-9">
+                      <input type="text" readonly class="form-control" placeholder="Select file to upload" style ="font-size:18px">
+                      <input type="file" id="input-file" accept=".pdf">
+                    </div>
+                  <!--<div class="file-path-wrapper">
+                    <input class="file-path validate" type="text" placeholder="Select a file to upload" style="color:black;font-size:16px">
+                  </div>-->
+                </div>
+             
+              <div class="form-group">
+                <label for="selectCat" class ="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Category</label>
+                <div class = "col-md-10">
+                    <select style="font-size:14px" id = "selectCat" class="form-control" placeholder="Choose ebook category">
+                      <option value="Trading" selected><font color="black" size = "3">Trading</font></option>
+                      <option value="Risk Management"><font color="black" size = "3">Risk Management</font></option>
+                      <option value="Fintech"><font color="black" size = "3">Fintech</font></option>
+                      <option value="Project Management"><font color="black" size = "3">Project Management</font></option>
+                      <option value="Finance"><font color="black" size = "3">Finance</font></option> 
+                      <option value="Business Management"><font color="black" size = "3">Business Management</font></option>
+                      <option value="Leadership"><font color="black" size = "3">Leadership</font></option>
+                      <option value="Financial Market"><font color="black" size = "3">Financial market</font></option>
+                    </select>
+                </div>
+              </div>
+                
+              <div class="form-group is-empty">
+                <label for="price" class ="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Price</label>
+                <div class = "col-md-10">
+                  <input type="number" name="price" id="price" step="any" style="font-size:16px" placeholder="Enter ebook price" class="form-control">
+                </div>
+              </div>
+                 
+              <div class="form-group is-empty">
+                <label for="description" class ="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Description</label>
+                <div class = "col-md-10">
+                <textarea class="form-control" rows="3" id="description" placeholder="Enter description of ebook"></textarea>
+                </div>
+              </div>
+                
+              <div class="form-group">
+                <div class = "col-md-9 col-md-offset-1">
+                  <button type="submit" class="btn btn-raised" style="background-color: darkblue; color:white">Upload<div class="ripple-container"></div></button>
+                </div>
+              </div>
+            </form>
+          </div>
         </header>
     
     
@@ -75,7 +96,7 @@
     <hr style="width:1250px;">
         <div class="row">
             <div class="col-lg-12">
-                <h3>Library</h3>
+                <h3 style="color:black">Library</h3>
             </div>
         </div>
          <?php
@@ -96,22 +117,26 @@
                 <div id=<?php echo $container?> style=""></div>
                 <div class="caption">
 
-                    <?php $fileName = $entry->original_filename; ?>
+                    <?php 
+                      $fileName = $entry->original_filename; 
+                      $fileCategory = $entry->category;
+                    ?>
                     @if(strlen($fileName) > 30)
-                    <p>{{substr($fileName,0,30)."..." }}</p>
+                    <p style="font-size:14px"><strong>{{substr($fileName,0,30)."..." }}</strong></p>
                     @else
-                    <p>{{$fileName}}</p>
+                    <p style="font-size:14px"><strong>{{$fileName}}</strong></p>
                     @endif
+                    <p style="font-size:16px">Category: {{$fileCategory}}</p>
                     @if(strpos($fileName,'xls') !== false || strpos($fileName,'xlsx') !== false || strpos($fileName,'xlsm'))
-                    <a href="{{route('downloadspreadsheet', $entry->filename)}}">Download</a><br/>
+                    <a href="{{route('downloadspreadsheet', $entry->filename)}}" class="btn btn-raised btn-success">Download</a><br/>
                     @else
-                    <a href="{{route('getentry', $entry->filename)}}">View</a><br/>
+                    <a href="{{route('getentry', $entry->filename)}}" class="btn btn-raised btn-info">View</a><br/>
                     @endif
 
                     @if (Auth::user()->isAdmin)
                     {{ Form::open(array('method'
                     => 'DELETE', 'route' => array('deleteentry', $entry->filename))) }}
-                    {{ Form::submit('Delete', array('class' => 'btn btn-danger')) }}
+                    {{ Form::submit('Delete', array('class' => 'btn btn-raised btn-danger')) }}
                     {{ Form::close() }}
                     @else
 

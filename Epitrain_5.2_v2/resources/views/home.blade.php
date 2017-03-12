@@ -17,60 +17,44 @@ function categoryButton(category) {
     <!-- Split button -->
 
    <!-- Page Content -->
-    <div class="container" style="positon:relatvie">
+    <div class="container" style="positon:relative">
 
         @if (Auth::user()->isAdmin)
         @else
-           <nav class="navbar navbar-default navbar-static-top" style="position:absolute;top:51px;left:0px;width:1380px;z-index:0;">
-          <div class="container" style="position:relative">
-            <div style="position:absolute;top:15px">
-            <font color="#85929E">
-              <button class="btn-five" style="background-color: Transparent;border:none" onclick="categoryButton('Trading')">
-                <i class="fa fa-money" aria-hidden="true"></i> Trading &nbsp&nbsp&nbsp&nbsp  
-              </button>
-              <button class="btn-five" style="background-color: Transparent;border:none" onclick="categoryButton('RiskManagemnt')">
-                <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Risk Management &nbsp &nbsp&nbsp&nbsp
-              </button>
-              <button class="btn-five" style="background-color: Transparent;border:none" onclick="categoryButton('Fintech')">
-              <i class="fa fa-credit-card-alt" aria-hidden="true"></i> Fintech&nbsp&nbsp&nbsp&nbsp  
-              </button>
-              <button class="btn-five" style="background-color: Transparent;border:none" onclick="categoryButton('ProjectManagement')"> 
-              <i class="fa fa-tasks" aria-hidden="true"></i> Project Management &nbsp&nbsp&nbsp&nbsp  
-              </button>
-              <button class="btn-five" style="background-color: Transparent;border:none" onclick="categoryButton('Finance')"> 
-              <i class="fa fa-usd" aria-hidden="true"></i> Finance&nbsp&nbsp&nbsp&nbsp  
-              </button>
-              <button class="btn-five" style="background-color: Transparent;border:none" onclick="categoryButton('BusinessManagement')">
-              <i class="fa fa-list-alt" aria-hidden="true"></i> Business Management &nbsp&nbsp&nbsp&nbsp  
-              </button>
-              <button class="btn-five" style="background-color: Transparent;border:none" onclick="categoryButton('Leadership')">
-              <i class="fa fa-users" aria-hidden="true"></i> Leadership &nbsp&nbsp&nbsp&nbsp  
-              </button>
-              <button class="btn-five" style="background-color: Transparent;border:none" onclick="categoryButton('FinancialMarket')">
-              <i class="fa fa-university" aria-hidden="true"></i> Financial market &nbsp&nbsp&nbsp&nbsp
-              </button>
-              <button class="btn-five" style="background-color: Transparent;border:none" onclick="categoryButton('All')">
-                View All
-              </button>
-            </font>
-            </div>
+        
+          <div class="fixed-action-btn toolbar" >
+						<a class="btn-floating btn-large" style = "background-color: #062C94">
+							<i class="large material-icons">view_array</i>
+						</a>
+            <!--<div style="position:relative;top:15px">-->
+            <!--<font color="#1034A6">-->
+						<ul>
+							<li class="waves-effect waves-light"><a href='/home'> <span class="white-text text-darken-2">Trading</span></a></li>
+							<li class="waves-effect waves-light"><a href='/home'> <span class="white-text text-darken-2">Risk Management</span></a></li>
+							<li class="waves-effect waves-light"><a href='/home'> <span class="white-text text-darken-2">Fintech</span></a></li>
+							<li class="waves-effect waves-light"><a href='/home'> <span class="white-text text-darken-2">Project Management</span></a></li>
+							<li class="waves-effect waves-light"><a href='/home'> <span class="white-text text-darken-2">Finance</span></a></li>
+							<li class="waves-effect waves-light"><a href='/home'> <span class="white-text text-darken-2">Business Management</span></a></li>
+							
+							<li class="waves-effect waves-light"><a href='/home'> <span class="white-text text-darken-2">Leadership</span></a></li>
+							<li class="waves-effect waves-light"><a href='/home'> <span class="white-text text-darken-2">Financial Market</span></a></li>
+							
+							<li class="waves-effect waves-light"><a href='/home'> <span class="white-text text-darken-2">View All</span></a></li>
+            <!--</font>-->
+						</ul>
           </div>
-        </nav>
+    </div>
+        
 
         @endif
 
-        <div style="position:absolute;left:120px;top:145px">
-          <font size="3">WELCOME TO EPITRAIN</font><br/><br/>
-        </div>
-        <div style="position:absolute;left:120px;top:165px">
-          <h2>Epitrain provides training, resource development & consultancy</h2>
-        </div>
+        <div style="">
           <br/>
           <br/>
-        <div style="position:absolute;left:118px;;top:215px">
-          <hr style="width:105px">
         </div>
-
+        <div style="color:blue">
+          <h2>Epitrain Elearning Platform</h2>
+        </div>
 
         <?php
          use Carbon\Carbon;
@@ -92,11 +76,11 @@ function categoryButton(category) {
             $expireOrnot = $currentTime->lt($end_Date);
           ?>
           @if($expireOrnot)
-            <div style="position:absolute;left:125px;top:245px">
+            <div style = "color:black">
             Your subscription plan will end at <?php echo $end_Date->toDateTimeString();?>.
             </div>
           @else
-          <div style="position:absolute;left:125px;top:245px">
+          <div>
            Want to start a subscription? &nbsp&nbsp
           <button  class="btn btn-four initialism basic_open" style="width:150px;">
             SUBSCRIBE
@@ -105,7 +89,7 @@ function categoryButton(category) {
 
           @endif
         @else
-          <div style="position:absolute;left:125px;top:245px">
+          <div>
            Want to start a subscription? &nbsp&nbsp
           <button  class="btn btn-four initialism basic_open" style="width:150px;">
             SUBSCRIBE
@@ -117,10 +101,10 @@ function categoryButton(category) {
 
         
 
-      <div style="position:absolute;top:290px">
+      <div class="container">
         <!--Trending-->
-        <div style="position:relative">
-        <font style="font-family:Book Antiqua;font-weight:10;position:absolute;left:40px;top:0px" size="6">Trending </font>
+        <div style="position:relative" class="col s12">
+        <font style="color:darkblue;position:absolute;left:40px;top:0px" size="6">Trending </font>
         </div><br/>
         <hr>
 
@@ -159,15 +143,13 @@ function categoryButton(category) {
         ?>
 
 
-          <div class="row text-center" style="border-style: solid;border-width: 2px;">
-
-          
+          <div class="row text-center col s12" style="border-style: solid;border-width: 4px;">
             <div id="ninja-slider">
-                <div class="slider-inner" style="width:1170px">
+                <div class="slider-inner">
                     <ul>
-
-                        <li>
-                            <div class="content" style="width:1170px">
+										<!--first page of trending ebook-->
+                       <li>
+                         <div class="content">
                               <?php
                                 $countNum2 = 0;
                                 $filenameArr2 = array();
@@ -258,23 +240,20 @@ function categoryButton(category) {
                                   @endif
                                   
                                     
-                                  <p style="position:absolute;right:12px;top:283px">
-                                      <button  class="btn btn-three slide_open" style="height:38px;width:65px" onclick="passtoSlide(<?php echo $fid2;?>,'<?php echo $oriFilename2;?>',<?php echo $price2;?>,'<?php echo $description2;?>')">
+                                  <p style="position:absolute;right:12px;top:283px;">
+                                      <button class="btn waves-effect waves-light btn blue slide_open" style="height:38px;width:65px" onclick="passtoSlide(<?php echo $fid2;?>,'<?php echo $oriFilename2;?>',<?php echo $price2;?>,'<?php echo $description2;?>')">
                                          Info
                                       </button>
                                   </p>
                                 
                               </div>
-                          </div>
-
-                          </div>
-
-
-                              @endforeach
                             </div>
-                        </li>
-
-                        <li>
+                          </div>
+                      @endforeach
+                  </div>
+              </li>
+										<!--second page of trending ebook-->
+                       <li>
                             <div class="content">
                                <?php
                                 $countNum3 = 0;
@@ -367,37 +346,30 @@ function categoryButton(category) {
                                   
                                     
                                   <p style="position:absolute;right:12px;top:283px">
-                                      <button  class="btn btn-three slide_open" style="height:38px;width:65px" onclick="passtoSlide(<?php echo $fid3;?>,'<?php echo $oriFilename3;?>',<?php echo $price3;?>,'<?php echo $description3;?>')">
+                                      <button  class="btn waves-effect waves-light btn blue slide_open" style="height:38px;width:65px" onclick="passtoSlide(<?php echo $fid3;?>,'<?php echo $oriFilename3;?>',<?php echo $price3;?>,'<?php echo $description3;?>')">
                                          Info
                                       </button>
                                   </p>
-                                
-                              </div>
-                          </div>
-
-                          </div>
-
-
-                              @endforeach
-
-
-
+                                </div>
                             </div>
-                        </li>
-
-                    </ul>
-                    <div class="fs-icon" title="Expand/Close"></div>
-                </div>
+                          </div>
+                        @endforeach
+                      </div>
+                    </li>
+									</ul>
+                <div class="fs-icon" title="Expand/Close"></div>
+							<div id="current-slide-num"></div>
             </div>
-
-        </div>
-        <!--end of slider-->
-        <br/>
+          </div
+      </div>
+    </div>
+    <!--end of slider-->
+  <br/>
 
 
         <!--Best Sellers in Financial Market-->
         <div style="position:relative">
-        <font style="font-family:Book Antiqua;font-weight:10;position:absolute;left:40px;top:0px" size="6">Best Sellers in Financial Market </font>
+        <font style="color:darkblue;position:absolute;left:40px;top:0px" size="6">Best Sellers in Financial Market </font>
         </div><br/>
         <hr>
 
@@ -437,7 +409,7 @@ function categoryButton(category) {
         ?>
 
 
-          <div class="row text-center" style="border-style:solid;border-width: 2px;">
+          <div class="row text-center" style="border-style:solid;border-width: 4px;">
 
           
             <div id="ninja-slider2">
@@ -537,7 +509,7 @@ function categoryButton(category) {
                                   
                                     
                                   <p style="position:absolute;right:12px;top:283px">
-                                      <button  class="btn btn-three slide_open" style="height:38px;width:65px" onclick="passtoSlide(<?php echo $fid4;?>,'<?php echo $oriFilename4;?>',<?php echo $price4;?>,'<?php echo $description4;?>')">
+                                      <button  class="btn waves-effect waves-light btn blue slide_open" style="height:38px;width:65px" onclick="passtoSlide(<?php echo $fid4;?>,'<?php echo $oriFilename4;?>',<?php echo $price4;?>,'<?php echo $description4;?>')">
                                          Info
                                       </button>
                                   </p>
@@ -645,7 +617,7 @@ function categoryButton(category) {
                                   
                                     
                                   <p style="position:absolute;right:12px;top:283px">
-                                      <button  class="btn btn-three slide_open" style="height:38px;width:65px" onclick="passtoSlide(<?php echo $fid5;?>,'<?php echo $oriFilename5;?>',<?php echo $price5;?>,'<?php echo $description5;?>')">
+                                      <button  class="btn waves-effect waves-light btn blue slide_open" style="height:38px;width:65px" onclick="passtoSlide(<?php echo $fid5;?>,'<?php echo $oriFilename5;?>',<?php echo $price5;?>,'<?php echo $description5;?>')">
                                          Info
                                       </button>
                                   </p>
@@ -676,7 +648,7 @@ function categoryButton(category) {
         <br/>
         <!--Best Sellers in Leadership-->
         <div style="position:relative">
-        <font style="font-family:Book Antiqua;font-weight:10;position:absolute;left:40px;top:0px" size="6">Best Sellers in Leadership </font>
+        <font style="color:darkblue;position:absolute;left:40px;top:0px" size="6">Best Sellers in Leadership </font>
         </div><br/>
         <hr>
 
@@ -716,7 +688,7 @@ function categoryButton(category) {
         ?>
 
 
-          <div class="row text-center" style="border-style: solid;border-width: 2px;">
+          <div class="row text-center" style="border-style: solid;border-width: 4px;">
 
           
             <div id="ninja-slider3">
@@ -816,7 +788,7 @@ function categoryButton(category) {
                                   
                                     
                                   <p style="position:absolute;right:12px;top:283px">
-                                      <button  class="btn btn-three slide_open" style="height:38px;width:65px" onclick="passtoSlide(<?php echo $fid6;?>,'<?php echo $oriFilename6;?>',<?php echo $price6;?>,'<?php echo $description6;?>')">
+                                      <button  class="btn waves-effect waves-light btn blue slide_open" style="height:38px;width:65px" onclick="passtoSlide(<?php echo $fid6;?>,'<?php echo $oriFilename6;?>',<?php echo $price6;?>,'<?php echo $description6;?>')">
                                          Info
                                       </button>
                                   </p>
@@ -924,7 +896,7 @@ function categoryButton(category) {
                                   
                                     
                                   <p style="position:absolute;right:12px;top:283px">
-                                      <button  class="btn btn-three slide_open" style="height:38px;width:65px" onclick="passtoSlide(<?php echo $fid7;?>,'<?php echo $oriFilename7;?>',<?php echo $price7;?>,'<?php echo $description7;?>')">
+                                      <button  class="btn waves-effect waves-light btn blue slide_open" style="height:38px;width:65px" onclick="passtoSlide(<?php echo $fid7;?>,'<?php echo $oriFilename7;?>',<?php echo $price7;?>,'<?php echo $description7;?>')">
                                          Info
                                       </button>
                                   </p>

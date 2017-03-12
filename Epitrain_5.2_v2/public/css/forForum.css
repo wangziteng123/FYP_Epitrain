@@ -5,16 +5,22 @@ float:left;
 .forumDiscussion{
 width:800px;
 float:right;
-height:90px;
+max-height:360px;
 display:in-line block;
-position:absolute;
+position:static;
+max-width: 100%;
 }
 
+.col-lg-9 .col-md-9 .col-s-12 .center-block .jumbotron {
+    padding-top:0px !important;
+    max-height: 360px;
+}
 @media screen and (max-width: 750px) { /* width at which layout changes  */
   .forumDiscussion {
     //float:none;
-    width:80%;
-    position: relative;
+    max-width:100%;
+    max-height:400px;
+    position:static;
     //vertical-align: bottom;
     /* width: 90px; -- set to the smaller value you want */
   }

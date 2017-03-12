@@ -1,12 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-
-
-
-
-
-
+<div class="row">
+    <div class="col-sm-6">
+        <ul class="breadcrumb pull-left" style="margin-bottom: 5px;font-size:20px">
+            <li style="font-size:16px"><a href="/">Home</a></li>
+            <li style="font-size:16px" class="active">View All Users</li>
+        </ul>
+    </div>
+</div>
 
 @if (Auth::user()->isAdmin)
     <div>
@@ -166,7 +168,7 @@
     @if ($users->count())
     <div class="container">
         <h1>All Users</h1>
-        <table class="table table-bordered" style="background-color:white">
+        <table class="table table-bordered" style="background-color:white; font-size: 18px">
             <thead>
                 <tr>
 

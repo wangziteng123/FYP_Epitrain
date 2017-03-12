@@ -1,7 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-
+<div class="row">
+    <div class="col-sm-6">
+        <ul class="breadcrumb pull-left" style="margin-bottom: 5px;font-size:20px">
+            <li style="font-size:16px"><a href="/">Home</a></li>
+            <li style="font-size:16px" class="active">My Library</li>
+        </ul>
+    </div>
+</div>
 <?php
         $entries2 = \DB::table('libraries')
             ->where('user_id', Auth::user()->id)
@@ -32,7 +39,7 @@
                         $container = "container".$countNum;
                     ?>
 
-                <div class="col-md-3 col-sm-6 hero-feature" >
+                <div class="col-sm-4 col-xs-5 col-md-3 hero-feature" >
 
                 <div class="thumbnail" style="height:300px">
                     <div id=<?php echo $container?> style=""></div>
@@ -40,17 +47,27 @@
                     <div class="caption">
                        <!--  <h3>{{$entry->original_filename}}</h3> -->
 
-                        <?php $fileName = $entry->original_filename; ?>
+                        <?php 
+                          $fileName = $entry->original_filename; 
+                          $fileCat = $entry->category;
+                          $fileDescription = $entry->description;
+                        ?>
                     @if(strlen($fileName) > 30)
-                    <p>{{substr($fileName,0,30)."..." }}</p>
+                      <p>{{substr($fileName,0,30)."..." }}</p>
                     @else
-                    <p>{{$fileName}}</p>
+                      <p>{{$fileName}}</p>
                     @endif
 
-                        <p>This is the description of the ebook.</p>
-                        <p>
-                            <a href="{{route('getviewer', $entry->filename)}}" class="btn btn-primary">View</a> 
-                        </p>
+                    <p><strong>Category:  </strong>{{$fileCat}}<br/></p>
+                    
+                    @if(strlen($fileDescription) > 0)
+                      <p><strong>Description:</strong><br/>{{$fileDescription}}</p>
+                    @else
+                      <p>No description is available for this ebook.</p>
+                    @endif
+                    <p>
+                        <a href="{{route('getviewer', $entry->filename)}}" class="btn-raised btn-info btn">View</a> 
+                    </p>
                     </div>
                 </div>
 

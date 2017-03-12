@@ -2,20 +2,28 @@
 
 @section('content')
 
+<div class="row">
+    <div class="col-sm-6">
+        <ul class="breadcrumb pull-left" style="margin-bottom: 5px;font-size:20px">
+            <li style="font-size:16px"><a href="/">Home</a></li>
+            <li style="font-size:16px" class="active">Create New User</li>
+        </ul>
+    </div>
+</div>
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-sm-9 col-sm-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">Register</div>
+                <div class="panel-heading"><h4>Create New User</h4></div>
                 <div class="panel-body">
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/store') }}">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label"><font color="black">Name</font></label>
+                            <label for="name" class="col-sm-4 control-label"><font color="black" size = "3">Name</font></label>
 
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}">
+                            <div class="col-sm-6">
+                                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" style="font-size:16px" placeholder="Enter new user's name">
 
                                 @if ($errors->has('name'))
                                     <span class="help-block">
@@ -26,10 +34,10 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label"><font color="black">E-Mail Address</font></label>
+                            <label for="email" class="col-sm-4 control-label"><font color="black" size = "3">E-Mail Address</font></label>
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}">
+                            <div class="col-sm-6">
+                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" style="font-size:16px" placeholder="Enter email of the user">
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -40,10 +48,10 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label"><font color="black">Password</font></label>
+                            <label for="password" class="col-sm-4 control-label"><font color="black" size = "3">Password</font></label>
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password">
+                            <div class="col-sm-6">
+                                <input id="password" type="password" class="form-control" name="password" style="font-size:16px" placeholder="Create a temporary password for the new user">
 
                                 @if ($errors->has('password'))
                                     <span class="help-block">
@@ -54,10 +62,10 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                            <label for="password-confirm" class="col-md-4 control-label"><font color="black">Confirm Password</font></label>
+                            <label for="password-confirm" class="col-sm-4 control-label"><font color="black" size = "3">Confirm Password</font></label>
 
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
+                            <div class="col-sm-6">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" style="font-size:16px" placeholder="Reenter the new password">
 
                                 @if ($errors->has('password_confirmation'))
                                     <span class="help-block">
@@ -68,8 +76,8 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary" id="register">
+                            <div class="col-sm-6 col-sm-offset-4">
+                                <button type="submit" class="btn btn-raised btn-success" id="register">
                                     <i class="fa fa-btn fa-user"></i> <font color="white">Register</font>
                                 </button>
                             </div>
