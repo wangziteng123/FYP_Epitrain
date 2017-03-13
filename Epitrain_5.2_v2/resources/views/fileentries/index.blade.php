@@ -12,6 +12,18 @@
         </ul>
     </div>
 </div>
+@if(Session::has('failure'))
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <p style="font-size:18px">{{ Session::get('failure') }}</p>
+    </div>
+@endif
+@if(Session::has('success'))
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <p style="font-size:18px">{{ Session::get('success') }}</p>
+    </div>
+@endif
 @if (session()->has('flash_notification.message'))
        <div class="alert alert-{{ session('flash_notification.level') }}">
            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -33,9 +45,9 @@
                   <!--<div class="btn" style="padding-top:0px !important">-->
                   <label for="inputFile" class="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Upload</label>   
                     <!--<span size = "3" >Upload</span>-->
-                    <div class = "col-md-9">
+                    <div class = "input-group col-md-9">
                       <input type="text" readonly class="form-control" placeholder="Select file to upload" style ="font-size:18px">
-                      <input type="file" id="input-file" accept=".pdf">
+                      <input type="file" name="filefield" value="{{ csrf_token() }}" style="color:black" accept="application/pdf" required>
                     </div>
                   <!--<div class="file-path-wrapper">
                     <input class="file-path validate" type="text" placeholder="Select a file to upload" style="color:black;font-size:16px">
@@ -45,7 +57,7 @@
               <div class="form-group">
                 <label for="selectCat" class ="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Category</label>
                 <div class = "col-md-10">
-                    <select style="font-size:14px" id = "selectCat" class="form-control" placeholder="Choose ebook category">
+                    <select name="category" style="font-size:14px" id = "selectCat" class="form-control" placeholder="Choose ebook category">
                       <option value="Trading" selected><font color="black" size = "3">Trading</font></option>
                       <option value="Risk Management"><font color="black" size = "3">Risk Management</font></option>
                       <option value="Fintech"><font color="black" size = "3">Fintech</font></option>
@@ -68,7 +80,7 @@
               <div class="form-group is-empty">
                 <label for="description" class ="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Description</label>
                 <div class = "col-md-10">
-                <textarea class="form-control" rows="3" id="description" placeholder="Enter description of ebook"></textarea>
+                <textarea class="form-control" rows="3" id="description" name="description" form="uploadform" placeholder="Enter description of ebook"></textarea>
                 </div>
               </div>
                 

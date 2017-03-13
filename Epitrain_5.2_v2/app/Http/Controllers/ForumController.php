@@ -62,10 +62,10 @@ class ForumController extends Controller
                 return view('forum.forumAdmin');
 
             } else{
-                return redirect()->route('forum');}
+                return redirect()->route('forum');
             }
-        //return \View::make('forum.forum')->with('discussionId',$discussionId);
         }
+        //return \View::make('forum.forum')->with('discussionId',$discussionId);
     }
 
     public function toPage(Request $request) {
@@ -115,6 +115,7 @@ class ForumController extends Controller
     public function deleteDiscussion(Request $request){
         $discussion_id = $request->get('discussionId');
 
+        //abort(404, "discussion id: " + $discussion_id);
         DB::table('forumdiscussion')->where('id','=', $discussion_id)->delete();
 
         return view('forum.forumAdmin');

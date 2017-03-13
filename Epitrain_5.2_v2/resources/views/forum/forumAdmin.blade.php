@@ -76,10 +76,7 @@
     	<a href="#"><font size="3" style="color:white">All Discussion</font></a> -->
     	<br/>
     	<br/>
-    	<!--
-    	@foreach($categories as $category)
-    		<a href="#"><font size="3" style="color:white"><?php echo $category->categoryname?></font></a><br/>
-    	@endforeach -->
+
         </div></div>
 </div>
 <div class="col-lg-9 col-md-9 col-s-12 center-block">

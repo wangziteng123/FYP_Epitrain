@@ -65,7 +65,6 @@ function callApi(url) {
 			  	  		<div class="checkbox">
 				  	  		<label>
 					  	  		<input type="checkbox" id=<?php echo $checkid?> onclick="countTotalprice()" checked/>
-					  	  		
 					  	  	</label>
 					  	 </div>
 				  	</div>
@@ -138,24 +137,24 @@ function callApi(url) {
      ?>
 
      	@if($expireOrnot)
-     		<div style="position:absolute;left:40px;top:35px" id="total-price">
-	 		<font style="font-size:40px;color:darkblue">S$0</font><br/>
+     		<div style="position:absolute;left:40px;top:35px">
+	 		<font style="font-size:40px;color:darkblue">S$<span id="total-price"></span></font><br/>
 	 		</div>
      	@else
-     		<div style="position:absolute;left:40px;top:35px" id="total-price">
-	 		<font style="font-size:40px;color:darkblue">S$<span class="total-price"></span></font><br/>
+     		<div style="position:absolute;left:40px;top:35px">
+	 		<font style="font-size:40px;color:darkblue">S$<span id="total-price"></span></font><br/>
 	 		</div>
      	@endif
 
  	 @else
- 	 	<div style="position:absolute;left:40px;top:35px" id="total-price">
- 		<font style="font-size:40px;color:darkblue">S$<span class="total-price"></span></font><br/>
+ 	 	<div style="position:absolute;left:40px;top:35px">
+ 		<font style="font-size:40px;color:darkblue">S$<span id="total-price"></span></font><br/>
  		</div>
 
  	 @endif
  	
  	<div style="position:absolute;left:40px;top:90px">
- 		<button  class="btn btn-raised btn-primary" style="width:200px;">
+ 		<button  class="btn btn-raised btn-primary initialism slide_open" style="width:200px;">
 	  	  		Checkout
 	  	</button>
  	</div>
@@ -168,9 +167,9 @@ function callApi(url) {
 
 <!-- Slide in popup window-->
 
-<div id="slide" class="well" style="position:relative;top:30px;width:600px;height:400px">
+<div id="slide" class="well col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1" style="position:relative;top:30px">
 	<button class="slide_close btn btn-default" style="position:absolute;right:20px"><i class="fa fa-times" aria-hidden="true"></i></button>
-    <h4>Checkout</h4>
+    
   	<form action="#">
 	   <!--  <ul class="list-group final-checkout">
 	     @foreach($shoppingcarts as $shoppingcart)
@@ -179,8 +178,9 @@ function callApi(url) {
 		  @endforeach
 		</ul> -->
 		<div class="panel panel-default" style="position:relative;height:50px">
+			<div class="panel-heading"><h4>Checkout</h4></div>
 			<div class="panel-body">
-				<font style="color:black;position:absolute;left:25px"><span class="final-count"></span>&nbsp ebooks</font>
+				<font style="color:black;position:absolute;left:25px" size = "4"><span class="final-count"></span>&nbspebooks</font>
 				 @if($isSubscribe)
 
 			 	 <?php
@@ -194,19 +194,22 @@ function callApi(url) {
 			     ?>
 
 			     	@if($expireOrnot)
-			     		<font style="color:black;position:absolute;right:35px">Total: S$0</span></font>
+			     		<font style="color:black; float:right" size = "4">Total: S$<span id="final-checkout">0</span></font>
 			     	@else
-			     		<font style="color:black;position:absolute;right:35px">Total: S$<span class="final-checkout"></span></font>
+			     		<font style="color:black; float:right" size = "4">Total: S$<span id="final-checkout"></span></font>
 			     	@endif
 
 			 	 @else
-			 	 	<font style="color:black;position:absolute;right:35px">Total: S$<span class="final-checkout"></span></font>
+			 	 	<font style="color:black; float:right" size = "4">Total: S$<span id="final-checkout"></span></font>
 
 			 	 @endif
+			 	 <br/>
+			 	 <br/>
+			 	 <button class="btn btn-success btn-raised pull-right" style="display:inline-block" onclick="pay()"><i class="fa fa-credit-card-alt" aria-hidden="true"></i>&nbsp&nbspPay</button>
 			</div>
 		</div>
 	</form>
-    <button class="btn btn-default" style="position:absolute;right:30px;width:70px" onclick="pay()"><i class="fa fa-credit-card-alt" aria-hidden="true"></i>&nbsp&nbspPay</button>
+    
 </div>
 
 
@@ -226,6 +229,7 @@ $(document).ready(function () {
 <script>
 	var shoppingcarts = <?php echo json_encode($shoppingcarts)?>;
 	var count = <?php echo count($shoppingcarts)?>;
+
 	var totalprice = 0;
 	var countFinal = 0;
 	//document.querySelector('.total-price').innerHTML = totalprice;
@@ -236,9 +240,10 @@ $(document).ready(function () {
 			countFinal++;
 		}
 	}
-	//alert("dsfs " + totalprice);
-	document.querySelector('.total-price').innerHTML = totalprice;
-	document.querySelector('.final-checkout').innerHTML = totalprice;
+	//alert("Info " + document.getElementById('total-price').innerHTML);
+
+	document.getElementById('total-price').innerHTML = totalprice;
+	document.getElementById('final-checkout').innerHTML = totalprice;
 	document.querySelector('.final-count').innerHTML = countFinal;
 
 
@@ -250,15 +255,15 @@ $(document).ready(function () {
 		var countFinal = 0;
 		//document.querySelector('.total-price').innerHTML = totalprice;
 		// alert("dsfsdf  " + document.getElementById("22").checked);
+
 		for(i = 0; i < count; i++) {
 			if(document.getElementById(shoppingcarts[i].id).checked) {
 				totalprice += shoppingcarts[i].price;
 				countFinal++;
 			}
 		}
-		//alert("dsfs " + totalprice);
-		document.querySelector('.total-price').innerHTML = totalprice;
-		document.querySelector('.final-checkout').innerHTML = totalprice;
+		document.getElementById('total-price').innerHTML = totalprice;
+		document.getElementById('final-checkout').innerHTML = totalprice;
 		document.querySelector('.final-count').innerHTML = countFinal;
 	}
 

@@ -67,12 +67,14 @@ class AuthController extends Controller
         return redirect('/login')->with('status', 'We sent you an activation code. Check your email.');
     }
     public function logout(Request $request) {
-        DB::table('sessions')->where('user_id', auth()->user()->id) //change login status in DB to logged out
+        if (Auth::check()) {
+             DB::table('sessions')->where('user_id', auth()->user()->id) //change login status in DB to logged out
             ->update(
                 ['loggedIn' => 0]
             );
-        Auth::logout();
-        Session::flush();
+            Auth::logout();
+            Session::flush();
+        }
         return redirect('/');
     }
     /**
