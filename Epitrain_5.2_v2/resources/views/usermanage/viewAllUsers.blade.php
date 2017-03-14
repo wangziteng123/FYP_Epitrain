@@ -14,8 +14,9 @@
     <div>
     <script>
 
-    var users = '<?php echo json_encode($users); ?>';
-    var usersArray = JSON.parse(users);
+    var users = '<?php echo $users->toJson(); ?>';
+    var usersRawArray = JSON.parse(users);
+    var usersArray = usersRawArray.data;
 
     var noOfClickName = 0;
     var noOfClickEmail = 0;
@@ -48,20 +49,20 @@
 
             //print out the sorted data into html table
             var arrayLength= usersArray.length;
-
+            alert(usersArray[0].name);
             for(i=0; i<arrayLength;i++){
 
                 var idName = i + "name";
                 var idEmail = i + "email";
-                var isAdmin = i +"admin";
+                var isSubscribe = i +"admin";
 
                 document.getElementById(idEmail).innerHTML = usersArray[i].email;
                 document.getElementById(idName).innerHTML = usersArray[i].name;
-                if(usersArray[i].isAdmin ===1){
-                      document.getElementById(isAdmin).innerHTML = "Yes";
+                if(usersArray[i].subscribe == "Yes"){
+                      document.getElementById(isSubscribe).innerHTML = "Yes";
                 }
                 else{
-                    document.getElementById(isAdmin).innerHTML = "No";
+                    document.getElementById(isSubscribe).innerHTML = "No";
                 }
 
              }
@@ -76,15 +77,15 @@
             for(i=arrayLength-1; i>=0;i--){
                 var idName = j + "name";
                 var idEmail = j + "email";
-                var isAdmin = j +"admin";
+                var isSubscribe = j +"admin";
 
                 document.getElementById(idEmail).innerHTML = usersArray[i].email;
                 document.getElementById(idName).innerHTML = usersArray[i].name;
-                if(usersArray[i].isAdmin ===1){
-                      document.getElementById(isAdmin).innerHTML = "Yes";
+                if(usersArray[i].subscribe == "Yes"){
+                      document.getElementById(isSubscribe).innerHTML = "Yes";
                 }
                 else{
-                    document.getElementById(isAdmin).innerHTML = "No";
+                    document.getElementById(isSubscribe).innerHTML = "No";
                 }
                 j = j + +1;
              }
@@ -124,15 +125,15 @@
 
                 var idName = i + "name";
                 var idEmail = i + "email";
-                var isAdmin = i +"admin";
+                var isSubscribe = i +"admin";
 
                 document.getElementById(idEmail).innerHTML = usersArray[i].email;
                 document.getElementById(idName).innerHTML = usersArray[i].name;
-                if(usersArray[i].isAdmin ===1){
-                      document.getElementById(isAdmin).innerHTML = "Yes";
+                if(usersArray[i].subscribe == "Yes"){
+                      document.getElementById(isSubscribe).innerHTML = "Yes";
                 }
                 else{
-                    document.getElementById(isAdmin).innerHTML = "No";
+                    document.getElementById(isSubscribe).innerHTML = "No";
                 }
 
              }
@@ -146,15 +147,15 @@
             for(i=arrayLength-1; i>=0;i--){
                 var idName = j + "name";
                 var idEmail = j + "email";
-                var isAdmin = j +"admin";
+                var isSubscribe = j +"admin";
 
                 document.getElementById(idEmail).innerHTML = usersArray[i].email;
                 document.getElementById(idName).innerHTML = usersArray[i].name;
-                if(usersArray[i].isAdmin ===1){
-                document.getElementById(isAdmin).innerHTML = "Yes";
+                if(usersArray[i].subscribe == "Yes"){
+                    document.getElementById(isSubscribe).innerHTML = "Yes";
                 }
                 else{
-                document.getElementById(isAdmin).innerHTML = "No";
+                    document.getElementById(isSubscribe).innerHTML = "No";
                 }
                 j = j + +1;
             }
@@ -174,7 +175,7 @@
 
             <th onclick="sortEmail()" style="color:black;text-align:center">Email</th>
             <th onclick="sortName()" style="color:black;text-align:center">Name</th>
-            <th style="color:black;text-align:center">Admin</th>
+            <th style="color:black;text-align:center">Subscriber</th>
                 </tr>
             </thead>
 
@@ -190,11 +191,11 @@
                        var idName = i + "name";
                        sentence = "<td style='color:black' id=" + idName + ">"+ usersArray[i].name +"</td>"
                        document.write(sentence);
-                       var isAdmin = i +"admin";
-                       if(usersArray[i].isAdmin ==1){
-                           document.write("  <td style='color:black' id=" + isAdmin+ ">Yes</td>");
+                       var isSubscribe = i +"admin";
+                       if(usersArray[i].subscribe == "Yes"){
+                           document.write("  <td style='color:black' id=" + isSubscribe+ ">Yes</td>");
                        }else{
-                       document.write("  <td style='color:black'id=" + isAdmin+ ">No</td>");
+                       document.write("  <td style='color:black'id=" + isSubscribe+ ">No</td>");
                        }
                        document.write(" </tr>");
 
@@ -206,6 +207,7 @@
 
         </table>
     </div>
+    {{ $users->links() }}
     @else
         There are no users
     @endif

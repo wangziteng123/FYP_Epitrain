@@ -26,7 +26,7 @@ class UserController extends Controller
 
     public function viewAllUsers(){
         //
-        $users = User::all();
+        $users = User::paginate(15);
 
         return \View::make('usermanage.viewAllUsers', compact('users'));
     }

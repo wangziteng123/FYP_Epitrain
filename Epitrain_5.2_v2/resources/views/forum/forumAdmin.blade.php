@@ -16,7 +16,7 @@
 		->join('forumcategory', 'forumdiscussion.category_id', '=', 'forumcategory.id')
 		->join('users', 'forumdiscussion.user_id', '=', 'users.id')
         ->select('forumdiscussion.*', 'forumcategory.categoryname', 'users.name')
-        ->get();
+        ->paginate(5);
 
   $user = \DB::table('users')->where('id', Auth::user()->id)->value('id');
 
@@ -179,7 +179,7 @@
                         ?>
 
 <!-- Button trigger modal for deleting discussion -->
-<button type="button" class="btn btn-danger btn-raised" data-toggle="modal" data-target="#myModalDeleteDiscussion">
+<button type="button" class="btn btn-danger btn-raised" data-toggle="modal" data-target="#myModalDeleteDiscussion" onclick="loadModal( <?php echo $discussionId;?>)">
      Delete Discussion
 </button>
 
@@ -195,7 +195,7 @@
         <!-- Add a form inside the add category modal-->
            <font color='black'> <form method="post" id="deleteForm" action=<?php echo URL::route('deleteDiscussion');?>>
             Are you sure you want to delete this discussion?
-            <input type="hidden" name="discussionId" value=<?php echo $discussionId;?>>
+            <input type="hidden" id="passDiscussionID" name="discussionId" value="">
 
         <div class="modal-footer">
           <button class="btn btn-raised btn-default" data-dismiss="modal">No</button>
@@ -231,12 +231,13 @@
               <?php echo $likes ?>
               </a>
             </font>
+          </div>
+	    	  <br/>
+
+
+	    	  </div>
         </div>
-	    	<br/>
-
-
-	    	</div>
-</div>
+        {{ $discussions->links() }}
     	@endforeach
 
     </div>
@@ -279,23 +280,9 @@ $(document).ready(function () {
 
 });
 
-function confirmDelete(){
-    var result = confirm("Are you sure you want to delete this discussion?");
-    console.log(result);
-    if (result == false) {
-        //window.location.reload();
-       // document.getElementById("deleteForm").innerHTML = "";
-       return false;
-    }
-
+function loadModal(discussion_id){
+    document.getElementById('passDiscussionID').value=discussion_id ;
 }
-
-
-
-
-
-
-
 
 
 </script>

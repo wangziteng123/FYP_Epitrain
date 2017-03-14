@@ -16,7 +16,7 @@
 		->join('forumcategory', 'forumdiscussion.category_id', '=', 'forumcategory.id')
 		->join('users', 'forumdiscussion.user_id', '=', 'users.id')
         ->select('forumdiscussion.*', 'forumcategory.categoryname', 'users.name')
-        ->get();
+        ->paginate(5);
 
         $user = \DB::table('users')->where('id', Auth::user()->id)->value('id');
 
@@ -143,6 +143,7 @@
   	  </div>
     </div>
     @endforeach
+    {{ $discussions->links() }}
 </div>
 
 
