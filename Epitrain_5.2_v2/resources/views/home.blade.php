@@ -3,60 +3,23 @@
 @section('content')
 
 
-<script>
-
-function categoryButton(category) {
-  var mainUrl = window.location.hostname;
-  var url = "http://" + mainUrl + "/category?category=" + category;
-
-  window.location = url;
-}
-
-</script>
-
-    <!-- Split button -->
-
    <!-- Page Content -->
-    <div class="container" style="positon:relative">
+    <div class="container" style="positon:relatvie">
 
-        @if (Auth::user()->isAdmin)
-        @else
-        
-          <div class="fixed-action-btn toolbar" >
-						<a class="btn-floating btn-large" style = "background-color: #062C94">
-							<i class="large material-icons">view_array</i>
-						</a>
-            <!--<div style="position:relative;top:15px">-->
-            <!--<font color="#1034A6">-->
-						<ul>
-							<li class="waves-effect waves-light"><a href='/home'> <span class="white-text text-darken-2">Trading</span></a></li>
-							<li class="waves-effect waves-light"><a href='/home'> <span class="white-text text-darken-2">Risk Management</span></a></li>
-							<li class="waves-effect waves-light"><a href='/home'> <span class="white-text text-darken-2">Fintech</span></a></li>
-							<li class="waves-effect waves-light"><a href='/home'> <span class="white-text text-darken-2">Project Management</span></a></li>
-							<li class="waves-effect waves-light"><a href='/home'> <span class="white-text text-darken-2">Finance</span></a></li>
-							<li class="waves-effect waves-light"><a href='/home'> <span class="white-text text-darken-2">Business Management</span></a></li>
-							
-							<li class="waves-effect waves-light"><a href='/home'> <span class="white-text text-darken-2">Leadership</span></a></li>
-							<li class="waves-effect waves-light"><a href='/home'> <span class="white-text text-darken-2">Financial Market</span></a></li>
-							
-							<li class="waves-effect waves-light"><a href='/home'> <span class="white-text text-darken-2">View All</span></a></li>
-            <!--</font>-->
-						</ul>
-          </div>
-    </div>
-        
 
-        @endif
-
-        <div style="">
+        <div style="position:absolute;left:120px;top:145px">
+          <font size="3">WELCOME TO EPITRAIN</font><br/><br/>
+        </div>
+        <div style="position:absolute;left:120px;top:165px">
+          <h2>Epitrain provides training, resource development & consultancy</h2>
+        </div>
           <br/>
           <br/>
-        </div>
-        <div style="color:blue">
-          <h2>Epitrain Elearning Platform</h2>
+        <div style="position:absolute;left:118px;;top:215px">
+          <hr style="width:105px">
         </div>
 
-        <?php
+       <?php
          use Carbon\Carbon;
 
          $isSubscribe = Auth::user()->subscribe;
@@ -76,22 +39,22 @@ function categoryButton(category) {
             $expireOrnot = $currentTime->lt($end_Date);
           ?>
           @if($expireOrnot)
-            <div style = "color:black">
+            <div style="position:absolute;left:125px;top:245px">
             Your subscription plan will end at <?php echo $end_Date->toDateTimeString();?>.
             </div>
           @else
-          <div>
+          <div style="position:absolute;left:125px;top:245px">
            Want to start a subscription? &nbsp&nbsp
-          <button  class="btn btn-four initialism basic_open" style="width:150px;">
+          <button  class="btn btn-success btn-raised initialism basic_open" style="width:150px;">
             SUBSCRIBE
           </button>
          </div>
 
           @endif
         @else
-          <div>
+          <div style="position:absolute;left:125px;top:245px">
            Want to start a subscription? &nbsp&nbsp
-          <button  class="btn btn-four initialism basic_open" style="width:150px;">
+          <button  class="btn btn-success btn-raised initialism basic_open" style="width:150px;">
             SUBSCRIBE
           </button>
          </div>
@@ -99,16 +62,13 @@ function categoryButton(category) {
         @endif
       @endif
 
-        
 
-      <div class="container">
-        <!--Trending-->
-        <div style="position:relative" class="col s12">
-        <font style="color:darkblue;position:absolute;left:40px;top:0px" size="6">Trending </font>
-        </div><br/>
+      <div style="position:absolute;top:340px;">
+        <font style="font-family:Book Antiqua;font-weight:10;position:absolute;left:40px;top:0px" size="6">Trending </font>
         <hr>
-
-        <!--Ninja Slider1-->
+      </div><br/>
+      
+        
         <?php
 
           $trendingEbooks = \DB::table('libraries')
@@ -116,7 +76,7 @@ function categoryButton(category) {
           ->select(DB::raw('count(*) as fileentry_count'),'fileentries.*', 'libraries.fileentry_id')
           ->groupBy('libraries.fileentry_id')
           ->orderBy('fileentry_count', 'desc')
-          ->take(8)
+          ->take(4)
           ->get();
 
 
@@ -126,71 +86,56 @@ function categoryButton(category) {
 
 
           $countTrendingEbooks = count($trendingEbooks); 
-          $trendingEbooks1 = [];
-          $trendingEbooks2 = [];
-
-          $countFor = 0;
-          foreach($trendingEbooks as $ebook) {
-            $countFor ++;
-            if($countFor > 4) {
-              array_push($trendingEbooks2, $ebook);
-            } else {
-              array_push($trendingEbooks1, $ebook);
-            }
-
+          if($countTrendingEbooks<=2) {
+              $trendingEbooks = \DB::table('fileentries')
+              ->take(4)
+              ->get();
           }
 
         ?>
 
+      <div class="row col-sm-10" style="position:absolute;top:420px;">
 
-          <div class="row text-center col s12" style="border-style: solid;border-width: 4px;">
-            <div id="ninja-slider">
-                <div class="slider-inner">
-                    <ul>
-										<!--first page of trending ebook-->
-                       <li>
-                         <div class="content">
-                              <?php
-                                $countNum2 = 0;
-                                $filenameArr2 = array();
-                              ?>
-                              @foreach($trendingEbooks1 as $ebook)
-                              <?php
-                                $countNum2++;
+        <?php
+            $countNum2 = 0;
+            $filenameArr2 = array();
+        ?>
+        @foreach($trendingEbooks as $ebook)
+         <?php
+          $countNum2++;
 
-                                $filename2 = $ebook->filename;
-                                array_push($filenameArr2,$filename2);
-                                $container2 = "2container".$countNum2;
+          $filename2 = $ebook->filename;
+          array_push($filenameArr2,$filename2);
+          $container2 = "2container".$countNum2;
 
-                                $price2 = $ebook->price; 
-                                $fid2 = $ebook->id;
-                                $oriFilename2 = $ebook->original_filename;
-                                $description2= $ebook ->description;
+          $price2 = $ebook->price; 
+          $fid2 = $ebook->id;
+          $oriFilename2 = $ebook->original_filename;
+          $description2= $ebook ->description;
 
-                                 //whether the book is in shoppingcart or not / library
-                                $shoppingcartExist = \DB::table('shoppingcarts')
-                                ->where('user_id', Auth::user()->id)
-                                ->where('fileentry_id', $fid2)
-                                ->get();
+          //whether the book is in shoppingcart or not / library
+          $shoppingcartExist = \DB::table('shoppingcarts')
+          ->where('user_id', Auth::user()->id)
+          ->where('fileentry_id', $fid2)
+          ->get();
 
-                                $libraryExist = \DB::table('libraries')
-                                ->where('user_id', Auth::user()->id)
-                                ->where('fileentry_id', $fid2)
-                                ->get();
+          $libraryExist = \DB::table('libraries')
+          ->where('user_id', Auth::user()->id)
+          ->where('fileentry_id', $fid2)
+          ->get();
 
-                                $container2 = "2container".$countNum2;
+          $container2 = "2container".$countNum2;
                              
-                              ?>
+          ?>                      
 
-                          <div class="col-md-3 col-sm-10 hero-feature" style="">
-
-                          <div class="thumbnail" style="position:relative;height:365px;width:200px">
-                              <div id=<?php echo $container2?> style="position:relative;left:22px;height:200px;width:135px"></div>
+           <div class="col-sm-6 col-md-3">
+            <div class="thumbnail" style="height:365px;width:210px">
+              <div id=<?php echo $container2?> style="position:relative;height:200px;width:135px;margin: 0 auto;"></div>
                                
-                              <div class="caption" style="">
-                                  <div style="position:absolute;top:195px">
-                                      @if(strlen($oriFilename2) > 30)
-                                      <p>{{substr($oriFilename2,0,30)."..." }}</p>
+                              <div class="caption" style="position:relative">
+                                  <div style="position:relative;margin: 0 auto;">
+                                      @if(strlen($oriFilename2) > 25)
+                                      <p>{{substr($oriFilename2,0,25)."..." }}</p>
                                       @else
                                       <p>{{$oriFilename2}}</p>
                                       @endif
@@ -198,19 +143,19 @@ function categoryButton(category) {
                                  </div>
 
                                 
-                                  <p style="position:absolute;top:274px;left:15px"><font style="font-size:25px;color:#34495E">S$<?php echo $price2?></font></p>
+                                  <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">S$<?php echo $price2?></font></p>
 
                                   @if (count($libraryExist))
-                                      <form style="position:absolute;right:85px;top:275px;border:none">
+                                      <form style="position:absolute;right:85px;top:91px;border:none">
                                           <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
                                           <input type="hidden" name="fid" value=<?php echo $fid2?>>
-                                          <button type="button" style="border:none;background-color: Transparent">
+                                          <button type="submit" style="border:none;background-color: Transparent">
                                              <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Bought already."></i>
                                           </button>
                                       </form>
-                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:83px;top:289px"></i>
+                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:83px;top:105px"></i>
                                   @else
-                                      <form action=<?php echo url('shoppingcart/addtolibrary');?> method="post" style="position:absolute;right:85px;top:275px;border:none">
+                                      <form action=<?php echo url('shoppingcart/addtolibrary');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
                                           <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
                                           <input type="hidden" name="fid" value=<?php echo $fid2?>>
                                           <button type="submit" style="border:none;background-color: Transparent">
@@ -221,16 +166,16 @@ function categoryButton(category) {
 
 
                                   @if (count($shoppingcartExist))
-                                      <form style="position:absolute;right:86px;top:299px">
+                                      <form style="position:absolute;right:86px;top:115px">
                                           <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
                                           <input type="hidden" name="fid" value=<?php echo $fid2?>>
-                                          <button type="button" style="border:none;background-color: Transparent">
+                                          <button type="submit" style="border:none;background-color: Transparent">
                                              <i class="fa fa-shopping-cart fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Added already."></i>
                                           </button>
                                       </form>
-                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:85px;top:311px"></i>
+                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:85px;top:127px"></i>
                                   @else
-                                       <form action=<?php echo url('shoppingcart/add');?> method="post" style="position:absolute;right:86px;top:299px">
+                                       <form action=<?php echo url('shoppingcart/add');?> method="post" style="position:absolute;right:86px;top:115px">
                                           <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
                                           <input type="hidden" name="fid" value=<?php echo $fid2?>>
                                           <button type="submit" style="border:none;background-color: Transparent">
@@ -240,140 +185,29 @@ function categoryButton(category) {
                                   @endif
                                   
                                     
-                                  <p style="position:absolute;right:12px;top:283px;">
-                                      <button class="btn waves-effect waves-light btn blue slide_open" style="height:38px;width:65px" onclick="passtoSlide(<?php echo $fid2;?>,'<?php echo $oriFilename2;?>',<?php echo $price2;?>,'<?php echo $description2;?>')">
-                                         Info
+                                  <p style="position:absolute;right:12px;top:89px">
+                                      <button  class="btn btn-info btn-raised btn-sm slide_open"  onclick="passtoSlide(<?php echo $fid2;?>,'<?php echo $oriFilename2;?>',<?php echo $price2;?>,'<?php echo $description2;?>')">
+                                      Info
                                       </button>
                                   </p>
                                 
                               </div>
-                            </div>
-                          </div>
-                      @endforeach
-                  </div>
-              </li>
-										<!--second page of trending ebook-->
-                       <li>
-                            <div class="content">
-                               <?php
-                                $countNum3 = 0;
-                                $filenameArr3 = array();
-                              ?>
-                              @foreach($trendingEbooks2 as $ebook3)
-                              <?php
-                                $countNum3++;
-
-                                $filename3 = $ebook3->filename;
-                                array_push($filenameArr3,$filename3);
-                                $container3 = "3container".$countNum3;
-
-                                $price3 = $ebook3->price; 
-                                $fid3 = $ebook3->id;
-                                $oriFilename3 = $ebook3->original_filename;
-                                $description3= $ebook3 ->description;
-
-                                 //whether the book is in shoppingcart or not / library
-                                $shoppingcartExist = \DB::table('shoppingcarts')
-                                ->where('user_id', Auth::user()->id)
-                                ->where('fileentry_id', $fid3)
-                                ->get();
-
-                                $libraryExist = \DB::table('libraries')
-                                ->where('user_id', Auth::user()->id)
-                                ->where('fileentry_id', $fid3)
-                                ->get();
-
-                                $container3 = "3container".$countNum3;
-                             
-                              ?>
-
-                          <div class="col-md-3 col-sm-10 hero-feature" style="">
-
-                          <div class="thumbnail" style="position:relative;height:365px;width:200px">
-                              <div id=<?php echo $container3?> style="position:relative;left:22px;height:200px;width:135px"></div>
-                               
-                              <div class="caption" style="">
-                                  <div style="position:absolute;top:195px">
-                                      @if(strlen($oriFilename3) > 30)
-                                      <p>{{substr($oriFilename3,0,30)."..." }}</p>
-                                      @else
-                                      <p>{{$oriFilename3}}</p>
-                                      @endif
-                                  <font size="1">Category: <?php echo $ebook3->category?></font>
-                                 </div>
-
-                                
-                                  <p style="position:absolute;top:274px;left:15px"><font style="font-size:25px;color:#34495E">S$<?php echo $price3?></font></p>
-
-                                  @if (count($libraryExist))
-                                      <form style="position:absolute;right:85px;top:275px;border:none">
-                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fid" value=<?php echo $fid3?>>
-                                          <button type="button" style="border:none;background-color: Transparent">
-                                             <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Bought already."></i>
-                                          </button>
-                                      </form>
-                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:83px;top:289px"></i>
-                                  @else
-                                      <form action=<?php echo url('shoppingcart/addtolibrary');?> method="post" style="position:absolute;right:85px;top:275px;border:none">
-                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fid" value=<?php echo $fid3?>>
-                                          <button type="submit" style="border:none;background-color: Transparent">
-                                             <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Purchase this book"></i>
-                                          </button>
-                                      </form>
-                                  @endif
-
-
-                                  @if (count($shoppingcartExist))
-                                      <form style="position:absolute;right:86px;top:299px">
-                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fid" value=<?php echo $fid3?>>
-                                          <button type="button" style="border:none;background-color: Transparent">
-                                             <i class="fa fa-shopping-cart fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Added already."></i>
-                                          </button>
-                                      </form>
-                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:85px;top:311px"></i>
-                                  @else
-                                       <form action=<?php echo url('shoppingcart/add');?> method="post" style="position:absolute;right:86px;top:299px">
-                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fid" value=<?php echo $fid3?>>
-                                          <button type="submit" style="border:none;background-color: Transparent">
-                                             <i class="fa fa-shopping-cart fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Add to shoppingcart."></i>
-                                          </button>
-                                      </form>                
-                                  @endif
-                                  
-                                    
-                                  <p style="position:absolute;right:12px;top:283px">
-                                      <button  class="btn waves-effect waves-light btn blue slide_open" style="height:38px;width:65px" onclick="passtoSlide(<?php echo $fid3;?>,'<?php echo $oriFilename3;?>',<?php echo $price3;?>,'<?php echo $description3;?>')">
-                                         Info
-                                      </button>
-                                  </p>
-                                </div>
-                            </div>
-                          </div>
-                        @endforeach
-                      </div>
-                    </li>
-									</ul>
-                <div class="fs-icon" title="Expand/Close"></div>
-							<div id="current-slide-num"></div>
             </div>
-          </div
-      </div>
+          </div>
+
+        @endforeach
     </div>
-    <!--end of slider-->
-  <br/>
 
 
-        <!--Best Sellers in Financial Market-->
-        <div style="position:relative">
-        <font style="color:darkblue;position:absolute;left:40px;top:0px" size="6">Best Sellers in Financial Market </font>
+
+    <!--Best Sellers in Financial Market-->
+<br/>
+        <div style="position:absolute;top:905px">
+        <font style="font-family:Book Antiqua;font-weight:10;position:absolute;left:40px;top:0px" size="6">FinancialMarket </font>
+        <hr style="">
         </div><br/>
-        <hr>
-
-        <!--Ninja Slider1-->
+        
+        
         <?php
 
           $financialEbooks = \DB::table('libraries')
@@ -382,7 +216,7 @@ function categoryButton(category) {
           ->select(DB::raw('count(*) as fileentry_count'),'fileentries.*', 'libraries.fileentry_id')
           ->groupBy('libraries.fileentry_id')
           ->orderBy('fileentry_count', 'desc')
-          ->take(8)
+          ->take(4)
           ->get();
 
 
@@ -391,94 +225,77 @@ function categoryButton(category) {
           // ->get();
 
 
-          $countTrendingEbooks = count($financialEbooks); 
-          $financialEbooks1 = [];
-          $financialEbooks2 = [];
-
-          $countFor2 = 0;
-          foreach($financialEbooks as $fEbook) {
-            $countFor2 ++;
-            if($countFor2 > 4) {
-              array_push($financialEbooks2, $fEbook);
-            } else {
-              array_push($financialEbooks1, $fEbook);
-            }
-
+          $countFinancialEbooks = count($financialEbooks); 
+          if($countFinancialEbooks<2) {
+              $financialEbooks = \DB::table('fileentries')
+              ->take(4)
+              ->get();
           }
 
         ?>
 
+      <div class="row col-sm-10" style="position:absolute;top:1000px;">
 
-          <div class="row text-center" style="border-style:solid;border-width: 4px;">
+        <?php
+            $countNum4 = 0;
+            $filenameArr4 = array();
+        ?>
+        @foreach($financialEbooks as $ebook)
+         <?php
+          $countNum4++;
 
-          
-            <div id="ninja-slider2">
-                <div class="slider-inner" style="width:1160px">
-                    <ul>
+          $filename4 = $ebook->filename;
+          array_push($filenameArr4,$filename4);
+          $container4 = "4container".$countNum4;
 
-                        <li>
-                            <div class="content" style="width:1170px">
-                              <?php
-                                $countNum4 = 0;
-                                $filenameArr4 = array();
-                              ?>
-                              @foreach($financialEbooks1 as $fEbook)
-                              <?php
-                                $countNum4++;
+          $price4 = $ebook->price; 
+          $fid4 = $ebook->id;
+          $oriFilename4 = $ebook->original_filename;
+          $description4= $ebook ->description;
 
-                                $filename4 = $fEbook->filename;
-                                array_push($filenameArr4,$filename4);
-                                $container4 = "4container".$countNum4;
+          //whether the book is in shoppingcart or not / library
+          $shoppingcartExist = \DB::table('shoppingcarts')
+          ->where('user_id', Auth::user()->id)
+          ->where('fileentry_id', $fid4)
+          ->get();
 
-                                $price4 = $fEbook->price; 
-                                $fid4 = $fEbook->id;
-                                $oriFilename4 = $fEbook->original_filename;
-                                $description4= $fEbook ->description;
+          $libraryExist = \DB::table('libraries')
+          ->where('user_id', Auth::user()->id)
+          ->where('fileentry_id', $fid4)
+          ->get();
 
-                                 //whether the book is in shoppingcart or not / library
-                                $shoppingcartExist4 = \DB::table('shoppingcarts')
-                                ->where('user_id', Auth::user()->id)
-                                ->where('fileentry_id', $fid4)
-                                ->get();
-
-                                $libraryExist4 = \DB::table('libraries')
-                                ->where('user_id', Auth::user()->id)
-                                ->where('fileentry_id', $fid4)
-                                ->get();
-
-                                //$container4 = "4container".$countNum4;
+          $container4 = "4container".$countNum4;
                              
-                              ?>
+          ?>                      
 
-                          <div class="col-md-3 col-sm-10 hero-feature" style="">
-
-                          <div class="thumbnail" style="position:relative;height:365px;width:200px">
-                              <div id=<?php echo $container4?> style="position:relative;left:22px;height:200px;width:135px"></div>
+           <div class="col-sm-6 col-md-3">
+            <div class="thumbnail" style="height:365px;width:210px">
+              <div id=<?php echo $container4?> style="position:relative;height:200px;width:135px;margin: 0 auto;"></div>
                                
-                              <div class="caption" style="">
-                                  <div style="position:absolute;top:195px">
-                                      @if(strlen($oriFilename4) > 30)
-                                      <p>{{substr($oriFilename4,0,30)."..." }}</p>
+                              <div class="caption" style="position:relative">
+                                  <div style="position:relative;margin: 0 auto;">
+                                      @if(strlen($oriFilename4) > 25)
+                                      <p>{{substr($oriFilename4,0,25)."..." }}</p>
                                       @else
                                       <p>{{$oriFilename4}}</p>
                                       @endif
-                                  <font size="1">Category: <?php echo $fEbook->category?></font>
+                                  <font size="1">Category: <?php echo $ebook->category?></font>
                                  </div>
 
                                 
-                                  <p style="position:absolute;top:274px;left:15px"><font style="font-size:25px;color:#34495E">S$<?php echo $price4?></font></p>
+                                  <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">S$<?php echo $price4?></font></p>
 
-                                  @if (count($libraryExist4))
-                                      <form style="position:absolute;right:85px;top:275px;border:none">
+                                  @if (count($libraryExist))
+                                      <form style="position:absolute;right:85px;top:91px;border:none">
                                           <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
                                           <input type="hidden" name="fid" value=<?php echo $fid4?>>
-                                          <button type="button" style="border:none;background-color: Transparent">
+                                          <button type="submit" style="border:none;background-color: Transparent">
                                              <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Bought already."></i>
                                           </button>
                                       </form>
-                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:83px;top:289px"></i>
+                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:83px;top:105px"></i>
                                   @else
-                                      <form action=<?php echo url('shoppingcart/addtolibrary');?> method="post" style="position:absolute;right:85px;top:275px;border:none">
+                                      <form action=<?php echo url('shoppingcart/addtolibrary');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
                                           <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
                                           <input type="hidden" name="fid" value=<?php echo $fid4?>>
                                           <button type="submit" style="border:none;background-color: Transparent">
@@ -488,17 +305,17 @@ function categoryButton(category) {
                                   @endif
 
 
-                                  @if (count($shoppingcartExist4))
-                                      <form style="position:absolute;right:86px;top:299px">
+                                  @if (count($shoppingcartExist))
+                                      <form style="position:absolute;right:86px;top:105px">
                                           <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
                                           <input type="hidden" name="fid" value=<?php echo $fid4?>>
-                                          <button type="button" style="border:none;background-color: Transparent">
+                                          <button type="submit" style="border:none;background-color: Transparent">
                                              <i class="fa fa-shopping-cart fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Added already."></i>
                                           </button>
                                       </form>
-                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:85px;top:311px"></i>
+                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:85px;top:127px"></i>
                                   @else
-                                       <form action=<?php echo url('shoppingcart/add');?> method="post" style="position:absolute;right:86px;top:299px">
+                                       <form action=<?php echo url('shoppingcart/add');?> method="post" style="position:absolute;right:86px;top:105px">
                                           <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
                                           <input type="hidden" name="fid" value=<?php echo $fid4?>>
                                           <button type="submit" style="border:none;background-color: Transparent">
@@ -508,258 +325,118 @@ function categoryButton(category) {
                                   @endif
                                   
                                     
-                                  <p style="position:absolute;right:12px;top:283px">
-                                      <button  class="btn waves-effect waves-light btn blue slide_open" style="height:38px;width:65px" onclick="passtoSlide(<?php echo $fid4;?>,'<?php echo $oriFilename4;?>',<?php echo $price4;?>,'<?php echo $description4;?>')">
-                                         Info
+                                  <p style="position:absolute;right:12px;top:89px">
+                                      <button  class="btn btn-info btn-raised btn-sm slide_open"  onclick="passtoSlide(<?php echo $fid2;?>,'<?php echo $oriFilename2;?>',<?php echo $price2;?>,'<?php echo $description2;?>')">
+                                      Info
                                       </button>
                                   </p>
                                 
                               </div>
-                          </div>
-
-                          </div>
-
-
-                              @endforeach
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="content">
-                               <?php
-                                $countNum5 = 0;
-                                $filenameArr5 = array();
-                              ?>
-                              @foreach($financialEbooks2 as $fEbook)
-                              <?php
-                                $countNum5++;
-
-                                $filename5 = $fEbook->filename;
-                                array_push($filenameArr5,$filename5);
-                                $container5 = "5container".$countNum5;
-
-                                $price5 = $fEbook->price; 
-                                $fid5 = $fEbook->id;
-                                $oriFilename5 = $fEbook->original_filename;
-                                $description5 = $fEbook ->description;
-
-                                 //whether the book is in shoppingcart or not / library
-                                $shoppingcartExist5 = \DB::table('shoppingcarts')
-                                ->where('user_id', Auth::user()->id)
-                                ->where('fileentry_id', $fid5)
-                                ->get();
-
-                                $libraryExist5 = \DB::table('libraries')
-                                ->where('user_id', Auth::user()->id)
-                                ->where('fileentry_id', $fid5)
-                                ->get();
-
-                                //$container5 = "5container".$countNum5;
-                             
-                              ?>
-
-                          <div class="col-md-3 col-sm-10 hero-feature" style="">
-
-                          <div class="thumbnail" style="position:relative;height:365px;width:200px">
-                              <div id=<?php echo $container5?> style="position:relative;left:22px;height:200px;width:135px"></div>
-                               
-                              <div class="caption" style="">
-                                  <div style="position:absolute;top:195px">
-                                      @if(strlen($oriFilename5) > 30)
-                                      <p>{{substr($oriFilename5,0,30)."..." }}</p>
-                                      @else
-                                      <p>{{$oriFilename5}}</p>
-                                      @endif
-                                  <font size="1">Category: <?php echo $fEbook->category?></font>
-                                 </div>
-
-                                
-                                  <p style="position:absolute;top:274px;left:15px"><font style="font-size:25px;color:#34495E">S$<?php echo $price5?></font></p>
-
-                                  @if (count($libraryExist5))
-                                      <form style="position:absolute;right:85px;top:275px;border:none">
-                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fid" value=<?php echo $fid5?>>
-                                          <button type="button" style="border:none;background-color: Transparent">
-                                             <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Bought already."></i>
-                                          </button>
-                                      </form>
-                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:83px;top:289px"></i>
-                                  @else
-                                      <form action=<?php echo url('shoppingcart/addtolibrary');?> method="post" style="position:absolute;right:85px;top:275px;border:none">
-                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fid" value=<?php echo $fid5?>>
-                                          <button type="submit" style="border:none;background-color: Transparent">
-                                             <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Purchase this book"></i>
-                                          </button>
-                                      </form>
-                                  @endif
-
-
-                                  @if (count($shoppingcartExist5))
-                                      <form style="position:absolute;right:86px;top:299px">
-                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fid" value=<?php echo $fid5?>>
-                                          <button type="button" style="border:none;background-color: Transparent">
-                                             <i class="fa fa-shopping-cart fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Added already."></i>
-                                          </button>
-                                      </form>
-                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:85px;top:311px"></i>
-                                  @else
-                                       <form action=<?php echo url('shoppingcart/add');?> method="post" style="position:absolute;right:86px;top:299px">
-                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fid" value=<?php echo $fid5?>>
-                                          <button type="submit" style="border:none;background-color: Transparent">
-                                             <i class="fa fa-shopping-cart fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Add to shoppingcart."></i>
-                                          </button>
-                                      </form>                
-                                  @endif
-                                  
-                                    
-                                  <p style="position:absolute;right:12px;top:283px">
-                                      <button  class="btn waves-effect waves-light btn blue slide_open" style="height:38px;width:65px" onclick="passtoSlide(<?php echo $fid5;?>,'<?php echo $oriFilename5;?>',<?php echo $price5;?>,'<?php echo $description5;?>')">
-                                         Info
-                                      </button>
-                                  </p>
-                                
-                              </div>
-                          </div>
-
-                          </div>
-
-
-                              @endforeach
-
-
-
-                            </div>
-                        </li>
-
-                    </ul>
-                    <div class="fs-icon" title="Expand/Close"></div>
-                </div>
             </div>
+          </div>
 
-        </div>
-        <!--end of slider-->
-        <!--End of Best Sellers in Financial Market-->
+        @endforeach
+    </div>
 
 
-        <br/>
-        <!--Best Sellers in Leadership-->
-        <div style="position:relative">
-        <font style="color:darkblue;position:absolute;left:40px;top:0px" size="6">Best Sellers in Leadership </font>
+    <!--Best Sellers in Leadership-->
+<br/>
+         <div style="position:absolute;top:1455px">
+        <font style="font-family:Book Antiqua;font-weight:10;position:absolute;left:40px;top:0px" size="6">Leadership</font>
+        <hr style="">
         </div><br/>
-        <hr>
-
-        <!--Ninja Slider1-->
+        
+        
         <?php
 
-          $leadershipEbooks = \DB::table('libraries')
+         $leadershipEbooks = \DB::table('libraries')
           ->join('fileentries', 'libraries.fileentry_id', '=', 'fileentries.id')
           ->where('category', 'Leadership')
           ->select(DB::raw('count(*) as fileentry_count'),'fileentries.*', 'libraries.fileentry_id')
           ->groupBy('libraries.fileentry_id')
           ->orderBy('fileentry_count', 'desc')
-          ->take(8)
+          ->take(4)
           ->get();
 
 
-          // $trendingEbooks = \DB::table('fileentries')
+
+          // $financialEbooks = \DB::table('fileentries')
           // ->take(8)
           // ->get();
 
-
           $countLeadershipEbooks = count($leadershipEbooks); 
-          $leadershipEbooks1 = [];
-          $leadershipEbooks2 = [];
-
-          $countFor3 = 0;
-          foreach($leadershipEbooks as $Lbook) {
-            $countFor3 ++;
-            if($countFor3 > 4) {
-              array_push($leadershipEbooks2, $Lbook);
-            } else {
-              array_push($leadershipEbooks1, $Lbook);
-            }
-
+          if($countLeadershipEbooks<2) {
+              $leadershipEbooks = \DB::table('fileentries')
+              ->where('category', 'Leadership')
+              ->take(4)
+              ->get();
           }
 
         ?>
 
+      <div class="row col-sm-10" style="position:absolute;top:1545px;">
 
-          <div class="row text-center" style="border-style: solid;border-width: 4px;">
+        <?php
+            $countNum6 = 0;
+            $filenameArr6 = array();
+        ?>
+        @foreach($leadershipEbooks as $ebook)
+         <?php
+          $countNum6++;
 
-          
-            <div id="ninja-slider3">
-                <div class="slider-inner" style="width:1170px">
-                    <ul>
+          $filename6 = $ebook->filename;
+          array_push($filenameArr6,$filename6);
+          $container6 = "6container".$countNum6;
 
-                        <li>
-                            <div class="content" style="width:1170px">
-                              <?php
-                                $countNum6 = 0;
-                                $filenameArr6 = array();
-                              ?>
-                              @foreach($leadershipEbooks1 as $lEbook)
-                              <?php
-                                $countNum6++;
+          $price4 = $ebook->price; 
+          $fid4 = $ebook->id;
+          $oriFilename4 = $ebook->original_filename;
+          $description4= $ebook ->description;
 
-                                $filename6 = $lEbook->filename;
-                                array_push($filenameArr6,$filename6);
-                                $container6 = "6container".$countNum6;
+          //whether the book is in shoppingcart or not / library
+          $shoppingcartExist = \DB::table('shoppingcarts')
+          ->where('user_id', Auth::user()->id)
+          ->where('fileentry_id', $fid4)
+          ->get();
 
-                                $price6 = $lEbook->price; 
-                                $fid6 = $lEbook->id;
-                                $oriFilename6 = $lEbook->original_filename;
-                                $description6 = $lEbook ->description;
+          $libraryExist = \DB::table('libraries')
+          ->where('user_id', Auth::user()->id)
+          ->where('fileentry_id', $fid4)
+          ->get();
 
-                                 //whether the book is in shoppingcart or not / library
-                                $shoppingcartExist6 = \DB::table('shoppingcarts')
-                                ->where('user_id', Auth::user()->id)
-                                ->where('fileentry_id', $fid6)
-                                ->get();
-
-                                $libraryExist6 = \DB::table('libraries')
-                                ->where('user_id', Auth::user()->id)
-                                ->where('fileentry_id', $fid6)
-                                ->get();
-
-                                //$container4 = "4container".$countNum4;
                              
-                              ?>
+          ?>                      
 
-                          <div class="col-md-3 col-sm-10 hero-feature" style="">
-
-                          <div class="thumbnail" style="position:relative;height:365px;width:200px">
-                              <div id=<?php echo $container6?> style="position:relative;left:22px;height:200px;width:135px"></div>
+           <div class="col-sm-6 col-md-3">
+            <div class="thumbnail" style="height:365px;width:210px">
+              <div id=<?php echo $container6?> style="position:relative;height:200px;width:135px;margin: 0 auto;"></div>
                                
-                              <div class="caption" style="">
-                                  <div style="position:absolute;top:195px">
-                                      @if(strlen($oriFilename6) > 30)
-                                      <p>{{substr($oriFilename4,0,30)."..." }}</p>
+                              <div class="caption" style="position:relative">
+                                  <div style="position:relative;margin: 0 auto;">
+                                      @if(strlen($oriFilename4) > 25)
+                                      <p>{{substr($oriFilename4,0,25)."..." }}</p>
                                       @else
-                                      <p>{{$oriFilename6}}</p>
+                                      <p>{{$oriFilename4}}</p>
                                       @endif
-                                  <font size="1">Category: <?php echo $lEbook->category?></font>
+                                  <font size="1">Category: <?php echo $ebook->category?></font>
                                  </div>
 
                                 
-                                  <p style="position:absolute;top:274px;left:15px"><font style="font-size:25px;color:#34495E">S$<?php echo $price6?></font></p>
+                                  <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">S$<?php echo $price4?></font></p>
 
-                                  @if (count($libraryExist6))
-                                      <form style="position:absolute;right:85px;top:275px;border:none">
+                                  @if (count($libraryExist))
+                                      <form style="position:absolute;right:85px;top:91px;border:none">
                                           <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fid" value=<?php echo $fid6?>>
-                                          <button type="button" style="border:none;background-color: Transparent">
+                                          <input type="hidden" name="fid" value=<?php echo $fid4?>>
+                                          <button type="submit" style="border:none;background-color: Transparent">
                                              <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Bought already."></i>
                                           </button>
                                       </form>
-                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:83px;top:289px"></i>
+                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:83px;top:105px"></i>
                                   @else
-                                      <form action=<?php echo url('shoppingcart/addtolibrary');?> method="post" style="position:absolute;right:85px;top:275px;border:none">
+                                      <form action=<?php echo url('shoppingcart/addtolibrary');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
                                           <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fid" value=<?php echo $fid6?>>
+                                          <input type="hidden" name="fid" value=<?php echo $fid4?>>
                                           <button type="submit" style="border:none;background-color: Transparent">
                                              <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Purchase this book"></i>
                                           </button>
@@ -767,19 +444,19 @@ function categoryButton(category) {
                                   @endif
 
 
-                                  @if (count($shoppingcartExist6))
-                                      <form style="position:absolute;right:86px;top:299px">
+                                  @if (count($shoppingcartExist))
+                                      <form style="position:absolute;right:86px;top:105px">
                                           <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fid" value=<?php echo $fid6?>>
-                                          <button type="button" style="border:none;background-color: Transparent">
+                                          <input type="hidden" name="fid" value=<?php echo $fid4?>>
+                                          <button type="submit" style="border:none;background-color: Transparent">
                                              <i class="fa fa-shopping-cart fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Added already."></i>
                                           </button>
                                       </form>
-                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:85px;top:311px"></i>
+                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:85px;top:127px"></i>
                                   @else
-                                       <form action=<?php echo url('shoppingcart/add');?> method="post" style="position:absolute;right:86px;top:299px">
+                                       <form action=<?php echo url('shoppingcart/add');?> method="post" style="position:absolute;right:86px;top:115px">
                                           <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fid" value=<?php echo $fid6?>>
+                                          <input type="hidden" name="fid" value=<?php echo $fid4?>>
                                           <button type="submit" style="border:none;background-color: Transparent">
                                              <i class="fa fa-shopping-cart fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Add to shoppingcart."></i>
                                           </button>
@@ -787,152 +464,19 @@ function categoryButton(category) {
                                   @endif
                                   
                                     
-                                  <p style="position:absolute;right:12px;top:283px">
-                                      <button  class="btn waves-effect waves-light btn blue slide_open" style="height:38px;width:65px" onclick="passtoSlide(<?php echo $fid6;?>,'<?php echo $oriFilename6;?>',<?php echo $price6;?>,'<?php echo $description6;?>')">
-                                         Info
+                                  <p style="position:absolute;right:12px;top:89px">
+                                      <button  class="btn btn-info btn-raised btn-sm slide_open"  onclick="passtoSlide(<?php echo $fid2;?>,'<?php echo $oriFilename2;?>',<?php echo $price2;?>,'<?php echo $description2;?>')">
+                                      Info
                                       </button>
                                   </p>
                                 
                               </div>
-                          </div>
-
-                          </div>
-
-
-                              @endforeach
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="content">
-                               <?php
-                                $countNum7 = 0;
-                                $filenameArr7 = array();
-                              ?>
-                              @foreach($leadershipEbooks2 as $lEbook)
-                              <?php
-                                $countNum7++;
-
-                                $filename7 = $lEbook->filename;
-                                array_push($filenameArr7,$filename7);
-                                $container7 = "7container".$countNum7;
-
-                                $price7 = $lEbook->price; 
-                                $fid7 = $lEbook->id;
-                                $oriFilename7 = $lEbook->original_filename;
-                                $description7 = $lEbook ->description;
-
-                                 //whether the book is in shoppingcart or not / library
-                                $shoppingcartExist7 = \DB::table('shoppingcarts')
-                                ->where('user_id', Auth::user()->id)
-                                ->where('fileentry_id', $fid5)
-                                ->get();
-
-                                $libraryExist7 = \DB::table('libraries')
-                                ->where('user_id', Auth::user()->id)
-                                ->where('fileentry_id', $fid7)
-                                ->get();
-
-                                //$container5 = "5container".$countNum5;
-                             
-                              ?>
-
-                          <div class="col-md-3 col-sm-10 hero-feature" style="">
-
-                          <div class="thumbnail" style="position:relative;height:365px;width:200px">
-                              <div id=<?php echo $container7?> style="position:relative;left:22px;height:200px;width:135px"></div>
-                               
-                              <div class="caption" style="">
-                                  <div style="position:absolute;top:195px">
-                                      @if(strlen($oriFilename7) > 30)
-                                      <p>{{substr($oriFilename7,0,30)."..." }}</p>
-                                      @else
-                                      <p>{{$oriFilename7}}</p>
-                                      @endif
-                                  <font size="1">Category: <?php echo $lEbook->category?></font>
-                                 </div>
-
-                                
-                                  <p style="position:absolute;top:274px;left:15px"><font style="font-size:25px;color:#34495E">S$<?php echo $price7?></font></p>
-
-                                  @if (count($libraryExis7))
-                                      <form style="position:absolute;right:85px;top:275px;border:none">
-                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fid" value=<?php echo $fid7?>>
-                                          <button type="button" style="border:none;background-color: Transparent">
-                                             <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Bought already."></i>
-                                          </button>
-                                      </form>
-                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:83px;top:289px"></i>
-                                  @else
-                                      <form action=<?php echo url('shoppingcart/addtolibrary');?> method="post" style="position:absolute;right:85px;top:275px;border:none">
-                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fid" value=<?php echo $fid7?>>
-                                          <button type="submit" style="border:none;background-color: Transparent">
-                                             <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Purchase this book"></i>
-                                          </button>
-                                      </form>
-                                  @endif
-
-
-                                  @if (count($shoppingcartExist7))
-                                      <form style="position:absolute;right:86px;top:299px">
-                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fid" value=<?php echo $fid7?>>
-                                          <button type="button" style="border:none;background-color: Transparent">
-                                             <i class="fa fa-shopping-cart fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Added already."></i>
-                                          </button>
-                                      </form>
-                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:85px;top:311px"></i>
-                                  @else
-                                       <form action=<?php echo url('shoppingcart/add');?> method="post" style="position:absolute;right:86px;top:299px">
-                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fid" value=<?php echo $fid7?>>
-                                          <button type="submit" style="border:none;background-color: Transparent">
-                                             <i class="fa fa-shopping-cart fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Add to shoppingcart."></i>
-                                          </button>
-                                      </form>                
-                                  @endif
-                                  
-                                    
-                                  <p style="position:absolute;right:12px;top:283px">
-                                      <button  class="btn waves-effect waves-light btn blue slide_open" style="height:38px;width:65px" onclick="passtoSlide(<?php echo $fid7;?>,'<?php echo $oriFilename7;?>',<?php echo $price7;?>,'<?php echo $description7;?>')">
-                                         Info
-                                      </button>
-                                  </p>
-                                
-                              </div>
-                          </div>
-
-                          </div>
-
-
-                              @endforeach
-
-
-
-                            </div>
-                        </li>
-
-                    </ul>
-                    <div class="fs-icon" title="Expand/Close"></div>
-                </div>
             </div>
+          </div>
 
-          </div>
-        <!--end of slider-->
-        <!--End of Best Sellers in Leadership-->
-          <br/><br/>
-          <div style="position:absoute;bottom:30px">
-            <footer>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <p>Copyright &copy; Your Website 2014</p>
-                    </div>
-                </div>
-            </footer>
-          </div>
-      </div>
+        @endforeach
+    </div>
+
 
         
    </div>      
@@ -947,27 +491,32 @@ function categoryButton(category) {
               <button class="slide_close btn btn-default" style="position:absolute;right:20px"><i class="fa fa-times" aria-hidden="true"></i></button>
               <br/>
               <span id="fid" hidden></span><br/>
-              <font size="5"><span id="title"></span></font><br/><br/>
-              <font size="5" color="#34495E" style="position:absolute;right:230px;">$<span id="price"></span></font><br/><br/>
-              <p><font size="3">&nbsp&nbsp<span id="description"></span></font></p><br/>
+              <font size="5" color="black"><span id="title"></span></font><br/><br/>
+              <font size="5" color="black" style="position:absolute;right:230px;">$<span id="price"></span></font><br/><br/>
+              <p><font size="3" color="black">&nbsp&nbsp<span id="description"></span></font></p><br/>
              
           </div>
+    <!-- -->
 
-      <!-- Basic Slider-->
+
+    <!-- Basic Slider-->
 
     <div id="basic" class="well" style="max-width:74em;">
-        <h4>Choose a subscribtion plan:</h4>
+        <h4><span style="color:black">Choose a subscription plan:</span></h4>
       <form action=<?php echo url('/subscribe');?>  method="post">
-        <p><input type="radio" name="period" value="1" checked> 1 month</p>
-        <p><input type="radio" name="period" value="6"> 6 months</p>
-        <p><input type="radio" name="period" value="12"> 1 year</p>
+        <p><input type="radio" name="period" value="1" checked><span style="color:black"> 1 month</span></p>
+        <p><input type="radio" name="period" value="6"><span style="color:black"> 6 months</span></p>
+        <p><input type="radio" name="period" value="12"><span style="color:black"> 1 year</span></p>
         <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-        <button type="submit" class="btn-default btn">Subscribe</button>
-        <button class="basic_close btn btn-default">Cancel</button>
+        <button type="submit" class="btn btn-default btn-raised"><span style="color:black">Subscribe</span></button>
+        <button class="basic_close btn btn-default btn-raised"><span style="color:black">Cancel</span></button>
       </form>
     </div>
     <!--end of basic slider-->
 
+
+
+   
 
 <script>
     function getPreview(url, divId) {
@@ -1041,13 +590,35 @@ function categoryButton(category) {
     }
 
 </script>
+   
+ <script>
+    
+               
+</script> 
+
+
 
 <script>
+$(document).ready(function () {
+
+    $('#slide').popup({
+        focusdelay: 400,
+        outline: true,
+        vertical: 'top'
+    });
+
+    $('#basic').popup();
+});
+</script>
+
+
+<!--For displaying pdfs-->
+  <script>
     <?php
         $js_array = json_encode($filenameArr2);
         echo "var filename_array2 = ". $js_array . ";\n";
     ?>
-    var countEntries = <?php echo count($trendingEbooks1)?>;        
+    var countEntries = <?php echo count($trendingEbooks)?>;        
     // URL of PDF document
     var mainUrl = window.location.hostname;
               
@@ -1062,27 +633,10 @@ function categoryButton(category) {
 
 <script>
     <?php
-        $js_array = json_encode($filenameArr3);
-        echo "var filename_array3 = ". $js_array . ";\n";
-    ?>
-    var countEntries = <?php echo count($trendingEbooks2)?>;        
-    // URL of PDF document
-    var mainUrl = window.location.hostname;          
-           
-    for(y = 1; y <= countEntries; y++) {
-        var url = "http://" + mainUrl + "/fileentry/get/" + filename_array3[y - 1];
-        var divId = "3container" + y;
-        getPreview(url, divId);
-    }             
-               
-</script> 
-
-<script>
-    <?php
         $js_array = json_encode($filenameArr4);
         echo "var filename_array4 = ". $js_array . ";\n";
     ?>
-    var countEntries = <?php echo count($financialEbooks1)?>;        
+    var countEntries = <?php echo count($financialEbooks)?>;        
     // URL of PDF document
     var mainUrl = window.location.hostname;         
            
@@ -1096,27 +650,10 @@ function categoryButton(category) {
 
 <script>
     <?php
-        $js_array = json_encode($filenameArr5);
-        echo "var filename_array5 = ". $js_array . ";\n";
-    ?>
-    var countEntries = <?php echo count($financialEbooks2)?>;        
-    // URL of PDF document
-    var mainUrl = window.location.hostname;       
-           
-    for(y = 1; y <= countEntries; y++) {
-        var url = "http://" + mainUrl + "/fileentry/get/" + filename_array5[y - 1];
-        var divId = "5container" + y;
-        getPreview(url, divId);
-    }             
-               
-</script> 
-
-<script>
-    <?php
         $js_array = json_encode($filenameArr6);
         echo "var filename_array6 = ". $js_array . ";\n";
     ?>
-    var countEntries = <?php echo count($leadershipEbooks1)?>;        
+    var countEntries = <?php echo count($leadershipEbooks)?>;        
     // URL of PDF document
     var mainUrl = window.location.hostname;       
            
@@ -1126,38 +663,6 @@ function categoryButton(category) {
         getPreview(url, divId);
     }             
                
-</script> 
-
-<script>
-    <?php
-        $js_array = json_encode($filenameArr7);
-        echo "var filename_array7 = ". $js_array . ";\n";
-    ?>
-    var countEntries = <?php echo count($leadershipEbooks2)?>;        
-    // URL of PDF document
-    var mainUrl = window.location.hostname;       
-           
-    for(y = 1; y <= countEntries; y++) {
-        var url = "http://" + mainUrl + "/fileentry/get/" + filename_array7[y - 1];
-        var divId = "7container" + y;
-        getPreview(url, divId);
-    }             
-               
-</script> 
-
-
-<script>
-$(document).ready(function () {
-
-    $('#slide').popup({
-        focusdelay: 400,
-        outline: true,
-        vertical: 'top'
-    });
-
-    $('#basic').popup();
-
-});
 </script>
 
 @endsection

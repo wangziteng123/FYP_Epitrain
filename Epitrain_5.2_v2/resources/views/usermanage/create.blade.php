@@ -2,6 +2,18 @@
 
 @section('content')
 
+@if(Session::has('failure'))
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <p style="font-size:18px">{{ Session::get('failure') }}</p>
+    </div>
+@endif
+@if(Session::has('success'))
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <p style="font-size:18px">{{ Session::get('success') }}</p>
+    </div>
+@endif
 <div class="row">
     <div class="col-sm-6">
         <ul class="breadcrumb pull-left" style="margin-bottom: 5px;font-size:20px">
@@ -23,7 +35,7 @@
                             <label for="name" class="col-sm-4 control-label"><font color="black" size = "3">Name</font></label>
 
                             <div class="col-sm-6">
-                                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" style="font-size:16px" placeholder="Enter new user's name">
+                                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" style="font-size:16px" placeholder="Enter new user's name" required>
 
                                 @if ($errors->has('name'))
                                     <span class="help-block">
@@ -37,7 +49,7 @@
                             <label for="email" class="col-sm-4 control-label"><font color="black" size = "3">E-Mail Address</font></label>
 
                             <div class="col-sm-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" style="font-size:16px" placeholder="Enter email of the user">
+                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" style="font-size:16px" placeholder="Enter email of the user" required>
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -51,7 +63,7 @@
                             <label for="password" class="col-sm-4 control-label"><font color="black" size = "3">Password</font></label>
 
                             <div class="col-sm-6">
-                                <input id="password" type="password" class="form-control" name="password" style="font-size:16px" placeholder="Create a temporary password for the new user">
+                                <input id="password" type="password" class="form-control" name="password" style="font-size:16px" placeholder="Create a temporary password for the new user" required>
 
                                 @if ($errors->has('password'))
                                     <span class="help-block">
@@ -65,7 +77,7 @@
                             <label for="password-confirm" class="col-sm-4 control-label"><font color="black" size = "3">Confirm Password</font></label>
 
                             <div class="col-sm-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" style="font-size:16px" placeholder="Reenter the new password">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" style="font-size:16px" placeholder="Reenter the new password" required>
 
                                 @if ($errors->has('password_confirmation'))
                                     <span class="help-block">
@@ -97,7 +109,5 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript" src="{{URL::asset('/js/createUser.js')}}"></script>
 
 @endsection

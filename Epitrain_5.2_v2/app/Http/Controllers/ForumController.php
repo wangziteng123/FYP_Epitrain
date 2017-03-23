@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Notifications\Notifiable;
+use App\Notifications\DiscussionResponsed;
+use App\Notifications\ClosedDiscussion;
+use App\Notifications\LikedDiscussion;
 use Illuminate\Http\Request;
 use DB;
 use DateTime;
 use Carbon\Carbon;
-
+use App\User;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 class ForumController extends Controller
 {
+    use Notifiable;
+    
     public function index() {
 
     	return view('forum.forum');
@@ -34,6 +40,56 @@ class ForumController extends Controller
     	DB::table('forumdiscussion') ->insert(
                 ['user_id' => $user_id, 'category_id' => $category_id, 'title' => $title, 'description' => $description, 'created_at' => $mytime->toDateTimeString()]
         );
+        
+        //exit($description);
+        //Added from here
+        $discussionId = DB::table('forumdiscussion')
+                -> where ('created_at', '=', $mytime)
+                -> where ('user_id', '=', $user_id)
+                -> value('id');
+        
+        $hashtags= FALSE;  
+        preg_match_all("/(#\w+)/u", $description, $matches);  
+        if ($matches) {
+            $hashtagsArray = array_count_values($matches[0]);
+            $hashtags = array_keys($hashtagsArray);
+        }
+        
+        $arrayOfTags = array(); 
+        if(!empty($hashtags)){
+            foreach($hashtags as $tagname){
+                $toAddTag = false;
+                foreach ($arrayOfTags as $values){
+                    if ($tagname == $values){
+                        $toAddTag = true;
+                    }
+                }
+                
+                if (!$toAddTag){
+                    array_push($arrayOfTags, $hashtags);
+                    $tagExistInForumTags = DB::table('forumtags') 
+                            -> where ('forum_tag', '=', $tagname)
+                            -> value('forum_tag');
+                    $tagCountInForumTags = DB::table('forumtags')
+                            -> where ('forum_tag', '=', $tagname)
+                            -> value('count');
+                    DB::table('forumtags_discussion') -> insert(
+                        ['forum_tag' => $tagname, 'discussion_id'=>$discussionId]
+                    );
+                    if($tagExistInForumTags != null){
+                        DB::table('forumtags')
+                        -> where ('forum_tag', '=', $tagname)
+                        -> update(['count' => $tagCountInForumTags+1]);
+                    }
+                    else{
+                        DB::table('forumtags') -> insert(
+                            ['forum_tag' => $tagname, 'count'=>1]
+                        );
+                    }
+                }
+            }
+        }
+        
         if (\Auth::user()->isAdmin){
             return view('forum.forumAdmin');
 
@@ -49,6 +105,22 @@ class ForumController extends Controller
                 -> get();
                 
                 if($discussionUserId == null){
+                    $userWhoCreatedDisc = \DB::table('forumdiscussion') 
+                        ->join('users', 'forumdiscussion.user_id', '=', 'users.id')
+                        //->select('users.*','forumdiscussion.id')
+                        ->where('forumdiscussion.id', '=', $discussionId)
+                        ->value('users.id');
+                    
+                    $userWhoLiked = \DB::table('users') 
+                        ->where('id', '=', $userId)
+                        ->value('name');
+                    
+                    $user = User::find($userWhoCreatedDisc);
+                    
+                    //$forumpageUrl = current($url);
+                    
+                    $user->notify(new LikedDiscussion($userWhoLiked));
+                    
                     DB::table('discussionUserLike') ->insert(
                             ['discussion_id' => $discussionId,'user_id' => $userId]
                     );
@@ -103,14 +175,91 @@ class ForumController extends Controller
     	$content= $request->get('content');
 
     	$mytime = Carbon::now() ->timezone(\Config::get('app.timezone'));
-
+        
+        $userWhoCreatedDisc = \DB::table('forumdiscussion') 
+            ->join('users', 'forumdiscussion.user_id', '=', 'users.id')
+            //->select('users.*','forumdiscussion.id')
+            ->where('forumdiscussion.id', '=', $discussion_id)
+            ->value('users.id');
+        
+        $user = User::find($userWhoCreatedDisc);
+        
+        $forumpageUrl = $request->get('forumpageUrl');
+        
+        $user->notify(new DiscussionResponsed($forumpageUrl));
+        
+        //\Notification::send($userWhoCreatedDisc, new DiscussionResponsed($forumpageUrl));
+        
     	DB::table('forumresponse')->insert(
                 ['user_id' => $user_id, 'discussion_id' => $discussion_id, 'content' => $content, 'created_at' => $mytime->toDateTimeString()]
         );
+        
+        $hashtags= FALSE;  
+        preg_match_all("/(#\w+)/u", $content, $matches);  
+        if ($matches) {
+            $hashtagsArray = array_count_values($matches[0]);
+            $hashtags = array_keys($hashtagsArray);
+        }
+        
+        $arrayOfTags = array(); 
+        if(!empty($hashtags)){
+            foreach($hashtags as $tagname){
+                $toAddTag = false;
+                foreach ($arrayOfTags as $values){
+                    if ($tagname == $values){
+                        $toAddTag = true;
+                    }
+                }
+                
+                if (!$toAddTag){
+                    array_push($arrayOfTags, $hashtags);
+                    $tagExistInForumTags = DB::table('forumtags') 
+                            -> where ('forum_tag', '=', $tagname)
+                            -> value('forum_tag');
+                    $tagCountInForumTags = DB::table('forumtags')
+                            -> where ('forum_tag', '=', $tagname)
+                            -> value('count');
+                    if($tagExistInForumTags != null){
+                        DB::table('forumtags')
+                        -> where ('forum_tag', '=', $tagname)
+                        -> update(['count' => $tagCountInForumTags+1]);
+                    }
+                    else{
+                        DB::table('forumtags') -> insert(
+                            ['forum_tag' => $tagname, 'count'=>1]
+                        );
+                    }
+                    
+                    $tagExistInFTD = DB::table('forumtags_discussion')
+                            -> where ('forum_tag', '=', $tagname)
+                            -> where ('discussion_id', '=', $discussion_id)
+                            -> get();
+                    if($tagExistInFTD == null){
+                        DB::table('forumtags_discussion') -> insert(
+                            ['forum_tag' => $tagname, 'discussion_id'=>$discussion_id]
+                        );
+                    }
+                }
+            }
+        }
 
         //return redirect()->route('forumpage')->with('discussionId',$discussion_id);
         return \View::make('forum.forumpage')->with('discussionId',$discussion_id);
     }
+    
+    //Added this
+    
+    public function showTagPosts(Request $request){
+        //return view('forum.forum');
+            $forumTag = $request->get('id');
+        //$forumTag = $this->route('id');
+        //echo $forumTag;
+        return view('forum.forumShowTagPosts', compact('forumTag'));
+        //return \View::make('forum.forumShowTagPosts', compact('forumTag'));
+        //return \View::make('forum.forumShowTagPosts')->with('forumTag',$forumTag);
+    }
+    
+    //To here
 
     public function deleteDiscussion(Request $request){
         $discussion_id = $request->get('discussionId');
@@ -123,6 +272,25 @@ class ForumController extends Controller
     public function closeDiscussion(Request $request){
 
          $discussion_id = $request->get('discussionId');
+         
+         //Added Here
+         
+         //Get the Discussion Creator's ID
+        
+        $userWhoCreatedDisc = \DB::table('forumdiscussion') 
+            ->join('users', 'forumdiscussion.user_id', '=', 'users.id')
+            //->select('users.*','forumdiscussion.id')
+            ->where('forumdiscussion.id', '=', $discussion_id)
+            ->value('users.id');
+        
+        $user = User::find($userWhoCreatedDisc);
+        
+        $forumpageUrl = $request->get('forumpageUrl');
+        
+        $user->notify(new ClosedDiscussion($forumpageUrl));
+         
+         //To here
+         
          DB::table('forumdiscussion')->where('id','=', $discussion_id)->update(['isOpen' => "1"]);
 
 

@@ -2242,6 +2242,7 @@ legend {
   background-color: #009688;
   border: 0;
   border-radius: 0;
+	z-index: 999;
 }
 .navbar .navbar-brand {
   position: relative;

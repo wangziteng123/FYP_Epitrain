@@ -72,9 +72,9 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-info">
-                                    <i class="fa fa-btn fa-user" style="color:midnightblue"></i> <font color="black">Register</font>
+                            <div class="col-md-6 col-md-offset-3">
+                                <button type="submit" class="btn btn-info btn-raised">
+                                    <i class="fa fa-btn fa-user" style="color:white"></i> <font color="white">Register</font>
                                 </button>
                             </div>
                         </div>

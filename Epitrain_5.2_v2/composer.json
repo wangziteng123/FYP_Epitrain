@@ -11,7 +11,9 @@
         "league/flysystem-aws-s3-v3": "^1.0",
         "laracasts/flash": "^2.0",
         "nicolaslopezj/searchable": "^1.9",
-        "askedio/laravel5-profanity-filter": "^1.0"
+        "askedio/laravel5-profanity-filter": "^1.0",
+        "stripe/stripe-php": "^4.4",
+        "laravel-notification-channels/backport": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

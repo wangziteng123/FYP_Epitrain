@@ -42,6 +42,8 @@ Route::group(['middleware' => ['auth','admin']], function() {
 	Route::post('/deleteDiscussion', ['as' => 'deleteDiscussion', 'uses' => 'ForumController@deleteDiscussion']);
 	Route::post('/closeDiscussion', ['as' => 'closeDiscussion', 'uses' => 'ForumController@closeDiscussion']);
     Route::post('/addCategory', ['as' => 'addCategory', 'uses' => 'ForumController@addCategory']);
+    //payment routes
+	Route::post('/payment', ['as' => 'payment', 'uses' => 'PaymentController@index']);
 });
 
 
@@ -66,6 +68,7 @@ Route::group(['middleware' => 'auth'], function() {
 	
 	Route::get('mylibrary', 'MyLibraryController@index');
 	Route::get('shop', 'HomeController@shop');
+	//Route::get('shop/{category_name}', 'HomeController@shop');
 	Route::get('buy/{book_id}', ['as'=>'buy', 'uses'=>'LibraryController@buy']);
  
  
@@ -88,6 +91,12 @@ Route::group(['middleware' => 'auth'], function() {
         'uses' => 'ForumController@liked',
         'as' => 'like'
     ]);
+    
+    Route::get('/forumShowTagPosts',[
+        'uses' => 'ForumController@showTagPosts',
+        'as' => 'forumShowTagPosts'
+    ]); 
+    
 	Route::get('/forum', ['as'=>'forum', 'uses'=>'ForumController@index']);
 	Route::get('/forumpage', ['as'=>'forumpage', 'uses'=>'ForumController@toPage']);
 	Route::get('/forumResponsePage', ['as'=>'forumResponsePage', 'uses'=>'ForumController@showAllResponse']);
@@ -97,6 +106,9 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('/category', ['as' => 'category', 'uses' => 'CategoryController@index']);
 
 	Route::post('/subscribe', ['as' => 'subscribe', 'uses' => 'SubscriptionController@addSubscription']);
+	//payment routes
+	Route::post('/payment', ['as' => 'payment', 'uses' => 'PaymentController@index']);
+	Route::post('/paymentForm', ['as' => 'paymentForm', 'uses' => 'PaymentController@paymentForm']);
 });
 
 // // Download Route

@@ -10,6 +10,13 @@
         </ul>
     </div>
 </div>
+@if (count($errors) > 0)
+    <div class="alert alert-danger">
+        @foreach ($errors->all() as $error)
+            {{ $error }}
+        @endforeach
+    </div>
+@endif
 <div class="container">
     @if (session()->has('flash_notification.message'))
        <div class="alert alert-{{ session('flash_notification.level') }}">
@@ -23,7 +30,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading"><h4>Update Info</h4></div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="PUT" action="/users/<?php echo Auth::user()->id ?>">
+                    <form class="form-horizontal" role="form" method="PUT" action="/users/<?php echo Auth::user()->id;?>">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">

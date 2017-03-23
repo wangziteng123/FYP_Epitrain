@@ -170,7 +170,7 @@ function callApi(url) {
 <div id="slide" class="well col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1" style="position:relative;top:30px">
 	<button class="slide_close btn btn-default" style="position:absolute;right:20px"><i class="fa fa-times" aria-hidden="true"></i></button>
     
-  	<form action="#">
+  	<form action=<?php echo URL::route('payment');?>  method="post">
 	   <!--  <ul class="list-group final-checkout">
 	     @foreach($shoppingcarts as $shoppingcart)
 		  <li class="list-group-item" style="position:relative">&nbsp&nbsp<?php echo $shoppingcart->original_filename;?>
@@ -205,10 +205,13 @@ function callApi(url) {
 			 	 @endif
 			 	 <br/>
 			 	 <br/>
-			 	 <button class="btn btn-success btn-raised pull-right" style="display:inline-block" onclick="pay()"><i class="fa fa-credit-card-alt" aria-hidden="true"></i>&nbsp&nbspPay</button>
+			 	 <input type="hidden" name="totalPrice" id="totalPrice" value=""/>
+					<input type="hidden" name="uid" id="uid" value=""/>
+					<input type="hidden" name="fidStr" id="fidStr" value=""/>
+				     <button class="btn btn-success btn-raised pull-right" style="display:inline-block" onclick="pay()"><i class="fa fa-credit-card-alt" aria-hidden="true"></i>&nbsp&nbspPay</button>
 			</div>
 		</div>
-	</form>
+	</form>	
     
 </div>
 
@@ -245,7 +248,7 @@ $(document).ready(function () {
 	document.getElementById('total-price').innerHTML = totalprice;
 	document.getElementById('final-checkout').innerHTML = totalprice;
 	document.querySelector('.final-count').innerHTML = countFinal;
-
+	document.querySelector('#totalPrice').value = totalprice;
 
 	function countTotalprice() {
 		var shoppingcarts = <?php echo json_encode($shoppingcarts)?>;
@@ -265,6 +268,7 @@ $(document).ready(function () {
 		document.getElementById('total-price').innerHTML = totalprice;
 		document.getElementById('final-checkout').innerHTML = totalprice;
 		document.querySelector('.final-count').innerHTML = countFinal;
+		document.querySelector('#totalPrice').value = totalprice;
 	}
 
 
@@ -282,6 +286,9 @@ $(document).ready(function () {
 			}
 		}
 
+		document.querySelector('#totalPrice').value = totalprice;
+        document.querySelector('#uid').value = uid;
+        document.querySelector('#fidStr').value = fidStr;
 		// //deploy
 		// //mainUrl = "http://" + mainUrl + "/checkout?uid=" + uid + "&count=" + countFinal + fidStr;
 		mainUrl = "http://" + mainUrl + "/shoppingcart/checkout?uid=" + uid + "&count=" + countFinal + fidStr;

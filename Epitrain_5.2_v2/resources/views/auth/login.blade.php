@@ -17,7 +17,6 @@
 @endif
 
 <div class="container">
-    <div class="row">
         <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 col-sm-offset-2 col-xs-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading" style="font-size:18px"><strong>Login</strong></div>
@@ -75,28 +74,29 @@
                                 <div class="checkbox">
                                     <label for="remember">
                                         <input type="checkbox" id="remember"> 
-                                        <span class="checkbox-material"></span>
-                                        <font color="black" size="3px">Remember Me</font>
+                                        <span style="color:black">Remember Me</span>
                                     </label>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
+													<!--LogIn button-->
                             <div class="col-sm-offset-3 col-xs-7 col-sm-6 col-md-offset-3 col-lg-offset-3 col-xs-offset-2">
                                 <button type="submit" class="btn btn-raised" style="background-color: darkblue">
                                     <i class="fa fa-btn fa-sign-in img-responsive" style="color:white"></i> <font color="white" class = "small">Login</font>
                                 </button>
                             </div>
+													<!-- forgot password function-->
                             <div class="col-sm-offset-3 col-xs-7 col-sm-6 col-md-offset-3 col-lg-offset-3">
                                 <a class="btn btn-link text-center" href="{{ url('/password/reset') }}" style="font-size:18px"><font color="black" class = "small">Forgot Your Password?</font></a>
                             </div>
                         </div>
+												
                     </form>
                 </div>
             </div>
         </div>
-    </div>
 </div>
 
 

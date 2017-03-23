@@ -25,7 +25,7 @@
           width: 435px;
           margin-top: 4px;
           padding: 4px;
-          background-color: #00008B;
+          background-color: #FFFFFF;
           border: 1px solid #ccc;
           border: 1px solid rgba(0, 0, 0, 0.2);
           -webkit-border-radius: 4px;
@@ -42,12 +42,13 @@
         }
 
         .tt-suggestion.tt-cursor,.tt-suggestion:hover {
-          color: #fff;
-          background-color: #0097cf;
-
+          color: #fafafa;
+          background-color: #f0f0f0;
+					
         }
 
         .tt-suggestion p {
+					color: #ababab;
           margin: 0;
         }
 

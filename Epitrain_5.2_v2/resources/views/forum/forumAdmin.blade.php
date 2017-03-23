@@ -16,10 +16,20 @@
 		->join('forumcategory', 'forumdiscussion.category_id', '=', 'forumcategory.id')
 		->join('users', 'forumdiscussion.user_id', '=', 'users.id')
         ->select('forumdiscussion.*', 'forumcategory.categoryname', 'users.name')
+        ->orderBy('created_at', 'desc') 
         ->paginate(5);
 
   $user = \DB::table('users')->where('id', Auth::user()->id)->value('id');
 
+  //Added Here
+  
+  $topFiveTags = \DB::table('forumtags')
+        -> orderBy ('count', 'DESC')
+        -> select ('forum_tag')
+        -> get();
+    
+    //To Here
+  
 ?>
 
 @if (session()->has('flash_notification.message'))
@@ -40,6 +50,27 @@
     <button type="button" class="btn btn-raised btn-success" data-toggle="modal" data-target="#myModal" style = "font-size:14px">
          Add Category
     </button>
+    
+    <div style="position:static; left:15px; " >
+    Top Five Tags </br>
+        <?php $counter = 1; ?>
+        @foreach($topFiveTags as $tags)
+            <?php 
+                $tagsToPass = substr($tags->forum_tag,1);
+                $forumShowTagPosts = URL::route('forumShowTagPosts');
+                $forumShowTagPosts = $forumShowTagPosts."?id=".$tagsToPass;
+                if($counter <6){ 
+            ?>            
+                <font color='black'><a style="text-decoration: none" href=<?php echo $forumShowTagPosts; ?>>
+                    <button type="button" class="btn btn-secondary btn-sm"><?php echo $tags->forum_tag;?></button>
+                    </a>
+                </font>
+            <?php } ?>
+            <?php $counter = $counter + 1; ?>
+            
+            </br>
+        @endforeach
+    </div>
 </div>
 
 <!-- Modal for adding category -->
@@ -105,7 +136,17 @@
 
             $numOfResponses = count($responses);
            //echo var_dump($numOfResponses);
-	    ?>
+            
+            //Added Here
+            
+            $tagCount = 0;
+            $tagsDisc = \DB::table('forumtags_discussion')
+            		->where('discussion_id', $discussionId)
+            		->get();
+            shuffle($tagsDisc);
+           //To Here
+        
+        ?>
 
 
 	    <div class="jumbotron" >
@@ -165,6 +206,7 @@
                             <!-- this is to close the discussion-->
                             <form method="post" action=<?php echo URL::route('closeDiscussion');?>>
                             <input type="hidden" name="discussionId" value=<?php echo $discussionId;?>>
+                            <input type="hidden" name="forumpageUrl" value=<?php echo $forumpageUrl;?>>
                             <button type="submit" class="btn btn-raised btn-warning">Close Discussion</button>
                             </form></br>
 
@@ -233,13 +275,28 @@
             </font>
           </div>
 	    	  <br/>
-
+              
+            @foreach($tagsDisc as $tags)
+                <?php 
+                    $tagsToPass = substr($tags->forum_tag,1);
+                    $forumShowTagPosts = URL::route('forumShowTagPosts');
+                    $forumShowTagPosts = $forumShowTagPosts."?id=".$tagsToPass;
+                    if($tagCount <6){ 
+                ?>            
+                    <font color='black'><a style="text-decoration: none" href=<?php echo $forumShowTagPosts; ?>>
+                        <button type="button" class="btn btn-secondary btn-sm" style="background: silver"><?php echo $tags->forum_tag;?></button>
+                        </a>
+                    </font>
+                <?php } ?>
+                <?php $counter = $tagCount + 1; ?>
+                
+                </br>
+            @endforeach
 
 	    	  </div>
-        </div>
-        {{ $discussions->links() }}
+        </div>  
     	@endforeach
-
+      {{ $discussions->links() }}
     </div>
 
 
@@ -247,25 +304,28 @@
 
 <!-- Slide in popup window-->
 
-<div id="slide" class="well" style="position:relative;top:30px;width:600px;height:400px">
-	<button class="slide_close btn btn-default" style="position:absolute;right:20px"><i class="fa fa-times" aria-hidden="true"></i></button>
-  	<br/>
-  	<form action=<?php echo URL::route('createDiscussion');?> method="post">
-  		Title of Discussion:<br/>
-		<input type="text" name="title" required><br/>
-		<br/>
-		Choose Category:<br/>
-		<select name="category" required>
-			@foreach($categories as $category)
-    		<a href="#"><font size="3" style="color:white"><?php echo $category->categoryname?></font></a><br/>
-    			<option value=<?php echo $category->id?> style=""><?php echo $category->categoryname?></option>
-    		@endforeach
-		</select>
-		<br/><br/>
-		<textarea class="materialize-textarea" name="description" rows="4" cols="50" required></textarea><br/>
-		<input type="submit" value="Submit" style="position:absolute;right:35px;"><br/><br/>
-		<button class="btn btn-default slide_close" style="float:right">Cancel</button>
-	</form>
+<div id="slide" class="well col-sm-7 col-sm-offset-2 col-xs-9 col-xs-offset-1" style="color: black">
+  <button class="slide_close btn btn-default" style="position:absolute;right:20px"><i class="fa fa-times" aria-hidden="true"></i></button>
+    <br/>
+    <form action=<?php echo URL::route('createDiscussion');?> method="post">
+      Title of Discussion:<br/>
+    <input type="text" name="title" required><br/>
+    <br/>
+    Choose Category:<br/>
+    <select name="category" required>
+      @foreach($categories as $category)
+        <a href="#"><font size="3"><?php echo $category->categoryname;?></font></a><br/>
+          <option value=<?php echo $category->id;?> style=""><?php echo $category->categoryname;?></option>
+        @endforeach
+    </select>
+    
+    <div class="form-group">
+      <label for="textArea" class="col-md-4 control-label" style="padding-left: 0px"><font size="3">Discussion Content</font></label>
+      <textarea class="form-control" rows="3" id="textArea"></textarea><br/>
+    </div>
+    <input type="submit" value="Submit" class="btn btn-raised btn-success" style="float:right" name="description">
+    <button class="btn btn-raised btn-warning slide_close" style="float:right">Cancel</button>
+  </form>
 </div>
 
 

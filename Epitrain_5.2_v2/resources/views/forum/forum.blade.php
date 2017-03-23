@@ -10,26 +10,54 @@
     </div>
 </div>
 <?php
+use Illuminate\Notifications\Notifiable;
+
 	$categories = \DB::table('forumcategory') ->get();
 	
 	$discussions = \DB::table('forumdiscussion') 
 		->join('forumcategory', 'forumdiscussion.category_id', '=', 'forumcategory.id')
 		->join('users', 'forumdiscussion.user_id', '=', 'users.id')
         ->select('forumdiscussion.*', 'forumcategory.categoryname', 'users.name')
+        ->orderBy('created_at', 'desc') //Added This
         ->paginate(5);
 
-        $user = \DB::table('users')->where('id', Auth::user()->id)->value('id');
+    $user = \DB::table('users')->where('id', Auth::user()->id)->value('id');
 
-
+    $topFiveTags = \DB::table('forumtags')
+        -> orderBy ('count', 'DESC')
+        -> select ('forum_tag')
+        -> get();
 
 ?>
 
 <div class="col-md-3 col-s-12 center-block">
   <h1 style="position: static;left: 14px;">Discussion Forum</h1>
   <hr>
-    <div style="position:static;left:15px;">
-    	<button class="btn btn-raised btn-primary initialism slide_open" style = "font-size:14px"><i class="fa fa-plus-circle" aria-hidden="true"></i> NEW DISCUSSION</button>
+  <div style="position:static;left:15px;">
+  	<button class="btn btn-raised btn-primary initialism slide_open" style = "font-size:14px"><i class="fa fa-plus-circle" aria-hidden="true"></i> NEW DISCUSSION</button>
+  </div>
+    
+  <div style="position:static; left:px; " >
+    Top Five Tags </br>
+        <?php $counter = 1; ?>
+        @foreach($topFiveTags as $tags)
+            <?php 
+                $tagsToPass = substr($tags->forum_tag,1);
+                $forumShowTagPosts = URL::route('forumShowTagPosts');
+                $forumShowTagPosts = $forumShowTagPosts."?id=".$tagsToPass;
+                if($counter <6){ 
+            ?>            
+                <font color='black'><a style="text-decoration: none" href=<?php echo $forumShowTagPosts; ?>>
+                    <button type="button" class="btn btn-secondary btn-sm"><?php echo $tags->forum_tag;?></button>
+                    </a>
+                </font>
+            <?php } ?>
+            <?php $counter = $counter + 1; ?>
+            
+            </br>
+        @endforeach
     </div>
+    
 </div>
 <div class="col-md-9 col-s-12 center-block">
     @foreach($discussions as $discussion)
@@ -41,20 +69,27 @@
             $isOpen= $discussion->isOpen; // needed to see if the discussion is still open for reply
 	    	$showResponsePageUrl = URL::route('forumResponsePage');
 	    	$showResponsePageUrl= $showResponsePageUrl."?id=".$discussion->id;
-
-        $likes = DB::table('discussionUserLike')
-            -> where ('discussion_id', '=', $discussion->id)
-            -> count();
+            
+            $toSendToLike = array($showResponsePageUrl);
+            
+            $likes = DB::table('discussionUserLike')
+                -> where ('discussion_id', '=', $discussion->id)
+                -> count();
             
 	    	$discussionId = $discussion->id;
-
-
+            
 	    	$responses = \DB::table('forumresponse')
             		->where('discussion_id', $discussionId)
             		->get();
 
             $numOfResponses = count($responses);
            //echo var_dump($numOfResponses);
+               
+            $tagCount = 0;
+            $tagsDisc = \DB::table('forumtags_discussion')
+            		->where('discussion_id', $discussionId)
+            		->get();
+            shuffle($tagsDisc);
 
 	    ?>
     <div class="jumbotron">
@@ -139,6 +174,22 @@
               </a>
             </font>
         </div>
+        @foreach($tagsDisc as $tags)
+            <?php 
+                $tagsToPass = substr($tags->forum_tag,1);
+                $forumShowTagPosts = URL::route('forumShowTagPosts');
+                $forumShowTagPosts = $forumShowTagPosts."?id=".$tagsToPass;
+                if($tagCount <6){ 
+            ?>            
+                <font color='black'><a style="text-decoration: none" href=<?php echo $forumShowTagPosts; ?>>
+                    <button type="button" class="btn btn-secondary btn-sm" style="background: silver"><?php echo $tags->forum_tag;?></button>
+                    </a>
+                </font>
+            <?php } ?>
+            <?php $counter = $tagCount + 1; ?>
+            
+            </br>
+        @endforeach
 
   	  </div>
     </div>
@@ -151,25 +202,28 @@
 
 <!-- Slide in popup window-->
 
-<div id="slide" class="well" style="position:relative;top:30px;width:600px;height:400px">
-	<button class="slide_close btn btn-default" style="position:absolute;right:20px"><i class="fa fa-times" aria-hidden="true"></i></button>
-  	<br/>
-  	<form action=<?php echo URL::route('createDiscussion');?> method="post">
-  		Title of Discussion:<br/>
-		<input type="text" name="title" required><br/>
-		<br/>
-		Choose Category:<br/>
-		<select name="category" required>
-			@foreach($categories as $category)
-    		<a href="#"><font size="3" style="color:white"><?php echo $category->categoryname?></font></a><br/>
-    			<option value=<?php echo $category->id?> style=""><?php echo $category->categoryname?></option>
-    		@endforeach
-		</select>
-		<br/><br/>
-		<textarea class="materialize-textarea" name="description" rows="4" cols="50" required></textarea><br/>
-		<input type="submit" value="Submit" style="position:absolute;right:35px;"><br/><br/>
-		<button class="btn btn-default slide_close" style="float:right">Cancel</button>
-	</form>
+<div id="slide" class="well col-sm-7 col-sm-offset-2 col-xs-9 col-xs-offset-1" style="color: black">
+  <button class="slide_close btn btn-default" style="position:absolute;right:20px"><i class="fa fa-times" aria-hidden="true"></i></button>
+    <br/>
+    <form action=<?php echo URL::route('createDiscussion');?> method="post">
+      Title of Discussion:<br/>
+    <input type="text" name="title" required><br/>
+    <br/>
+    Choose Category:<br/>
+    <select name="category" required>
+      @foreach($categories as $category)
+        <a href="#"><font size="3"><?php echo $category->categoryname;?></font></a><br/>
+          <option value=<?php echo $category->id;?> style=""><?php echo $category->categoryname;?></option>
+        @endforeach
+    </select>
+    
+    <div class="form-group">
+      <label for="textArea" class="col-md-4 control-label" style="padding-left: 0px"><font size="3">Discussion Content</font></label>
+      <textarea class="form-control" rows="3" id="textArea" name="description"></textarea><br/>
+    </div>
+    <input type="submit" value="Submit" class="btn btn-raised btn-success" style="float:right">
+    <button class="btn btn-raised btn-warning slide_close" style="float:right">Cancel</button>
+  </form>
 </div>
 
 

@@ -25,13 +25,13 @@ class LibraryController extends Controller
 		
 		public function buy($book_id)
 		{
-				$user_id = Auth::user()->id;
-				$current_time = Carbon::now()->toDayDateTimeString();
-				$id = DB::table('libraries')->insertGetId(
-						['user_id' => $user_id, 'book_id' => $book_id, 'created_at' => $current_time]
-				);
-				
-				//echo $id;
-				return redirect('mylibrary');
+			$user_id = Auth::user()->id;
+			$current_time = Carbon::now()->toDayDateTimeString();
+			$id = DB::table('libraries')->insertGetId(
+					['user_id' => $user_id, 'fileentry_id' => $book_id, 'created_at' => $current_time]
+			);
+			
+			//echo $id;
+			return redirect('mylibrary');
 		}
 }

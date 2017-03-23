@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 
 use App\Shoppingcart;
 use App\Fileentry;
+use App\Payment;
 
 class ShoppingController extends Controller
 {
@@ -46,28 +47,44 @@ class ShoppingController extends Controller
 
     public function addToLibrary(Request $request) {
         $user_id = $request->get('uid');
-        $fileentry_id = $request->get('fid');
 
-        $shoppingcartExist = \DB::table('shoppingcarts')
-                        ->where('user_id', $user_id)
-                        ->where('fileentry_id', $fileentry_id)
-                        ->get();
+        $fidStr = $request->get('fidStr');
 
-        if(count($shoppingcartExist)) {
-             DB::table('libraries') ->insert(
+        $fidStrArray = explode(",", $fidStr);
+
+        
+
+        $sizeOfFidStrArray = count($fidStrArray);
+        
+
+        for($start = 0; $start < $sizeOfFidStrArray; $start++){
+
+            $fileentry_id = $fidStrArray[$start];
+
+
+            $shoppingcartExist = \DB::table('shoppingcarts')
+                            ->where('user_id', $user_id)
+                            ->where('fileentry_id', $fileentry_id)
+                            ->get();
+
+            if(count($shoppingcartExist)) {
+                 DB::table('libraries') ->insert(
+                    ['fileentry_id' => $fileentry_id, 'user_id' => $user_id]
+                );
+                 DB::table('shoppingcarts')
+                    ->where('fileentry_id', '=', $fileentry_id)
+                    ->where('user_id', '=',$user_id )
+                    ->delete();
+            }
+
+            DB::table('libraries') ->insert(
                 ['fileentry_id' => $fileentry_id, 'user_id' => $user_id]
             );
-             DB::table('shoppingcarts')
-                ->where('fileentry_id', '=', $fileentry_id)
-                ->where('user_id', '=',$user_id )
-                ->delete();
-        }
 
-        DB::table('libraries') ->insert(
-            ['fileentry_id' => $fileentry_id, 'user_id' => $user_id]
-        );
+
+         }
  
-        return redirect()->route('home');
+        return view('mylibrary.index');
     }
 
     public function checkout(Request $request) {

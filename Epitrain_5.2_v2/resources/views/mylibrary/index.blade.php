@@ -41,7 +41,7 @@
 
                 <div class="col-sm-4 col-xs-5 col-md-3 hero-feature" >
 
-                <div class="thumbnail" style="height:300px">
+                <div class="thumbnail">
                     <div id=<?php echo $container?> style=""></div>
 
                     <div class="caption">

@@ -44,8 +44,11 @@ class UserController extends Controller
         
         $user = User::find($id);
         $user->name = $name;
-        $user->save();
-        return redirect('usermanage.create');
+        if($user->save()) {
+            return redirect('createUser')->with('success', "User successfully created!");
+        } else {
+            return redirect('createUser')->with('failure', "Please fill in all the details!");
+        }
     }
 
     /**
@@ -56,66 +59,21 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        try{
-                //echo "you are at the storing function";
-                //$input = var_dump($request);
-                //echo $input;
-                //$name = $request->input('name');
-        //$email= $request->input('email');
-                //$password= $password->input('password');
-                $this->validate($request, [
-                    'name' => 'required|max:255',
-                    'email' => 'required|email|max:255|unique:users',
-                    'password' => 'required|min:6|confirmed',
-                ]);
-                $user = new User;
-                
-                $user->name = $request->name;
-                $user->email = $request->email;
-                $user->password = bcrypt($request->password);
-                $user->save();
-                $error = "success";
-                $data = array(
-                    'error'  => $error
-                );
-
-
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:6|confirmed',
+        ]);
+        $user = new User;
+        
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        if($user->save()) {
+            return redirect('createUser')->with('success', "User successfully created!");
+        } else {
+            return redirect('createUser')->with('failure', "Please fill in all the details!");
         }
-
-        catch(\Exception $e){
-            $error = "failed";
-            $data = array(
-                'error'  => $error
-            );
-        }
-        finally{
-        return \View::make('usermanage.create', array('error' => $error));
-           //return view('usermanage.create', $data) ;
-            //return \View::make('usermanage.create');
-
-        }
-
-
-
-
-
-                //echo $name;
-                //echo $email;
-                //echo $password;
-                //$input = Input::all();
-        //$validation = Validator::make($input, User::$rules);
-                //echo $input;
-        /*if ($validation->passes())
-        {
-            User::create($input);
-
-            return Redirect::route('users.index');
-        }
-
-        return Redirect::route('users.create')
-            ->withInput()
-            ->withErrors($validation)
-            ->with('message', 'There were validation errors.');*/
     }
 
     /**
@@ -158,53 +116,48 @@ public function update(Request $request, $id)
             //$validation = Validator::make($input, User::$rules);
 
             $error = "";
-
+            $this->validate($request, [
+                'name' => 'required'
+            ]);
              try{
-              $name = $request->input('name');
+                     $name = $request->input('name');
                      $email= $request->input('email');
                      $password = $request->input('password');
                      $confirmPassword = $request->input('password_confirmation');
                      $currentPasswordInput = $request->input('currentPassword'); // current password that is retrieve from the form
-
-
-                     echo $confirmPassword + " confirm pw";
+                     //echo $confirmPassword + " confirm pw";
 
                      $user = User::find($id);
-
                     $currentPassword = $request->input('passwordCheck'); //hashed password from db
 
                      //$user->name = $name;
                     //$currentPassword = bcrypt('123456');
 
 
-                    if(password_verify($currentPasswordInput,$currentPassword) && $password == $confirmPassword && $password != "" && $confirmPassword !="" && $name !=""){
-                     echo "entered";
-                     $user->password = bcrypt($request->input('password'));
-                     $user->name = $request->input('name');
-                     $error = "changeAll";
-                     $data = array('error'  => $error);
+                    if(password_verify($currentPasswordInput,$currentPassword) && $password == $confirmPassword && $password != "" && $confirmPassword !="" && strcmp($user->name,$name) !== 0){
+                     //echo "entered";
+                         $user->password = bcrypt($request->input('password'));
+                         $user->name = $request->input('name');
+                         $error = "changeAll";
+                         $data = array('error'  => $error);
 
-                    }
-
-                    else if(password_verify($currentPasswordInput,$currentPassword) && $password == $confirmPassword && $password != "" && $confirmPassword !=""){
+                    } else if (password_verify($currentPasswordInput,$currentPassword) && $password == $confirmPassword && $password != "" && $confirmPassword !=""){
                          $user->password = bcrypt($request->input('password'));;
 
                          $error = "changePW";
                          $data = array('error'  => $error);
-                    }
-
-                    else if(password_verify($currentPasswordInput,$currentPassword) && $password == $confirmPassword && $password == "" && $confirmPassword =="" && $name !="" ){
+                    } else if (password_verify($currentPasswordInput,$currentPassword) && $password == $confirmPassword && $password == "" && $confirmPassword =="" && strcmp($user->name,$name) !== 0){
                         $user->name =$name;
                         $error = "changeName";
                         $data = array('error'  => $error);
 
+                    } else if (password_verify($currentPasswordInput,$currentPassword) && $password == $confirmPassword && $password == "" && strcmp($user->name,$name) == 0){
+                        $user->name =$name;
+                        $error = "noChange";
+                        $data = array('error'  => $error);
+
                     }
-
-
-
                      $user->save();
-
-
 
              } catch(\Exception $e){
                           $error = "failed";
@@ -222,6 +175,9 @@ public function update(Request $request, $id)
                       }
                       else if($error =="changeName"){
                          flash('Name Changed Successfully!', 'success');
+                      } 
+                      else if ($error =="noChange") {
+                        flash('No changes made to personal info', 'warning');
                       }
                       else{
                          flash('Update failed! Incorrect current password or mismatch confirmation of new password', 'danger');

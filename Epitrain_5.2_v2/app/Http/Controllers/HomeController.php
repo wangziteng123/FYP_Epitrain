@@ -44,7 +44,7 @@ class HomeController extends Controller
         return view('usermanage.create');
     }
 		
-		public function shop()
+	public function shop()
     {
         $books = Fileentry::all();
  
