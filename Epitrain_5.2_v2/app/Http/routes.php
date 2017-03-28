@@ -37,7 +37,9 @@ Route::group(['middleware' => ['auth','admin']], function() {
 	Route::get('/viewAllUsers', 'UserController@viewAllUsers');
 	Route::delete('fileentry/delete/{filename}', [
 	'as'=>'deleteentry', 'uses'=>'FileEntryController@delete']);
-	
+	Route::post('fileentry/sort', ['as' => 'fileSort', 'uses' => 'FileEntryController@sort']);
+	Route::post('fileentry/filter', ['as' => 'fileFilter', 'uses' => 'FileEntryController@filter']);
+
 	Route::get('/forumAdmin', ['as'=>'forum', 'uses'=>'ForumController@indexAdmin']);
 	Route::post('/deleteDiscussion', ['as' => 'deleteDiscussion', 'uses' => 'ForumController@deleteDiscussion']);
 	Route::post('/closeDiscussion', ['as' => 'closeDiscussion', 'uses' => 'ForumController@closeDiscussion']);
@@ -65,7 +67,7 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('users/{id}', 'UserController@update');
 	//For file upload and download
 	Route::get('fileentry', 'FileEntryController@index');
-
+	
 	Route::get('fileentry/get/{filename}', [
 		'as'=>'getentry', 'uses'=>'FileEntryController@get']);
 

@@ -4,6 +4,9 @@
 
 <link type="text/css" rel="stylesheet" href="css/fileentry.css"/>
 @section('content')
+<?php 
+
+?>
 <div class="row">
     <div class="col-sm-6">
         <ul class="breadcrumb pull-left" style="margin-bottom: 5px;font-size:20px">
@@ -104,11 +107,49 @@
                                       
          <button type="submit" class="btn btn-primary">Upload</button>
     </form>-->
-
-    <hr style="width:1250px;">
+   
         <div class="row">
-            <div class="col-lg-12">
-                <h3 style="color:black">Library</h3>
+            <div class="col-sm-12">
+                <h2 style="color:black">Library</h2>
+            </div>
+            <br/>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <span style="color:black" class= "col-sm-4 col-sm-offset-4">Sort files by: 
+                      <form method="post" id="sortForm" action=<?php echo URL::route('fileSort');?>>
+                          <input type="hidden" id="mode" name="mode" value="<?php echo $mode;?>">
+                          <input type="hidden" id="sortField" name="sortField" value="">
+                          <input type="submit" value="Name" class="btn btn-primary btn-raised" onclick="populateField('original_filename')"></input>
+                          <input type="submit" value="Category" class="btn btn-primary btn-raised" onclick="populateField('category')"></input>
+                          <input type="submit" value="Price" class="btn btn-primary btn-raised" onclick="populateField('price')"></input>
+                      </form>
+                </span>
+                <span style="color:black" class= "col-sm-4 col-sm-offset-4">Filter files by category: 
+                  <form method="post" id="filterForm" action=<?php echo URL::route('fileFilter');?>>
+                    <input type="hidden" id="mode" name="mode" value="<?php echo $mode;?>">
+                    <div class="form-group">
+                      <div class = "col-sm-10 col-sm-offset-1">
+                          <select name="filterCat" style="font-size:14px" id = "selectFilterCat" class="form-control" placeholder="Choose ebook category">
+                            <option value="Trading" selected><font color="black" size = "3">Trading</font></option>
+                            <option value="Risk Management"><font color="black" size = "3">Risk Management</font></option>
+                            <option value="Fintech"><font color="black" size = "3">Fintech</font></option>
+                            <option value="Project Management"><font color="black" size = "3">Project Management</font></option>
+                            <option value="Finance"><font color="black" size = "3">Finance</font></option> 
+                            <option value="Business Management"><font color="black" size = "3">Business Management</font></option>
+                            <option value="Leadership"><font color="black" size = "3">Leadership</font></option>
+                            <option value="Financial Market"><font color="black" size = "3">Financial market</font></option>
+                            <option value=""><font color="black" size = "3">All categories</font></option>
+                          </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class = "col-sm-10 col-sm-offset-1">
+                        <input type="submit" class="btn btn-raised btn-success" value="Filter"></input>
+                      </div>
+                    </div>
+                  </form>
+                </span>
             </div>
         </div>
          <?php
@@ -124,14 +165,15 @@
             array_push($filenameArr,$entry->filename);
             $container = "container".$countNum;
         ?>
-         <div class="col-md-4">
-            <div class="thumbnail">
-                <div id=<?php echo $container?> style=""></div>
+         <div class="col-sm-4" style="height:395px">
+            <div class="thumbnail" style="height:95%">
+                <div id=<?php echo $container?> style="height:42%"></div>
                 <div class="caption">
 
                     <?php 
                       $fileName = $entry->original_filename; 
                       $fileCategory = $entry->category;
+                      $filePrice = $entry->price;
                     ?>
                     @if(strlen($fileName) > 30)
                     <p style="font-size:14px"><strong>{{substr($fileName,0,30)."..." }}</strong></p>
@@ -139,6 +181,7 @@
                     <p style="font-size:14px"><strong>{{$fileName}}</strong></p>
                     @endif
                     <p style="font-size:16px">Category: {{$fileCategory}}</p>
+                    <p style="font-size:16px">Price: ${{$filePrice}}</p>
                     @if(strpos($fileName,'xls') !== false || strpos($fileName,'xlsx') !== false || strpos($fileName,'xlsm'))
                     <a href="{{route('downloadspreadsheet', $entry->filename)}}" class="btn btn-raised btn-success">Download</a><br/>
                     @else
@@ -214,8 +257,6 @@
                     
                       });
 
-
-
     }
 
 </script>
@@ -225,10 +266,12 @@
         $js_array = json_encode($filenameArr);
         echo "var filename_array = ". $js_array . ";\n";
     ?>
-    var countEntries = <?php echo count($entries)?>;        
+    var countEntries = <?php echo count($entries);?>;        
     // URL of PDF document
     var mainUrl = window.location.hostname;
-           
+    if (mainUrl == "localhost") {
+      mainUrl = "localhost:8000"
+    }
     for(y = 1; y <= countEntries; y++) {
         var url = "http://" + mainUrl + "/fileentry/get/" + filename_array[y - 1];
         var divId = "container" + y;
@@ -236,6 +279,9 @@
     }             
                
 </script> 
-
-
+<script>
+function populateField(fieldToSort){
+    document.getElementById('sortField').value=fieldToSort;
+}
+</script>
 @endsection

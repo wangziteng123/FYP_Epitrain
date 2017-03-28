@@ -20,11 +20,51 @@ class FileEntryController extends Controller
 {
     public function index()
 	{
-		$entries = Fileentry::all();
- 
-		return view('fileentries.index', compact('entries'));
+		$entries = Fileentry::orderBy('original_filename', 'asc')->get();
+ 		$mode = "name-asc";
+
+		return view('fileentries.index', compact('entries','mode'));
 	}
+	public function sort(Request $request)
+	{
+		$sortField = $request->input('sortField');
+		$mode = $request->input('mode');
+		$entries = Fileentry::orderBy('original_filename', 'asc')->get();
+		if ($mode == null) {
+			$mode = "name-asc";
+		}
+		$modeArr = explode("-", $mode);
+		if ($sortField == $modeArr[0] && $modeArr[1] == "asc") {
+			//exit($sortField);
+			$entries = Fileentry::orderBy($sortField, 'desc')->get();
+			$mode = $sortField."-desc";
+		} else if ($sortField == $modeArr[0] && $modeArr[1] == "desc") {
+			$entries = Fileentry::orderBy($sortField, 'asc')->get();
+			$mode = $sortField."-asc";
+		} else {
+			$entries = Fileentry::orderBy($sortField, 'asc')->get();
+			$mode = $sortField."-asc";
+		}
  
+		return view('fileentries.index', compact('entries','mode'));
+	}
+ 	public function filter(Request $request)
+	{
+		$mode = $request->input('mode');
+		if ($mode == null) {
+			$mode = "name-asc";
+		}
+		$modeArr = explode("-", $mode);
+		$filterCat = $request->input('filterCat');
+		if (strlen($filterCat) != 0) {
+			$entries = Fileentry::orderBy($modeArr[0], $modeArr[1])
+			->where('category', '=', $filterCat)->get();
+		} else {
+			$entries = Fileentry::orderBy($modeArr[0], $modeArr[1])->get();
+		}
+		
+		return view('fileentries.index', compact('entries','mode'));
+	}
 	public function add(Request $request) {
  
 		//get category, price and description
