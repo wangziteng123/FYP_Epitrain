@@ -188,10 +188,11 @@ class ForumController extends Controller
         
         $user->notify(new DiscussionResponsed($forumpageUrl));
         
+        $timeCreated = $mytime->toDateTimeString();
         //\Notification::send($userWhoCreatedDisc, new DiscussionResponsed($forumpageUrl));
         
     	DB::table('forumresponse')->insert(
-                ['user_id' => $user_id, 'discussion_id' => $discussion_id, 'content' => $content, 'created_at' => $mytime->toDateTimeString()]
+                ['user_id' => $user_id, 'discussion_id' => $discussion_id, 'content' => $content, 'created_at' => $timeCreated]
         );
         
         $hashtags= FALSE;  
@@ -212,6 +213,11 @@ class ForumController extends Controller
                 }
                 
                 if (!$toAddTag){
+                    $thisComment = DB::table('forumresponse')
+                            -> where ('user_id', '=', $user_id)
+                            -> where ('created_at', '=', $timeCreated)                            
+                            -> first();
+                    //var_dump($thisComment);
                     array_push($arrayOfTags, $hashtags);
                     $tagExistInForumTags = DB::table('forumtags') 
                             -> where ('forum_tag', '=', $tagname)
@@ -229,14 +235,15 @@ class ForumController extends Controller
                             ['forum_tag' => $tagname, 'count'=>1]
                         );
                     }
-                    
+
                     $tagExistInFTD = DB::table('forumtags_discussion')
                             -> where ('forum_tag', '=', $tagname)
                             -> where ('discussion_id', '=', $discussion_id)
+                            -> where ('comment_id', '=', $thisComment->id)
                             -> get();
                     if($tagExistInFTD == null){
                         DB::table('forumtags_discussion') -> insert(
-                            ['forum_tag' => $tagname, 'discussion_id'=>$discussion_id]
+                            ['forum_tag' => $tagname, 'discussion_id'=>$discussion_id, 'comment_id'=> $thisComment->id]
                         );
                     }
                 }
@@ -264,11 +271,79 @@ class ForumController extends Controller
     public function deleteDiscussion(Request $request){
         $discussion_id = $request->get('discussionId');
 
-        //abort(404, "discussion id: " + $discussion_id);
-        DB::table('forumdiscussion')->where('id','=', $discussion_id)->delete();
+        $tagsInThisDiscussion = DB::table('forumtags_discussion')
+                    -> where ('discussion_id', '=', $discussion_id)
+                    -> get();
 
+        foreach($tagsInThisDiscussion as $thisTag) {
+            $tagCountInForumTags = DB::table('forumtags')
+                    -> where ('forum_tag', '=', $thisTag->forum_tag)
+                    -> value('count');
+            //exit($tagCountInForumTags);
+            if ($tagCountInForumTags == 1) {
+                DB::table('forumtags') 
+                -> where ('forum_tag', '=', $thisTag->forum_tag)
+                -> delete();
+            } else {
+                DB::table('forumtags')
+                -> where ('forum_tag', '=', $thisTag->forum_tag)
+                -> update(['count' => $tagCountInForumTags - 1]);
+            }
+            
+        }
+        DB::table('forumtags_discussion')
+        -> where ('discussion_id', '=', $discussion_id)
+        -> delete();
+
+        DB::table('forumresponse')
+        -> where ('discussion_id', '=', $discussion_id)
+        -> delete();
+
+        DB::table('forumdiscussion')->where('id','=', $discussion_id)->delete();
+        
         return view('forum.forumAdmin');
     }
+
+    public function deleteComment(Request $request){
+        $comment_id = $request->get('commentID');
+        $discussion_id = $request->get('discussionID');
+
+        $tagsInThisComment = DB::table('forumtags_discussion')
+                    -> where ('discussion_id', '=', $discussion_id)
+                    -> where ('comment_id', '=', $comment_id)
+                    -> get();
+
+        //exit(var_dump($tagsInThisComment)."discussion id: ".$discussion_id." comment id: ".$comment_id);
+        if ($tagsInThisComment != null) {
+            foreach($tagsInThisComment as $thisTag) {
+                $tagCountInForumTags = DB::table('forumtags')
+                        -> where ('forum_tag', '=', $thisTag->forum_tag)
+                        -> value('count');
+                //exit($tagCountInForumTags);
+                if ($tagCountInForumTags == 1) {
+                    DB::table('forumtags') 
+                    -> where ('forum_tag', '=', $thisTag->forum_tag)
+                    -> delete();
+                } else {
+                    DB::table('forumtags')
+                    -> where ('forum_tag', '=', $thisTag->forum_tag)
+                    -> update(['count' => $tagCountInForumTags - 1]);
+                }
+                
+            }
+            DB::table('forumtags_discussion')
+            -> where ('discussion_id', '=', $discussion_id)
+            -> where ('comment_id', '=', $comment_id)
+            -> delete();
+        }
+        
+        DB::table('forumresponse')
+        -> where ('id', '=', $comment_id)
+        -> delete();
+        
+        return redirect('/forumResponsePage?id='.$discussion_id);
+    }
+
     public function closeDiscussion(Request $request){
 
          $discussion_id = $request->get('discussionId');

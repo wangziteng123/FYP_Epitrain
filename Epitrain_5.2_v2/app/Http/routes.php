@@ -42,8 +42,20 @@ Route::group(['middleware' => ['auth','admin']], function() {
 	Route::post('/deleteDiscussion', ['as' => 'deleteDiscussion', 'uses' => 'ForumController@deleteDiscussion']);
 	Route::post('/closeDiscussion', ['as' => 'closeDiscussion', 'uses' => 'ForumController@closeDiscussion']);
     Route::post('/addCategory', ['as' => 'addCategory', 'uses' => 'ForumController@addCategory']);
+    Route::post('/deleteComment', ['as' => 'deleteComment', 'uses' => 'ForumController@deleteComment']);
     //payment routes
 	Route::post('/payment', ['as' => 'payment', 'uses' => 'PaymentController@index']);
+
+	Route::get('/faq', ['as' => 'faq', 'uses' => 'FaqController@index']);
+	Route::get('/faq/create', function () {
+	    return view('faq.create');
+	});
+	Route::post('/faq/createquestion', ['as' => 'faqcreate', 'uses' => 'FaqController@create']);
+	Route::get('/faq/delete', ['as' => 'faqdelete', 'uses' => 'FaqController@delete']);
+	Route::get('/faq/edit', function () {
+	    return view('faq.edit');
+	});
+	Route::post('/faq/editFaq', ['as' => 'faqEdit', 'uses' => 'FaqController@edit']);
 });
 
 
@@ -85,6 +97,7 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::post('shoppingcart/deleteShoppcart', 'ShoppingController@delete');
 
 	Route::post('shoppingcart/addtolibrary', 'ShoppingController@addToLibrary');
+	Route::post('shoppingcart/addToLibraryOne', 'ShoppingController@addToLibraryOne');
 	Route::post('shoppingcart/checkout', 'ShoppingController@checkout');
 	
 	Route::get('/forum/{discussionId}/{userId}',[
@@ -109,6 +122,7 @@ Route::group(['middleware' => 'auth'], function() {
 	//payment routes
 	Route::post('/payment', ['as' => 'payment', 'uses' => 'PaymentController@index']);
 	Route::post('/paymentForm', ['as' => 'paymentForm', 'uses' => 'PaymentController@paymentForm']);
+	Route::get('/faq', ['as' => 'faq', 'uses' => 'FaqController@index']);
 });
 
 // // Download Route

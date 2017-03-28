@@ -198,61 +198,62 @@
             </font> <br/><br/>
 
 	    			<?php
-                        //check if the discussion has been closed or not
-                        if ($isOpen == 0){ ?>
-                            <a style="display:block; font-size:20px" href=<?php echo $forumpageUrl?>>
-                            Reply <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                            </font><br/>
-                            <!-- this is to close the discussion-->
-                            <form method="post" action=<?php echo URL::route('closeDiscussion');?>>
-                            <input type="hidden" name="discussionId" value=<?php echo $discussionId;?>>
-                            <input type="hidden" name="forumpageUrl" value=<?php echo $forumpageUrl;?>>
-                            <button type="submit" class="btn btn-raised btn-warning">Close Discussion</button>
-                            </form></br>
+                //check if the discussion has been closed or not
+                if ($isOpen == 0){ ?>
+                    <a style="display:block; font-size:20px" href=<?php echo $forumpageUrl?>>
+                    Reply <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                    </font><br/>
+                    <!-- this is to close the discussion-->
+                    <form method="post" action=<?php echo URL::route('closeDiscussion');?>>
+                    <input type="hidden" name="discussionId" value=<?php echo $discussionId;?>>
+                    <input type="hidden" name="forumpageUrl" value=<?php echo $forumpageUrl;?>>
+                    <button type="submit" class="btn btn-raised btn-warning">Close Discussion</button>
+                    </form></br>
 
-                            <?php
+                    <?php
 
-                        }else{ ?>
-                            <font color='red'> This discussion has been closed </font>
+                }else{ ?>
+                    <font color='red'> This discussion has been closed </font>
 
-                        <?php
-                        }
+                <?php
+                }
 
-                        ?>
+            ?>
 
-<!-- Button trigger modal for deleting discussion -->
-<button type="button" class="btn btn-danger btn-raised" data-toggle="modal" data-target="#myModalDeleteDiscussion" onclick="loadModal( <?php echo $discussionId;?>)">
-     Delete Discussion
-</button>
+            <!-- Button trigger modal for deleting discussion -->
+            <button type="button" class="btn btn-danger btn-raised" data-toggle="modal" data-target="#myModalDeleteDiscussion" onclick="loadModal( <?php echo $discussionId;?>)">
+                 Delete Discussion
+            </button>
 
-<!-- Modal for deleting discussion -->
-<div class="modal fade" id="myModalDeleteDiscussion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <font color='black'> <h4 class="modal-title" id="myModalLabel"><b>Delete Discussion</b></h4></font>
-      </div>
-      <div class="modal-body">
-        <!-- Add a form inside the add category modal-->
-           <font color='black'> <form method="post" id="deleteForm" action=<?php echo URL::route('deleteDiscussion');?>>
-            Are you sure you want to delete this discussion?
-            <input type="hidden" id="passDiscussionID" name="discussionId" value="">
+            <!-- Modal for deleting discussion -->
+            <div class="modal fade" id="myModalDeleteDiscussion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <font color='black'> <h4 class="modal-title" id="myModalLabel"><b>Delete Discussion</b></h4></font>
+                  </div>
+                  <div class="modal-body">
+                    <!-- Add a form inside the add category modal-->
+                       <font color='black'> <form method="post" id="deleteForm" action=<?php echo URL::route('deleteDiscussion');?>>
+                        Are you sure you want to delete this discussion?
+                        <input type="hidden" id="passDiscussionID" name="discussionId" value="">
 
-        <div class="modal-footer">
-          <button class="btn btn-raised btn-default" data-dismiss="modal">No</button>
+                    <div class="modal-footer">
+                      <button class="btn btn-raised btn-default" data-dismiss="modal">No</button>
 
-          <input type="submit" value="Delete" class="btn btn-raised btn-danger"></input>
+                      <input type="submit" value="Yes" class="btn btn-raised btn-danger"></input>
 
-        </div>
-        </form></font>
+                    </div>
+                    </form></font>
 
 
-      </div>
+                  </div>
 
-    </div>
-  </div>
-</div>
+                </div>
+              </div>
+            </div>
+
 	    	    </div>
 	    	    <div class="col-sm-4 center-block">
             <font color='black' style="font-size:34px">
@@ -321,9 +322,9 @@
     
     <div class="form-group">
       <label for="textArea" class="col-md-4 control-label" style="padding-left: 0px"><font size="3">Discussion Content</font></label>
-      <textarea class="form-control" rows="3" id="textArea"></textarea><br/>
+      <textarea class="form-control" rows="3" id="textArea" name="description"></textarea><br/>
     </div>
-    <input type="submit" value="Submit" class="btn btn-raised btn-success" style="float:right" name="description">
+    <input type="submit" value="Submit" class="btn btn-raised btn-success" style="float:right">
     <button class="btn btn-raised btn-warning slide_close" style="float:right">Cancel</button>
   </form>
 </div>

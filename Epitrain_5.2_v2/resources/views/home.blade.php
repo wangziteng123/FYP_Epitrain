@@ -26,13 +26,12 @@
        ?>
 
       @if (!Auth::user()->isAdmin)
-      
-
         @if($isSubscribe)
           <?php
             $currentTime = Carbon::now();
             $userSubscribe = \DB::table('subscription')
               ->where('user_id', Auth::user()->id)
+              ->orderBy('id','desc')
               ->first();
 
             $end_Date = Carbon::createFromFormat('Y-m-d H:i:s', $userSubscribe->end_date);
@@ -45,7 +44,7 @@
           @else
           <div style="position:absolute;left:125px;top:245px">
            Want to start a subscription? &nbsp&nbsp
-          <button  class="btn btn-success btn-raised initialism basic_open" style="width:150px;">
+          <button  class="btn btn-raised btn-primary initialism basic_open" style="width:150px;">
             SUBSCRIBE
           </button>
          </div>
@@ -54,14 +53,13 @@
         @else
           <div style="position:absolute;left:125px;top:245px">
            Want to start a subscription? &nbsp&nbsp
-          <button  class="btn btn-success btn-raised initialism basic_open" style="width:150px;">
+          <button  class="btn btn-raised btn-primary initialism basic_open" style="width:150px;">
             SUBSCRIBE
           </button>
          </div>
 
         @endif
       @endif
-
 
       <div style="position:absolute;top:340px;">
         <font style="font-family:Book Antiqua;font-weight:10;position:absolute;left:40px;top:0px" size="6">Trending </font>
@@ -132,66 +130,133 @@
             <div class="thumbnail" style="height:365px;width:210px">
               <div id=<?php echo $container2?> style="position:relative;height:200px;width:135px;margin: 0 auto;"></div>
                                
-                              <div class="caption" style="position:relative">
-                                  <div style="position:relative;margin: 0 auto;">
-                                      @if(strlen($oriFilename2) > 25)
-                                      <p>{{substr($oriFilename2,0,25)."..." }}</p>
-                                      @else
-                                      <p>{{$oriFilename2}}</p>
-                                      @endif
-                                  <font size="1">Category: <?php echo $ebook->category?></font>
-                                 </div>
+                <div class="caption" style="position:relative">
+                    <div style="position:relative;margin: 0 auto;">
+                        @if(strlen($oriFilename2) > 25)
+                        <p>{{substr($oriFilename2,0,25)."..." }}</p>
+                        @else
+                        <p>{{$oriFilename2}}</p>
+                        @endif
+                    <font size="1">Category: <?php echo $ebook->category?></font>
+                   </div>
 
-                                
-                                  <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">S$<?php echo $price2?></font></p>
+                    @if($isSubscribe && !Auth::user()->isAdmin)
+                      @if($expireOrnot)
 
-                                  @if (count($libraryExist))
-                                      <form style="position:absolute;right:85px;top:91px;border:none">
-                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fid" value=<?php echo $fid2?>>
-                                          <button type="submit" style="border:none;background-color: Transparent">
-                                             <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Bought already."></i>
-                                          </button>
-                                      </form>
-                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:83px;top:105px"></i>
-                                  @else
-                                      <form action=<?php echo url('shoppingcart/addtolibrary');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
-                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fid" value=<?php echo $fid2?>>
-                                          <button type="submit" style="border:none;background-color: Transparent">
-                                             <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Purchase this book"></i>
-                                          </button>
-                                      </form>
-                                  @endif
+                         @if (count($libraryExist))
+                        <form method="post" style="position:absolute;right:92px;top:89px">
+                              <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                              <input type="hidden" name="fid" value=<?php echo $fid2?>>
+                              <button  class="btn btn-info btn-raised btn-sm" color="gray">
+                                Added
+                              </button>
+                            </form>
+                         @else
+                        <form action=<?php echo url('shoppingcart/addToLibraryOne');?> method="post" style="position:absolute;right:102px;top:89px">
+                              <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                              <input type="hidden" name="fid" value=<?php echo $fid2?>>
+                              <button  class="btn btn-info btn-raised btn-sm">
+                                Add
+                              </button>
+                            </form>
+                         @endif
+                      @else
+                         <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">S$<?php echo $price2?></font></p>
+
+                        @if (count($libraryExist))
+                            <form style="position:absolute;right:85px;top:91px;border:none">
+                                <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                                <input type="hidden" name="fid" value=<?php echo $fid2?>>
+                                <button type="submit" style="border:none;background-color: Transparent">
+                                   <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Bought already."></i>
+                                </button>
+                            </form>
+                            <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:83px;top:105px"></i>
+                        @else
+                            <form action=<?php echo url('shoppingcart/addToLibraryOne');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
+                                <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                                <input type="hidden" name="fid" value=<?php echo $fid2?>>
+                                <button type="submit" style="border:none;background-color: Transparent">
+                                   <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Purchase this book"></i>
+                                </button>
+                            </form>
+                        @endif
 
 
-                                  @if (count($shoppingcartExist))
-                                      <form style="position:absolute;right:86px;top:115px">
-                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fid" value=<?php echo $fid2?>>
-                                          <button type="submit" style="border:none;background-color: Transparent">
-                                             <i class="fa fa-shopping-cart fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Added already."></i>
-                                          </button>
-                                      </form>
-                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:85px;top:127px"></i>
-                                  @else
-                                       <form action=<?php echo url('shoppingcart/add');?> method="post" style="position:absolute;right:86px;top:115px">
-                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fid" value=<?php echo $fid2?>>
-                                          <button type="submit" style="border:none;background-color: Transparent">
-                                             <i class="fa fa-shopping-cart fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Add to shoppingcart."></i>
-                                          </button>
-                                      </form>                
-                                  @endif
-                                  
-                                    
-                                  <p style="position:absolute;right:12px;top:89px">
-                                      <button  class="btn btn-info btn-raised btn-sm slide_open"  onclick="passtoSlide(<?php echo $fid2;?>,'<?php echo $oriFilename2;?>',<?php echo $price2;?>,'<?php echo $description2;?>')">
-                                      Info
-                                      </button>
-                                  </p>
-                                
-                              </div>
+                        @if (count($shoppingcartExist))
+                            <form style="position:absolute;right:86px;top:115px">
+                                <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                                <input type="hidden" name="fid" value=<?php echo $fid2?>>
+                                <button type="submit" style="border:none;background-color: Transparent">
+                                   <i class="fa fa-shopping-cart fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Added already."></i>
+                                </button>
+                            </form>
+                            <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:85px;top:127px"></i>
+                        @else
+                             <form action=<?php echo url('shoppingcart/add');?> method="post" style="position:absolute;right:86px;top:115px">
+                                <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                                <input type="hidden" name="fid" value=<?php echo $fid2?>>
+                                <button type="submit" style="border:none;background-color: Transparent">
+                                   <i class="fa fa-shopping-cart fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Add to shoppingcart."></i>
+                                </button>
+                            </form>                
+                        @endif
+                      @endif
+                    @else
+                         <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">S$<?php echo $price2?></font></p>
+
+                    @if (count($libraryExist))
+                        <form style="position:absolute;right:85px;top:91px;border:none">
+                            <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                            <input type="hidden" name="fid" value=<?php echo $fid2?>>
+                            <button type="submit" style="border:none;background-color: Transparent">
+                               <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Bought already."></i>
+                            </button>
+                        </form>
+                        <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:83px;top:105px"></i>
+                    @else
+                        <form action=<?php echo url('shoppingcart/addToLibraryOne');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
+                            <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                            <input type="hidden" name="fid" value=<?php echo $fid2?>>
+                            <button type="submit" style="border:none;background-color: Transparent">
+                               <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Purchase this book"></i>
+                            </button>
+                        </form>
+                    @endif
+
+
+                    @if (count($shoppingcartExist))
+                        <form style="position:absolute;right:86px;top:115px">
+                            <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                            <input type="hidden" name="fid" value=<?php echo $fid2?>>
+                            <button type="submit" style="border:none;background-color: Transparent">
+                               <i class="fa fa-shopping-cart fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Added already."></i>
+                            </button>
+                        </form>
+                        <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:85px;top:127px"></i>
+                    @else
+                         <form action=<?php echo url('shoppingcart/add');?> method="post" style="position:absolute;right:86px;top:115px">
+                            <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                            <input type="hidden" name="fid" value=<?php echo $fid2?>>
+                            <button type="submit" style="border:none;background-color: Transparent">
+                               <i class="fa fa-shopping-cart fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Add to shoppingcart."></i>
+                            </button>
+                        </form>                
+                    @endif
+
+
+                    @endif
+                  
+                   
+                    
+                      
+                    <p style="position:absolute;right:12px;top:89px">
+                        <button class="btn btn-info btn-raised btn-sm slide_open"  onclick="passtoSlide(<?php echo $fid2;?>,'<?php echo $oriFilename2;?>',<?php echo $price2;?>,'<?php echo $description2;?>')">
+                        Info
+                        </button>
+                    </p>
+                  
+                </div>
             </div>
           </div>
 
@@ -282,8 +347,27 @@
                                   <font size="1">Category: <?php echo $ebook->category?></font>
                                  </div>
 
-                                
-                                  <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">S$<?php echo $price4?></font></p>
+                                 @if($isSubscribe && !Auth::user()->isAdmin)
+                                  @if($expireOrnot)
+                                    @if (count($libraryExist))
+                                      <form method="post" style="position:absolute;right:92px;top:89px">
+                                            <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                                            <input type="hidden" name="fid" value=<?php echo $fid4?>>
+                                            <button  class="btn btn-info btn-raised btn-sm">
+                                              Added
+                                            </button>
+                                          </form>
+                                    @else
+                                      <form action=<?php echo url('shoppingcart/addToLibraryOne');?> method="post" style="position:absolute;right:102px;top:89px">
+                                            <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                                            <input type="hidden" name="fid" value=<?php echo $fid4?>>
+                                            <button  class="btn btn-info btn-raised btn-sm">
+                                              Add
+                                            </button>
+                                          </form>
+                                    @endif
+                                  @else
+                                      <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">S$<?php echo $price4?></font></p>
 
                                   @if (count($libraryExist))
                                       <form style="position:absolute;right:85px;top:91px;border:none">
@@ -295,7 +379,7 @@
                                       </form>
                                       <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:83px;top:105px"></i>
                                   @else
-                                      <form action=<?php echo url('shoppingcart/addtolibrary');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
+                                      <form action=<?php echo url('shoppingcart/addToLibraryOne');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
                                           <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
                                           <input type="hidden" name="fid" value=<?php echo $fid4?>>
                                           <button type="submit" style="border:none;background-color: Transparent">
@@ -306,16 +390,16 @@
 
 
                                   @if (count($shoppingcartExist))
-                                      <form style="position:absolute;right:86px;top:105px">
+                                      <form style="position:absolute;right:86px;top:115px">
                                           <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
                                           <input type="hidden" name="fid" value=<?php echo $fid4?>>
                                           <button type="submit" style="border:none;background-color: Transparent">
                                              <i class="fa fa-shopping-cart fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Added already."></i>
                                           </button>
                                       </form>
-                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:85px;top:127px"></i>
+                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:85px;top:137px"></i>
                                   @else
-                                       <form action=<?php echo url('shoppingcart/add');?> method="post" style="position:absolute;right:86px;top:105px">
+                                       <form action=<?php echo url('shoppingcart/add');?> method="post" style="position:absolute;right:86px;top:115px">
                                           <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
                                           <input type="hidden" name="fid" value=<?php echo $fid4?>>
                                           <button type="submit" style="border:none;background-color: Transparent">
@@ -323,6 +407,55 @@
                                           </button>
                                       </form>                
                                   @endif
+
+                                  @endif
+
+                                 @else
+                                      <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">S$<?php echo $price4?></font></p>
+
+                                  @if (count($libraryExist))
+                                      <form style="position:absolute;right:85px;top:91px;border:none">
+                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                                          <input type="hidden" name="fid" value=<?php echo $fid4?>>
+                                          <button type="submit" style="border:none;background-color: Transparent">
+                                             <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Bought already."></i>
+                                          </button>
+                                      </form>
+                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:83px;top:105px"></i>
+                                  @else
+                                      <form action=<?php echo url('shoppingcart/addToLibraryOne');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
+                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                                          <input type="hidden" name="fid" value=<?php echo $fid4?>>
+                                          <button type="submit" style="border:none;background-color: Transparent">
+                                             <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Purchase this book"></i>
+                                          </button>
+                                      </form>
+                                  @endif
+
+
+                                  @if (count($shoppingcartExist))
+                                      <form style="position:absolute;right:86px;top:115px">
+                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                                          <input type="hidden" name="fid" value=<?php echo $fid4?>>
+                                          <button type="submit" style="border:none;background-color: Transparent">
+                                             <i class="fa fa-shopping-cart fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Added already."></i>
+                                          </button>
+                                      </form>
+                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:85px;top:137px"></i>
+                                  @else
+                                       <form action=<?php echo url('shoppingcart/add');?> method="post" style="position:absolute;right:86px;top:115px">
+                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                                          <input type="hidden" name="fid" value=<?php echo $fid4?>>
+                                          <button type="submit" style="border:none;background-color: Transparent">
+                                             <i class="fa fa-shopping-cart fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Add to shoppingcart."></i>
+                                          </button>
+                                      </form>                
+                                  @endif
+
+                                 @endif
+
+                                
+                                  
                                   
                                     
                                   <p style="position:absolute;right:12px;top:89px">
@@ -421,7 +554,26 @@
                                   <font size="1">Category: <?php echo $ebook->category?></font>
                                  </div>
 
-                                
+                                  @if($isSubscribe && !Auth::user()->isAdmin)
+                                  @if($expireOrnot)
+                                  @if (count($libraryExist))
+                                      <form method="post" style="position:absolute;right:92px;top:89px">
+                                            <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                                            <input type="hidden" name="fid" value=<?php echo $fid4?>>
+                                            <button  class="btn btn-info btn-raised btn-sm">
+                                              Added 
+                                            </button>
+                                          </form>
+                                    @else
+                                      <form action=<?php echo url('shoppingcart/addToLibraryOne');?> method="post" style="position:absolute;right:102px;top:89px">
+                                            <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                                            <input type="hidden" name="fid" value=<?php echo $fid4?>>
+                                            <button  class="btn btn-info btn-raised btn-sm">
+                                              Add
+                                            </button>
+                                          </form>
+                                    @endif
+                                  @else
                                   <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">S$<?php echo $price4?></font></p>
 
                                   @if (count($libraryExist))
@@ -434,7 +586,7 @@
                                       </form>
                                       <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:83px;top:105px"></i>
                                   @else
-                                      <form action=<?php echo url('shoppingcart/addtolibrary');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
+                                      <form action=<?php echo url('shoppingcart/addToLibraryOne');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
                                           <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
                                           <input type="hidden" name="fid" value=<?php echo $fid4?>>
                                           <button type="submit" style="border:none;background-color: Transparent">
@@ -462,9 +614,59 @@
                                           </button>
                                       </form>                
                                   @endif
+
+
+                                  @endif
+
+                                 @else
+                                 <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">S$<?php echo $price4?></font></p>
+
+                                  @if (count($libraryExist))
+                                      <form style="position:absolute;right:85px;top:91px;border:none">
+                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                                          <input type="hidden" name="fid" value=<?php echo $fid4?>>
+                                          <button type="submit" style="border:none;background-color: Transparent">
+                                             <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Bought already."></i>
+                                          </button>
+                                      </form>
+                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:83px;top:105px"></i>
+                                  @else
+                                      <form action=<?php echo url('shoppingcart/addToLibraryOne');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
+                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                                          <input type="hidden" name="fid" value=<?php echo $fid4?>>
+                                          <button type="submit" style="border:none;background-color: Transparent">
+                                             <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Purchase this book"></i>
+                                          </button>
+                                      </form>
+                                  @endif
+
+
+                                  @if (count($shoppingcartExist))
+                                      <form style="position:absolute;right:86px;top:105px">
+                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                                          <input type="hidden" name="fid" value=<?php echo $fid4?>>
+                                          <button type="submit" style="border:none;background-color: Transparent">
+                                             <i class="fa fa-shopping-cart fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Added already."></i>
+                                          </button>
+                                      </form>
+                                      <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:85px;top:127px"></i>
+                                  @else
+                                       <form action=<?php echo url('shoppingcart/add');?> method="post" style="position:absolute;right:86px;top:115px">
+                                          <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                                          <input type="hidden" name="fid" value=<?php echo $fid4?>>
+                                          <button type="submit" style="border:none;background-color: Transparent">
+                                             <i class="fa fa-shopping-cart fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Add to shoppingcart."></i>
+                                          </button>
+                                      </form>                
+                                  @endif
+
+
+                                 @endif
+                                
+                                  
                                   
                                     
-                                  <p style="position:absolute;right:12px;top:89px">
+                                   <p style="position:absolute;right:12px;top:89px">
                                       <button  class="btn btn-info btn-raised btn-sm slide_open"  onclick="passtoSlide(<?php echo $fid2;?>,'<?php echo $oriFilename2;?>',<?php echo $price2;?>,'<?php echo $description2;?>')">
                                       Info
                                       </button>
@@ -502,14 +704,14 @@
     <!-- Basic Slider-->
 
     <div id="basic" class="well" style="max-width:74em;">
-        <h4><span style="color:black">Choose a subscription plan:</span></h4>
+        <h4><font color='black'>Choose a subscribtion plan:</font></h4>
       <form action=<?php echo url('/subscribe');?>  method="post">
-        <p><input type="radio" name="period" value="1" checked><span style="color:black"> 1 month</span></p>
-        <p><input type="radio" name="period" value="6"><span style="color:black"> 6 months</span></p>
-        <p><input type="radio" name="period" value="12"><span style="color:black"> 1 year</span></p>
+        <p><input type="radio" name="period" value="1" checked><font color='black'> 1 month</font></p>
+        <p><input type="radio" name="period" value="6"><font color='black'> 6 months</font></p>
+        <p><input type="radio" name="period" value="12"><font color='black'> 1 year</font></p>
         <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-        <button type="submit" class="btn btn-default btn-raised"><span style="color:black">Subscribe</span></button>
-        <button class="basic_close btn btn-default btn-raised"><span style="color:black">Cancel</span></button>
+        <button type="submit" class="btn-success btn btn-raised">Subscribe</button>
+        <button class="basic_close btn btn-danger btn-raised">Cancel</button>
       </form>
     </div>
     <!--end of basic slider-->

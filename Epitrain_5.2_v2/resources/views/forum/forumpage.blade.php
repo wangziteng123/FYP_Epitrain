@@ -100,13 +100,46 @@
             echo $dateDiff;
 
           }
-
-
-
-
-
 	    ?></font> <br/>
+  @if (Auth::user()->isAdmin)
+     <button type="button" class="btn btn-danger btn-raised" data-toggle="modal" data-target="#myModalDeleteComment" onclick="loadModal(<?php echo $response->id;?>, <?php echo $discussionId;?>)">
+           Delete Comment
+      </button>
+   @endif
 </div>
+
+<!-- Modal for deleting comment-->
+@if (Auth::user()->isAdmin)
+  <div class="modal fade" id="myModalDeleteComment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <font color='black'> <h4 class="modal-title" id="myModalLabel"><b>Delete Discussion</b></h4></font>
+        </div>
+        <div class="modal-body">
+          <!-- Add a form inside the add category modal-->
+             <font color='black'> <form method="post" id="deleteForm" action=<?php echo URL::route('deleteComment');?>>
+              Are you sure you want to delete this comment? Attached tags will also be deleted
+              <input type="hidden" id="passCommentID" name="commentID" value="">
+              <input type="hidden" id="passDiscussionID" name="discussionID" value="">
+
+          <div class="modal-footer">
+            <button class="btn btn-raised btn-default" data-dismiss="modal">No</button>
+
+            <input type="submit" value="Yes" class="btn btn-raised btn-danger"></input>
+
+          </div>
+          </form></font>
+
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+@endif
+
 @endforeach
 
 <?php
@@ -135,7 +168,12 @@
 </form>
 </div>
 
-
+<script>
+function loadModal(comment_id, discussion_id){
+    document.getElementById('passCommentID').value=comment_id ;
+    document.getElementById('passDiscussionID').value=discussion_id ;
+}
+</script>
 
 
 

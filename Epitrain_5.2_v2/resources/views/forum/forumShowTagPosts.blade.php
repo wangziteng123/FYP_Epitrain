@@ -5,7 +5,12 @@
     <div class="col-sm-6">
         <ul class="breadcrumb pull-left" style="margin-bottom: 5px;font-size:20px">
             <li style="font-size:16px"><a href="/">Home</a></li>
-            <li style="font-size:16px" class="active"><a href="/forum">Discussion Forum</a></li>
+            @if (Auth::user()->isAdmin)
+              <li style="font-size:16px"><a href="/forumAdmin">Discussion Forum</a></li>
+            @else
+              <li style="font-size:16px"><a href="/forum">Discussion Forum</a></li>
+            @endif
+            <li style="font-size:16px" class="active">Discussions With Tag</li>
         </ul>
     </div>
 </div>
@@ -43,16 +48,28 @@
     //To here
 ?>
 
-<div class="col-md-3 col-s-12 center-block">
-  <h1 style="position: static;left: 14px;">Discussion Forum</h1>
+<div class="col-md-3 col-sm-12 center-block">
+  @if (Auth::user()->isAdmin)
+    <h1 style="position: static;left: 14px;">Discussion Forum (Admin)</h1>
+  @else 
+    <h1 style="position: static;left: 14px;">Discussion Forum</h1>
+  @endif
   <hr>
     <div style="position:static;left:15px;">
     	<button class="btn btn-raised btn-primary initialism slide_open" style = "font-size:14px"><i class="fa fa-plus-circle" aria-hidden="true"></i> NEW DISCUSSION</button>
+      @if (Auth::user()->isAdmin)
+        <button type="button" class="btn btn-raised btn-success" data-toggle="modal" data-target="#myModal" style = "font-size:14px">
+             Add Category
+        </button>
+        <a href="/forumAdmin"><button type="button" class="btn btn-info btn-raised">View all discussions</button></a>
+      @else
+        <a href="/forum"><button type="button" class="btn btn-info btn-raised">View all discussions</button></a>
+      @endif
     </div>
-    
-    <div class="col-lg-5 " style="position:relative; left:px; " >
+    <div class="col-sm-12" style="position:relative; left:px; " >
     Top Five Tags </br>
         <?php $counter = 1; ?>
+
         @foreach($topFiveTags as $tags)
             <?php 
                 $tagsToPass = substr($tags->forum_tag,1);
@@ -61,7 +78,7 @@
                 if($counter <6){ 
             ?>            
                 <font color='black'><a style="text-decoration: none" href=<?php echo $forumShowTagPosts; ?>>
-                    <button type="button" class="btn btn-secondary btn-sm"><?php echo $tags->forum_tag;?></button>
+                    <button type="button" class="btn btn-default btn-sm"><?php echo $tags->forum_tag;?></button>
                     </a>
                 </font>
             <?php } ?>
@@ -69,11 +86,42 @@
             
             </br>
         @endforeach
+
     </div>
     
 </div>
 
-<div class="col-md-9 col-s-12 center-block">
+<!-- Modal for adding category -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <font color='black'> <h4 class="modal-title" id="myModalLabel">Add Category</h4></font>
+      </div>
+      <div class="modal-body">
+        <!-- Add a form inside the add category modal-->
+           <font color='black'> <form method="post" id="addCategory" action=<?php echo URL::route('addCategory');?>>
+            Category Name: <input type="text" name="categoryName" class="form-control" >
+
+
+        <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+        <input type="submit" value="Add Category" class="btn btn-primary"></button>
+
+        </div>
+        </form></font>
+
+
+      </div>
+
+    </div>
+  </div>
+</div>
+</br>
+
+<div class="col-md-9 col-sm-12 center-block">
     	@foreach($discussionsWithTag as $discId)
 
     	<?php
@@ -165,20 +213,61 @@
                 //check if the discussion has been closed or not
                 if ($isOpen == 0){ ?>
                     <a style="display:block; font-size:20px" href=<?php echo $forumpageUrl?>>
-                 	      Reply 
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>  
-                    </a>
-                 	  <br/>
-                 <?php
+                    Reply <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                    </font><br/>
+                    <!-- this is to close the discussion-->
+                    @if (Auth::user()->isAdmin)
+                      <form method="post" action=<?php echo URL::route('closeDiscussion');?>>
+                      <input type="hidden" name="discussionId" value=<?php echo $discussionId;?>>
+                      <input type="hidden" name="forumpageUrl" value=<?php echo $forumpageUrl;?>>
+                      <button type="submit" class="btn btn-raised btn-warning">Close Discussion</button>
+                      </form></br>
+                    @endif
+                    <?php
 
                 }else{ ?>
-                   <font color='red'> This discussion has been closed </font>
+                    <font color='red'> This discussion has been closed </font>
 
                 <?php
-
                 }
 
             ?>
+
+            <!-- Button trigger modal for deleting discussion -->
+            @if (Auth::user()->isAdmin)
+              <button type="button" class="btn btn-danger btn-raised" data-toggle="modal" data-target="#myModalDeleteDiscussion" onclick="loadModal( <?php echo $discussionId;?>)">
+                   Delete Discussion
+              </button>
+
+              <!-- Modal for deleting discussion -->
+              <div class="modal fade" id="myModalDeleteDiscussion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <font color='black'> <h4 class="modal-title" id="myModalLabel"><b>Delete Discussion</b></h4></font>
+                    </div>
+                    <div class="modal-body">
+                      <!-- Add a form inside the add category modal-->
+                         <font color='black'> <form method="post" id="deleteForm" action=<?php echo URL::route('deleteDiscussion');?>>
+                          Are you sure you want to delete this discussion?
+                          <input type="hidden" id="passDiscussionID" name="discussionId" value="">
+
+                      <div class="modal-footer">
+                        <button class="btn btn-raised btn-default" data-dismiss="modal">No</button>
+
+                        <input type="submit" value="Delete" class="btn btn-raised btn-danger"></input>
+
+                      </div>
+                      </form></font>
+
+
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            @endif
   	    </div>
   	    <div class="col-sm-4 center-block">
             <font color='black' style="font-size:34px">

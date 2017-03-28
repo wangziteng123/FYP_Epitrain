@@ -21,8 +21,8 @@
       @foreach($errors->all() as $error)
           {{ $error }}</br>
       @endforeach
-    
   </div>
+<br/>
 @endif
 <div class="container">
   <div class ="col-sm-9 col-xs-9 col-xs-offset-1 col-sm-offset-1">

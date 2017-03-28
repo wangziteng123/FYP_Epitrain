@@ -14,6 +14,15 @@
         <p style="font-size:18px">{{ Session::get('success') }}</p>
     </div>
 @endif
+@if (count($errors) > 0)
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <div class="row">
     <div class="col-sm-6">
         <ul class="breadcrumb pull-left" style="margin-bottom: 5px;font-size:20px">

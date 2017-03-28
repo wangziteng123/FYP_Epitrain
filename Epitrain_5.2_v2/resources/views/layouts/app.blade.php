@@ -87,6 +87,12 @@
   </script>
     
     <style type="text/css">
+
+
+    .btn-four{font-weight: 900;background: #3C7FE7; font-color:#FDFEFE; border-color: transparent;}
+    .btn-four:hover{color: #3C7FE7; background:#FDFEFE; border: 1px solid #3C7FE7;}
+
+
     </style>
 
     <!--Search functuion-->
@@ -180,16 +186,18 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/fileentry') }}"><i class="material-icons">library_add</i>Manage Library</a></li>
-																<li class="divider"></li>
-																<li><a href="{{ url('/createUser') }}"><i class="material-icons">person_add</i>Create User</a></li>
-																<li class="divider"></li>
-																<li><a href="{{ url('/forumAdmin') }}"><i class="material-icons">speaker_notes</i>Discussion Forum</a></li>
-																<li class="divider"></li>
-																<li><a href="{{ url('/viewAllUsers') }}"><i class="material-icons">group</i>View All Users</a></li>
-																<li class="divider"></li>
-																<li><a href="{{ url('/update') }}"><i class="material-icons">perm_identity</i>Update Personal Info</a></li>
-																<li class="divider"></li>
-																<li><a href="{{ url('/logout') }}"><i class="material-icons">cancel</i>Logout</a></li>
+								<li class="divider"></li>
+								<li><a href="{{ url('/createUser') }}"><i class="material-icons">person_add</i>Create User</a></li>
+								<li class="divider"></li>
+								<li><a href="{{ url('/forumAdmin') }}"><i class="material-icons">speaker_notes</i>Discussion Forum</a></li>
+								<li class="divider"></li>
+								<li><a href="{{ url('/viewAllUsers') }}"><i class="material-icons">group</i>View All Users</a></li>
+								<li class="divider"></li>
+								<li><a href="{{ url('/update') }}"><i class="material-icons">perm_identity</i>Update Personal Info</a></li>
+								<li class="divider"></li>
+                                <li><a href="{{ url('/faq') }}"><i class="material-icons">question_answer</i>FAQ</a></li>
+                                <li class="divider"></li>
+								<li><a href="{{ url('/logout') }}"><i class="material-icons">cancel</i>Logout</a></li>
                             </ul>
                         </li>
                     @else
@@ -216,6 +224,7 @@
                                 <li><a href="{{ url('/forum') }}"><i class="material-icons">recent_actors</i>Discussion Forum</a></li>
                                 <li><a href="{{ url('/update') }}"><i class="material-icons">group</i>Update Personal Info</a></li>
                                 <li><a href="{{ url('/contact') }}"><i class="material-icons">record_voice_over</i>Contact Admin</a></li>
+                                <li><a href="{{ url('/faq') }}"><i class="material-icons">question_answer</i>FAQ</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="material-icons">cancel</i>Logout</a></li>
                             </ul>
                         </li>

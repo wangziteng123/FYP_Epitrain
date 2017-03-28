@@ -45,6 +45,36 @@ class ShoppingController extends Controller
         return redirect()->route('shoppingcart');  
     }
 
+
+    public function addToLibraryOne(Request $request) {
+        
+        $user_id = $request->get('uid');
+        $fileentry_id = $request->get('fid');
+
+        $shoppingcartExist = \DB::table('shoppingcarts')
+                        ->where('user_id', $user_id)
+                        ->where('fileentry_id', $fileentry_id)
+                        ->get();
+
+        if(count($shoppingcartExist)) {
+             DB::table('libraries') ->insert(
+                ['fileentry_id' => $fileentry_id, 'user_id' => $user_id]
+            );
+             DB::table('shoppingcarts')
+                ->where('fileentry_id', '=', $fileentry_id)
+                ->where('user_id', '=',$user_id )
+                ->delete();
+        }
+
+        DB::table('libraries') ->insert(
+            ['fileentry_id' => $fileentry_id, 'user_id' => $user_id]
+        );
+ 
+ 
+        return view('mylibrary.index');
+    }
+
+
     public function addToLibrary(Request $request) {
         $user_id = $request->get('uid');
 
