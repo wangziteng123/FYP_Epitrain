@@ -154,9 +154,15 @@ function callApi(url) {
  	 @endif
  	
  	<div style="position:absolute;left:40px;top:90px">
- 		<button  class="btn btn-raised btn-primary initialism slide_open" style="width:200px;">
-	  	  		Checkout
-	  	</button>
+		<!-- form to link to the payment form index page -->
+		<form action=<?php echo URL::route('payment');?>  method="post">
+			<input type="hidden" name="totalPrice" id="totalPrice" value=""/>
+			<input type="hidden" name="uid" id="uid" value=""/>
+			<input type="hidden" name="fidStr" id="fidStr" value=""/>
+			<button onclick="pay()" class="btn btn-raised btn-primary initialism " style="width:200px;">
+					Checkout
+			</button>
+		</form>
  	</div>
  	
  </table>
@@ -170,7 +176,7 @@ function callApi(url) {
 <div id="slide" class="well col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1" style="position:relative;top:30px">
 	<button class="slide_close btn btn-default" style="position:absolute;right:20px"><i class="fa fa-times" aria-hidden="true"></i></button>
     
-  	<form action=<?php echo URL::route('payment');?>  method="post">
+  	<!--<form action=<?php echo URL::route('payment');?>  method="post">
 	   <!--  <ul class="list-group final-checkout">
 	     @foreach($shoppingcarts as $shoppingcart)
 		  <li class="list-group-item" style="position:relative">&nbsp&nbsp<?php echo $shoppingcart->original_filename;?>
@@ -193,9 +199,9 @@ function callApi(url) {
 			            $expireOrnot = $currentTime->lt($end_Date);
 			     ?>
 
-			     	@if($expireOrnot)
+			     	<!-- @if($expireOrnot)
 			     		<font style="color:black; float:right" size = "4">Total: S$<span id="final-checkout">0</span></font>
-			     	@else
+			     	 @else
 			     		<font style="color:black; float:right" size = "4">Total: S$<span id="final-checkout"></span></font>
 			     	@endif
 
@@ -212,7 +218,7 @@ function callApi(url) {
 			</div>
 		</div>
 	</form>	
-    
+    -->
 </div>
 
 
@@ -250,51 +256,50 @@ $(document).ready(function () {
 	document.querySelector('.final-count').innerHTML = countFinal;
 	document.querySelector('#totalPrice').value = totalprice;
 
+	
 	function countTotalprice() {
 		var shoppingcarts = <?php echo json_encode($shoppingcarts)?>;
 		
 		var count = <?php echo count($shoppingcarts)?>;
 		var totalprice = 0;
 		var countFinal = 0;
-		//document.querySelector('.total-price').innerHTML = totalprice;
-		// alert("dsfsdf  " + document.getElementById("22").checked);
-
+	 
 		for(i = 0; i < count; i++) {
 			if(document.getElementById(shoppingcarts[i].id).checked) {
 				totalprice += shoppingcarts[i].price;
 				countFinal++;
 			}
 		}
-		document.getElementById('total-price').innerHTML = totalprice;
-		document.getElementById('final-checkout').innerHTML = totalprice;
+		 
+ 		document.querySelector('.total-price').innerHTML = totalprice;
+		document.querySelector('.final-checkout').innerHTML = totalprice;
 		document.querySelector('.final-count').innerHTML = countFinal;
-		document.querySelector('#totalPrice').value = totalprice;
+        document.querySelector('#totalPrice').value = totalprice;
+
 	}
 
 
+
+	
 	function pay() {
 		var shoppingcarts = <?php echo json_encode($shoppingcarts)?>;
 		var uid = <?php echo Auth::user()->id?>;
 		var fidStr = "";
 		var mainUrl = window.location.hostname;
 		var countFinal = 0;
-
+        console.log(totalprice);
 		for(i = 0; i < count; i++) {
 			if(document.getElementById(shoppingcarts[i].id).checked) {
 				countFinal++;
-				fidStr = fidStr + "&fid" + countFinal + "=" + shoppingcarts[i].id;
+				fidStr = fidStr + "," + shoppingcarts[i].id;
 			}
 		}
 
-		document.querySelector('#totalPrice').value = totalprice;
+        countTotalprice();
+      //  document.querySelector('#totalPrice').value = totalprice;
         document.querySelector('#uid').value = uid;
         document.querySelector('#fidStr').value = fidStr;
-		// //deploy
-		// //mainUrl = "http://" + mainUrl + "/checkout?uid=" + uid + "&count=" + countFinal + fidStr;
-		mainUrl = "http://" + mainUrl + "/shoppingcart/checkout?uid=" + uid + "&count=" + countFinal + fidStr;
-		callApi(mainUrl); 
-		// $.post(url,function(data) {
-		// });
+ 
 
 	}
 
