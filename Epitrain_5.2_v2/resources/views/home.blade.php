@@ -144,13 +144,9 @@
                       @if($expireOrnot)
 
                          @if (count($libraryExist))
-                        <form method="post" style="position:absolute;right:92px;top:89px">
-                              <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                              <input type="hidden" name="fid" value=<?php echo $fid2?>>
-                              <button  class="btn btn-info btn-raised btn-sm" color="gray">
+                              <button class="btn btn-info btn-raised btn-sm" style="position:absolute;right:92px;top:89px">
                                 Added
                               </button>
-                            </form>
                          @else
                         <form action=<?php echo url('shoppingcart/addToLibraryOne');?> method="post" style="position:absolute;right:102px;top:89px">
                               <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
@@ -350,13 +346,9 @@
                                  @if($isSubscribe && !Auth::user()->isAdmin)
                                   @if($expireOrnot)
                                     @if (count($libraryExist))
-                                      <form method="post" style="position:absolute;right:92px;top:89px">
-                                            <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                            <input type="hidden" name="fid" value=<?php echo $fid4?>>
-                                            <button  class="btn btn-info btn-raised btn-sm">
-                                              Added
-                                            </button>
-                                          </form>
+                                        <button class="btn btn-info btn-raised btn-sm" style="position:absolute;right:92px;top:89px">
+                                          Added
+                                        </button>
                                     @else
                                       <form action=<?php echo url('shoppingcart/addToLibraryOne');?> method="post" style="position:absolute;right:102px;top:89px">
                                             <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
@@ -557,13 +549,9 @@
                                   @if($isSubscribe && !Auth::user()->isAdmin)
                                   @if($expireOrnot)
                                   @if (count($libraryExist))
-                                      <form method="post" style="position:absolute;right:92px;top:89px">
-                                            <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                            <input type="hidden" name="fid" value=<?php echo $fid4?>>
-                                            <button  class="btn btn-info btn-raised btn-sm">
-                                              Added 
-                                            </button>
-                                          </form>
+                                        <button  class="btn btn-info btn-raised btn-sm" style="position:absolute;right:92px;top:89px">
+                                          Added 
+                                        </button>
                                     @else
                                       <form action=<?php echo url('shoppingcart/addToLibraryOne');?> method="post" style="position:absolute;right:102px;top:89px">
                                             <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>

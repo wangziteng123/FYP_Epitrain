@@ -71,8 +71,8 @@ class FileEntryController extends Controller
 		$category = $request->input('category');
 		$price = $request->input('price');
 		$description = $request->input('description');
-		
 		$file = $request->file('filefield');
+
 		if ($file != null) {
 			$n_file = File::get($file);
 			$extension = $file->getClientOriginalExtension();
@@ -97,6 +97,68 @@ class FileEntryController extends Controller
 		} else {
 			return redirect('fileentry')->with('failure', "You haven't chosen any file to upload.");
 		}	
+	}
+
+	public function edit(Request $request) {
+ 
+		//get category, price and description
+		$category = $request->input('category');
+		$price = $request->input('price');
+		$description = $request->input('description');
+		$file = $request->file('filefield');
+		$oldFileName = $request->input('oldFileName');
+		$entry = Fileentry::where('filename', '=', $oldFileName)->firstOrFail();
+
+		if ($entry) {
+			if($file != null) {
+				//delete old file
+				Storage::disk('s3')->delete('/ebooks/'.$entry->filename);
+				//add new file
+		 		$n_file = File::get($file);
+				$extension = $file->getClientOriginalExtension();
+				if($extension === 'xlsm' || $extension === 'xls' || $extension === 'xlsx'){
+			      	$encrypted = Crypt::encrypt($n_file);
+			      	Storage::disk('s3')->put('spreadsheets/'.$file->getFilename().'.'.$extension,  $encrypted);
+			    } else {
+			    	Storage::disk('s3')->put('ebooks/'.$file->getFilename().'.'.$extension,  $n_file);
+			    }	
+				$entry->mime = $file->getClientMimeType();
+				$entry->original_filename = $file->getClientOriginalName();
+				$entry->filename = $file->getFilename().'.'.$extension;
+
+				$entry->category = $category;
+				$entry->price = $price;
+				$entry->description = $description;
+		 
+				$entry->save();
+		    } else {
+		    	$entry->category = $category;
+				$entry->price = $price;
+				$entry->description = $description;
+		 
+				$entry->save();
+		    }
+		} else {
+			$n_file = File::get($file);
+			$extension = $file->getClientOriginalExtension();
+			if($extension === 'xlsm' || $extension === 'xls' || $extension === 'xlsx'){
+		      	$encrypted = Crypt::encrypt($n_file);
+		      	Storage::disk('s3')->put('spreadsheets/'.$file->getFilename().'.'.$extension,  $encrypted);
+		    } else {
+		    	Storage::disk('s3')->put('ebooks/'.$file->getFilename().'.'.$extension,  $n_file);
+		    }	
+			$entry = new Fileentry();
+			$entry->mime = $file->getClientMimeType();
+			$entry->original_filename = $file->getClientOriginalName();
+			$entry->filename = $file->getFilename().'.'.$extension;
+
+			$entry->category = $category;
+			$entry->price = $price;
+			$entry->description = $description;
+	 
+			$entry->save();			
+		}	
+		return redirect('fileentry')->with('success', "File updated successfully!");
 	}
 
 	public function get($filename){

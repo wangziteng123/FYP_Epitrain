@@ -79,7 +79,9 @@ Route::group(['middleware' => 'auth'], function() {
 
 	Route::post('fileentry/add', [
 		'as'=>'addentry', 'uses'=>'FileEntryController@add']);
-	
+	Route::post('fileentry/edit', [
+		'as'=>'editentry', 'uses'=>'FileEntryController@edit']);
+
 	Route::get('mylibrary', 'MyLibraryController@index');
 	Route::get('shop', 'HomeController@shop');
 	//Route::get('shop/{category_name}', 'HomeController@shop');
