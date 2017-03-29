@@ -37,45 +37,57 @@ class PaymentController extends Controller
     }
 
 
-    public function paymentForm(Request $request){
-       // $category_id = $request->get('category');
+  public function paymentForm(Request $request){
+         // $category_id = $request->get('category');
 
-        $pay = new Payment();
+          $pay = new Payment();
 
-        $token = $request->get('stripeToken');
-        $totalPrice = $request->get('amount');
-        $uid = $request->get('uid');
-
-        $fidStr = $request->get('fidStr');
-
-
-         $valueForPayment = [
-
-                "amount" =>$totalPrice,  // hardcode an amt
-                "currency"=> "SGD",
-                "token" => $token
-
-
-         ];
-
-       $response= $pay->makepayment($valueForPayment);
-
-
-       if($response == "Payment complete."){
-            app('App\Http\Controllers\ShoppingController')->addToLibrary($request);
-           //return view('mylibrary.index');
-           return view('shoppingcart.index');
-
-       }
-       else{
-
-       return view('shoppingcart.index');
-       }
+          $token = $request->get('stripeToken');
 
 
 
-    }
+        \Stripe\Stripe::setApiKey("sk_test_wZZaGd7Ztp3yQaOUuScbg6op");
+         $tokenJSON = \Stripe\Token::retrieve($token);
+         $userPaymentEmail = $tokenJSON ->email;
 
+
+          //$userPaymentEmail = $token['email'];
+        //  echo "hello ";
+         // echo $userPaymentEmail;
+          $totalPrice = $request->get('amount');
+          $uid = $request->get('uid');
+
+          $fidStr = $request->get('fidStr');
+
+
+           $valueForPayment = [
+
+                  "amount" =>$totalPrice,
+                  "currency"=> "SGD",
+                  "token" => $token,
+                  "uid" => $uid,
+                  "fidStr" => $fidStr,  // contains the bought book fid
+                  "receipt_email" => $userPaymentEmail
+
+           ];
+
+         $response= $pay->makepayment($valueForPayment);  // calling a method in payment class
+
+
+         if($response == "Payment complete."){
+              app('App\Http\Controllers\ShoppingController')->addToLibrary($request); // call add to library method in shopping controller
+             //return view('mylibrary.index');
+             return view('shoppingcart.index');
+
+         }
+         else{
+
+         return view('shoppingcart.index');
+         }
+
+
+
+      }
 
 
 

@@ -75,21 +75,18 @@ class ShoppingController extends Controller
     }
 
 
-    public function addToLibrary(Request $request) {
+     public function addToLibrary(Request $request) {
         $user_id = $request->get('uid');
 
         $fidStr = $request->get('fidStr');
 
         $fidStrArray = explode(",", $fidStr);
 
-        
-
         $sizeOfFidStrArray = count($fidStrArray);
-        
 
-        for($start = 0; $start < $sizeOfFidStrArray; $start++){
+        for($start = 0; $start < $sizeOfFidStrArray-1; $start++ ){
 
-            $fileentry_id = $fidStrArray[$start];
+            $fileentry_id = $fidStrArray[$start +1];
 
 
             $shoppingcartExist = \DB::table('shoppingcarts')
@@ -113,8 +110,9 @@ class ShoppingController extends Controller
 
 
          }
- 
-        return view('mylibrary.index');
+
+                return view('mylibrary.index');
+
     }
 
     public function checkout(Request $request) {
