@@ -91,11 +91,12 @@ class ForumController extends Controller
         }
         
         if (\Auth::user()->isAdmin){
-            return view('forum.forumAdmin');
+            return redirect()->route('forumAdmin');
 
         } else{
-            return redirect()->route('forum');}
+            return redirect()->route('forum');
         }
+    }
     
     public function liked($discussionId, $userId){
         if($discussionId!=null){

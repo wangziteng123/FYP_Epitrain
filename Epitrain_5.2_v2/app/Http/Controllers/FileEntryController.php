@@ -20,7 +20,7 @@ class FileEntryController extends Controller
 {
     public function index()
 	{
-		$entries = Fileentry::orderBy('original_filename', 'asc')->get();
+		$entries = Fileentry::orderBy('original_filename', 'asc')->paginate(12);
  		$mode = "name-asc";
 
 		return view('fileentries.index', compact('entries','mode'));
@@ -29,20 +29,20 @@ class FileEntryController extends Controller
 	{
 		$sortField = $request->input('sortField');
 		$mode = $request->input('mode');
-		$entries = Fileentry::orderBy('original_filename', 'asc')->get();
+		$entries = Fileentry::orderBy('original_filename', 'asc')->paginate(12);
 		if ($mode == null) {
 			$mode = "name-asc";
 		}
 		$modeArr = explode("-", $mode);
 		if ($sortField == $modeArr[0] && $modeArr[1] == "asc") {
 			//exit($sortField);
-			$entries = Fileentry::orderBy($sortField, 'desc')->get();
+			$entries = Fileentry::orderBy($sortField, 'desc')->paginate(12);
 			$mode = $sortField."-desc";
 		} else if ($sortField == $modeArr[0] && $modeArr[1] == "desc") {
-			$entries = Fileentry::orderBy($sortField, 'asc')->get();
+			$entries = Fileentry::orderBy($sortField, 'asc')->paginate(12);
 			$mode = $sortField."-asc";
 		} else {
-			$entries = Fileentry::orderBy($sortField, 'asc')->get();
+			$entries = Fileentry::orderBy($sortField, 'asc')->paginate(12);
 			$mode = $sortField."-asc";
 		}
  
@@ -60,7 +60,7 @@ class FileEntryController extends Controller
 			$entries = Fileentry::orderBy($modeArr[0], $modeArr[1])
 			->where('category', '=', $filterCat)->get();
 		} else {
-			$entries = Fileentry::orderBy($modeArr[0], $modeArr[1])->get();
+			$entries = Fileentry::orderBy($modeArr[0], $modeArr[1])->paginate(12);
 		}
 		
 		return view('fileentries.index', compact('entries','mode'));

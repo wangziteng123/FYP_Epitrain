@@ -7,10 +7,10 @@
     <div class="container" style="positon:relatvie">
 
 
-        <div style="position:absolute;left:120px;top:145px">
+        <div class="row">
           <font size="3">WELCOME TO EPITRAIN</font><br/><br/>
         </div>
-        <div style="position:absolute;left:120px;top:165px">
+        <div class="row">
           <h2>Epitrain provides training, resource development & consultancy</h2>
         </div>
           <br/>
@@ -38,11 +38,11 @@
             $expireOrnot = $currentTime->lt($end_Date);
           ?>
           @if($expireOrnot)
-            <div style="position:absolute;left:125px;top:245px">
+            <div class="row">
             Your subscription plan will end at <?php echo $end_Date->toDateTimeString();?>.
             </div>
           @else
-          <div style="position:absolute;left:125px;top:245px">
+          <div class="row">
            Want to start a subscription? &nbsp&nbsp
           <button  class="btn btn-raised btn-primary initialism basic_open" style="width:150px;">
             SUBSCRIBE
@@ -51,7 +51,7 @@
 
           @endif
         @else
-          <div style="position:absolute;left:125px;top:245px">
+          <div class="row">
            Want to start a subscription? &nbsp&nbsp
           <button  class="btn btn-raised btn-primary initialism basic_open" style="width:150px;">
             SUBSCRIBE
@@ -61,9 +61,11 @@
         @endif
       @endif
 
-      <div style="position:absolute;top:340px;">
-        <font style="font-family:Book Antiqua;font-weight:10;position:absolute;left:40px;top:0px" size="6">Trending </font>
+      <div class="row">
+				<div class="col-sm-2">
+        <font style="font-family:Book Antiqua;font-weight:10" size="6">Trending </font>
         <hr>
+				</div>
       </div><br/>
       
         
@@ -92,7 +94,8 @@
 
         ?>
 
-      <div class="row col-sm-10" style="position:absolute;top:420px;">
+      <div class="row">
+				<div class="col-sm-10">
 
         <?php
             $countNum2 = 0;
@@ -257,15 +260,18 @@
           </div>
 
         @endforeach
+			</div>
     </div>
 
 
 
     <!--Best Sellers in Financial Market-->
 <br/>
-        <div style="position:absolute;top:905px">
-        <font style="font-family:Book Antiqua;font-weight:10;position:absolute;left:40px;top:0px" size="6">FinancialMarket </font>
+        <div class="row">
+					<div class="col-sm-2">
+        <font style="font-family:Book Antiqua;font-weight:10" size="6">FinancialMarket </font>
         <hr style="">
+					</div>
         </div><br/>
         
         
@@ -295,7 +301,8 @@
 
         ?>
 
-      <div class="row col-sm-10" style="position:absolute;top:1000px;">
+      <div class="row">
+				<div class="col-sm-10">
 
         <?php
             $countNum4 = 0;
@@ -461,14 +468,17 @@
           </div>
 
         @endforeach
+			</div>
     </div>
 
 
     <!--Best Sellers in Leadership-->
 <br/>
-         <div style="position:absolute;top:1455px">
+         <div class="row">
+					<div class="col-sm-2">
         <font style="font-family:Book Antiqua;font-weight:10;position:absolute;left:40px;top:0px" size="6">Leadership</font>
         <hr style="">
+					</div>
         </div><br/>
         
         
@@ -499,8 +509,8 @@
 
         ?>
 
-      <div class="row col-sm-10" style="position:absolute;top:1545px;">
-
+      <div class="row">
+				<div class="col-sm-10">
         <?php
             $countNum6 = 0;
             $filenameArr6 = array();
@@ -665,6 +675,7 @@
           </div>
 
         @endforeach
+			</div>
     </div>
 
 
