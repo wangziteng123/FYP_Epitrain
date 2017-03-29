@@ -263,21 +263,21 @@ $(document).ready(function () {
 		var count = <?php echo count($shoppingcarts)?>;
 		var totalprice = 0;
 		var countFinal = 0;
-	 
+		//document.querySelector('.total-price').innerHTML = totalprice;
+		// alert("dsfsdf  " + document.getElementById("22").checked);
 		for(i = 0; i < count; i++) {
 			if(document.getElementById(shoppingcarts[i].id).checked) {
 				totalprice += shoppingcarts[i].price;
 				countFinal++;
 			}
 		}
-		 
+		//alert("dsfs " + totalprice);
  		document.querySelector('.total-price').innerHTML = totalprice;
 		document.querySelector('.final-checkout').innerHTML = totalprice;
 		document.querySelector('.final-count').innerHTML = countFinal;
         document.querySelector('#totalPrice').value = totalprice;
 
 	}
-
 
 
 	
@@ -299,7 +299,8 @@ $(document).ready(function () {
       //  document.querySelector('#totalPrice').value = totalprice;
         document.querySelector('#uid').value = uid;
         document.querySelector('#fidStr').value = fidStr;
- 
+
+
 
 	}
 
