@@ -31,9 +31,21 @@ class PaymentController extends Controller
             "uid"=>$uid ,
             "fidStr" =>$fidStr
             ];
+			
+			
+			
+			if($totalPrice >0.5){
+				 //return view('paymentform.index');
+				return \View::make('paymentform.index')->with('value',$value);
+			}else{
+				$message =[
+				"error"=>"Please let the admin know that you cannot purchase book of price less than 50 cents"
+				];
+				return \View::make('about.contact')->with('message','Please let the admin know that you cannot purchase book of price less than 50 cents');
+				
+			}
 
-         //return view('paymentform.index');
-         return \View::make('paymentform.index')->with('value',$value);
+        
     }
 
 

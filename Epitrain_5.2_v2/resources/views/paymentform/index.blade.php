@@ -11,12 +11,11 @@
 
     $totalPrice = $totalPrice*100;
 
-
+ 
     $fidStrArray = explode(",", $fidStr); // retrieve the fid of the books user want to purchase
 
     $sizeOfFidStrArray = count($fidStrArray);  //count how many books
-
-
+ 
         ?>
 
 
@@ -68,7 +67,6 @@
 
         }
 
-
     ?>
 
 
@@ -77,6 +75,10 @@
             </table>
 
 
+ 	
+			
+ 		
+			
 <!-- Payment button from stripe -->
 <form action=<?php echo URL::route('paymentForm');?> method="POST">
   <script id="stripe-data"
@@ -95,8 +97,8 @@
   <input type="hidden" id="fidStr" name="fidStr" value=<?php echo $fidStr ?> />
 </form>
 
- 
-
+  
+ 	
 
 
 @endsection

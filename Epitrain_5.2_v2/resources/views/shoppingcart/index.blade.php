@@ -155,14 +155,14 @@ function callApi(url) {
  	
  	<div style="position:absolute;left:40px;top:90px">
 		<!-- form to link to the payment form index page -->
-		<form action=<?php echo URL::route('payment');?>  method="post">
+		<form action=<?php echo URL::route('payment');?>  method="post"> 
 			<input type="hidden" name="totalPrice" id="totalPrice" value=""/>
-			<input type="hidden" name="uid" id="uid" value=""/>
-			<input type="hidden" name="fidStr" id="fidStr" value=""/>
+        	<input type="hidden" name="uid" id="uid" value=""/>
+        	<input type="hidden" name="fidStr" id="fidStr" value=""/>
 			<button onclick="pay()" class="btn btn-raised btn-primary initialism " style="width:200px;">
 					Checkout
 			</button>
-		</form>
+		 </form>
  	</div>
  	
  </table>
@@ -199,7 +199,7 @@ function callApi(url) {
 			            $expireOrnot = $currentTime->lt($end_Date);
 			     ?>
 
-			     	<!-- @if($expireOrnot)
+			     	 @if($expireOrnot)
 			     		<font style="color:black; float:right" size = "4">Total: S$<span id="final-checkout">0</span></font>
 			     	 @else
 			     		<font style="color:black; float:right" size = "4">Total: S$<span id="final-checkout"></span></font>
@@ -211,7 +211,7 @@ function callApi(url) {
 			 	 @endif
 			 	 <br/>
 			 	 <br/>
-			 	 <input type="hidden" name="totalPrice" id="totalPrice" value=""/>
+			 	<!-- <input type="hidden" name="totalPrice" id="totalPrice" value=""/>
 					<input type="hidden" name="uid" id="uid" value=""/>
 					<input type="hidden" name="fidStr" id="fidStr" value=""/>
 				     <button class="btn btn-success btn-raised pull-right" style="display:inline-block" onclick="pay()"><i class="fa fa-credit-card-alt" aria-hidden="true"></i>&nbsp&nbspPay</button>
@@ -252,7 +252,7 @@ $(document).ready(function () {
 	//alert("Info " + document.getElementById('total-price').innerHTML);
 
 	document.getElementById('total-price').innerHTML = totalprice;
-	document.getElementById('final-checkout').innerHTML = totalprice;
+	document.getElementById('#final-checkout').innerHTML = totalprice;
 	document.querySelector('.final-count').innerHTML = countFinal;
 	document.querySelector('#totalPrice').value = totalprice;
 
@@ -272,8 +272,8 @@ $(document).ready(function () {
 			}
 		}
 		//alert("dsfs " + totalprice);
- 		document.querySelector('.total-price').innerHTML = totalprice;
-		document.querySelector('.final-checkout').innerHTML = totalprice;
+ 		document.querySelector('#total-price').innerHTML = totalprice;
+		document.querySelector('#final-checkout').innerHTML = totalprice;
 		document.querySelector('.final-count').innerHTML = countFinal;
         document.querySelector('#totalPrice').value = totalprice;
 
@@ -290,16 +290,19 @@ $(document).ready(function () {
         console.log(totalprice);
 		for(i = 0; i < count; i++) {
 			if(document.getElementById(shoppingcarts[i].id).checked) {
+				
 				countFinal++;
 				fidStr = fidStr + "," + shoppingcarts[i].id;
+				 
 			}
 		}
-
+ 
         countTotalprice();
       //  document.querySelector('#totalPrice').value = totalprice;
         document.querySelector('#uid').value = uid;
-        document.querySelector('#fidStr').value = fidStr;
+		
 
+        document.querySelector('#fidStr').value = fidStr;
 
 
 	}
