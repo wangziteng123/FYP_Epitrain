@@ -19,11 +19,16 @@ body{
     $parts = parse_url($url);
     parse_str($parts['query'], $chosenCategory);
     //var_dump($parts);
-
-    $bookList = \DB::table('fileentries')
+    if (strcmp($chosenCategory['cat'], "viewAll") == 0) {
+      $bookList = \DB::table('fileentries')
+        ->paginate(10)
+        ->setPath('/shop?cat='.$chosenCategory['cat']);
+    } else {
+      $bookList = \DB::table('fileentries')
         ->where('category', $chosenCategory['cat'])
-        ->get();
-    
+        ->paginate(10)
+        ->setPath('/shop?cat='.$chosenCategory['cat']);
+    }
     //var_dump($bookList);
     
 ?>
@@ -34,7 +39,11 @@ body{
                 <div class="panel-heading">Epishop</div>
 
                 <div class="panel-body">
+                  <?php if (strcmp($chosenCategory['cat'], "viewAll") == 0) { ?>
+                    <h1><font color="black">All books in shop</font></h1>
+                  <?php } else { ?>
                     <h1><font color="black">Books under <?php echo $chosenCategory['cat'];?> category</font></h1>
+                  <?php };?>
                 </div>
 
                 @foreach($bookList as $book)
@@ -125,6 +134,7 @@ body{
 
             </div>
         </div>
+        {{ $bookList->links() }}
     </div>
 </div>
 <link rel="stylesheet" href="{{ URL::asset('css/style.css') }}" />

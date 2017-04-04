@@ -391,37 +391,19 @@ class ForumController extends Controller
 
                  $error = "Category successfully added";
             }
-
-
 	    }catch (\Exception $e){
-
 	         $error = "failed";
              $data = array(
                 'error'  => $error
              );
-
-
-
 	    }finally{
 	        if($error == "Category successfully added"){
                 flash('Category added Successfully!', 'success');
             }
-
-
             else{
                 flash('Category was not added!', 'danger');
             }
             return redirect('forumAdmin');
-
-
 	    }
-
-
     }
-
-
-	
-	
-
-
 }

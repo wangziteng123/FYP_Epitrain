@@ -116,7 +116,7 @@
             $count = count($shoppingcartExist);
         } 
     }
-   
+    $categories = \DB::table('category') ->get();
 ?>
     <header>
     <nav class="navbar navbar-inverse" >
@@ -141,31 +141,26 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
                     <li><a href="{{ url('/home') }}">Home</a></li>
-                
-								
-								<!--Categories-->
-								@if(Auth::guest())
-									@elseif(Auth::user()->isAdmin)
-									@else
-										<li class="dropdown">
-											<a class="dropdown-toggle" data-toggle="dropdown">Categories<b class="caret"></b></a>
-											<ul class="dropdown-menu">
-												<li><a id = 'link-1' href='/shop'> <span class="white-text text-darken-2" id="cat-1">Trading</span></a></li>
-												<li><a id = 'link-2' href='/shop'> <span class="white-text text-darken-2" id="cat-2">Risk Management</span></a></li>
-												<li><a id = 'link-3' href='/shop'> <span class="white-text text-darken-2" id="cat-3">Fintech</span></a></li>
-												<li><a id = 'link-4' href='/shop'> <span class="white-text text-darken-2" id="cat-4">Project Management</span></a></li>
-												<li><a id = 'link-5' href='/shop'> <span class="white-text text-darken-2" id="cat-5">Finance</span></a></li>
-												<li><a id = 'link-6' href='/shop'> <span class="white-text text-darken-2" id="cat-6">Business Management</span></a></li>
-												
-												<li><a id = 'link-7' href='/shop'> <span class="white-text text-darken-2" id="cat-7">Leadership</span></a></li>
-												<li><a id = 'link-8' href='/shop'> <span class="white-text text-darken-2" id="cat-8">Financial Market</span></a></li>
-												
-												<li><a href='/shop?cat=viewAll'> <span class="white-text text-darken-2">View All</span></a></li>
-											</ul>
-										</li>
-									@endif
+						
+						<!--Categories-->
+						@if(Auth::guest())
+						@elseif(Auth::user()->isAdmin)
+						@else
+							<li class="dropdown">
+								<a class="dropdown-toggle" data-toggle="dropdown">Categories<b class="caret"></b></a>
+								<ul class="dropdown-menu">
+                                    @for ($i = 1; $i < 9; $i++)
+                                        <?php $category = $categories[$i]; ?>
+                                        <li><a id =<?php echo "link-".$i;?> href='/shop'><span class="white-text text-darken-2" id=<?php echo "cat-".$i;?>><?php echo $category->categoryname; ?></span></a></li>
+                                    @endfor
+									<li><a id = 'link-1' href='/shop'> <span class="white-text text-darken-2" id="cat-1">Trading</span></a></li>
 									
+									<li><a href='/shop?cat=viewAll'> <span class="white-text text-darken-2">View All</span></a></li>
 								</ul>
+							</li>
+						@endif
+							
+						</ul>
 								
 								
                 @if(Auth::check())

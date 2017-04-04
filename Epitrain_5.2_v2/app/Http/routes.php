@@ -47,7 +47,7 @@ Route::group(['middleware' => ['auth','admin']], function() {
 	Route::get('/forumAdmin', ['as'=>'forumAdmin', 'uses'=>'ForumController@indexAdmin']);
 	Route::post('/deleteDiscussion', ['as' => 'deleteDiscussion', 'uses' => 'ForumController@deleteDiscussion']);
 	Route::post('/closeDiscussion', ['as' => 'closeDiscussion', 'uses' => 'ForumController@closeDiscussion']);
-    Route::post('/addCategory', ['as' => 'addCategory', 'uses' => 'ForumController@addCategory']);
+    Route::post('/addCategory', ['as' => 'addCategory', 'uses' => 'CategoryController@addCategory']);
     Route::post('/deleteComment', ['as' => 'deleteComment', 'uses' => 'ForumController@deleteComment']);
     //payment routes
 	Route::post('/payment', ['as' => 'payment', 'uses' => 'PaymentController@index']);
