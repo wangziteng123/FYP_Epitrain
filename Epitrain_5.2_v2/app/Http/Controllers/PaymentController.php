@@ -38,10 +38,8 @@ class PaymentController extends Controller
 				 //return view('paymentform.index');
 				return \View::make('paymentform.index')->with('value',$value);
 			}else{
-				$message =[
-				"error"=>"Please let the admin know that you cannot purchase book of price less than 50 cents"
-				];
-				return \View::make('about.contact')->with('message','Please let the admin know that you cannot purchase book of price less than 50 cents');
+				$message = "Please let the admin know that you cannot purchase book of price less than 50 cents";
+				return \View::make('about.contact')->with('errorMsg',$message);
 				
 			}
 

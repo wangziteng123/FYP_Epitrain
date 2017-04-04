@@ -63,13 +63,8 @@ class Payment extends Authenticatable
 
      }
 
-        function makepayment($value){
+   function makepayment($value){
             try{
-
-                // Setup payment Gateway
-               // $payGateway = Omnipay::create('Stripe');
-
-
 
             // Set your secret key: remember to change this to your live secret key in production
             // See your keys here: https://dashboard.stripe.com/account/apikeys
@@ -79,25 +74,23 @@ class Payment extends Authenticatable
             // Get the payment token submitted by the form:
             $token = $value['token'];
             $totalPrice= $value['amount'];
+            $fidStr = $value['fidStr'];
+            $userPaymentEmail = $value['receipt_email'];
 
             // Charge the user's card:
             $charge = \Stripe\Charge::create(array(
               "amount" => $totalPrice,
               "currency" => "sgd",
-              "description" => "Example charge",
-              "source" => $token
+              "description" => $fidStr,
+              "source" => $token,
+              "receipt_email" => $userPaymentEmail
             ));
-
-
-
-
-
 
 
             $chargeID = $charge->id;
             $chargeOutcome = "Payment failed";
             $chargeOutcome = $charge->outcome->seller_message;
-            echo var_dump($chargeOutcome);
+
 
              if($chargeOutcome == "Payment complete."){
                 return $chargeOutcome;
@@ -106,12 +99,6 @@ class Payment extends Authenticatable
              else{
                 return $chargeOutcome;
              }
-
-
-
-
-
-
 
 
 

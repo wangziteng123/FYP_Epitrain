@@ -70,6 +70,11 @@
     <script src="{{ asset('js/jquery.tipsy.js')}}"></script>
     <link rel="stylesheet" href="{{ asset('css/tipsy.css')}}" type="text/css">
 
+    <!--Morris Chart-->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="http://cdn.oesmith.co.uk/morris-0.4.1.min.js"></script>
+
+
     <script type='text/javascript'>
      $(function() {
        $('.tooltipTipsy').tipsy({fade: true, gravity: 'n'});
