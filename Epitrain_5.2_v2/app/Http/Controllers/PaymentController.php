@@ -37,8 +37,13 @@ class PaymentController extends Controller
 			if($totalPrice >0.5){
 				 //return view('paymentform.index');
 				return \View::make('paymentform.index')->with('value',$value);
+			}
+			else if($totalPrice = null || strlen($fidStr) >1 ){
+			    $message = "Please let the admin know that you cannot purchase book of price less than 50 cents";
+                return redirect('shoppingcart')->with('message',$message);
 			}else{
-				$message = "Please let the admin know that you cannot purchase book of price less than 50 cents";
+				  $message = "Please select at least a book";
+
 				return redirect('shoppingcart')->with('errorMsg',$message);
 
 				

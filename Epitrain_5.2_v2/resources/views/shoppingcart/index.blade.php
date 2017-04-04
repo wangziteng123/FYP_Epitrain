@@ -15,6 +15,12 @@
       <p style="font-size:18px"> <b>{{ Session::get('errorMsg') }}</b></p>
     </div>
 @endif
+@if(Session::has('message'))
+    <div class="alert alert-danger">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <p style="font-size:18px"> <b>{{ Session::get('message') }}</b></p>
+    </div>
+@endif
 <?php
 
 		$shoppingcarts = \DB::table('shoppingcarts')
@@ -160,7 +166,7 @@ function callApi(url) {
  	 @endif
 
 
-
+<!-- only allow user there is at least 1 book that is ticked -->
  	@if($totalprice > 0.5)
  	<div style="position:absolute;left:40px;top:90px">
 		<!-- form to link to the payment form index page -->

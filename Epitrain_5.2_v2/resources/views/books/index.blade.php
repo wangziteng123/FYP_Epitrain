@@ -42,6 +42,9 @@ body{
                     <br/>
                     <?php
                         $checkid = $book->id;
+                        $checkidStr = (string) $checkid;
+                        $checkidStr = ",". $checkidStr;
+
                         $countNum = 0;
                         $countNum ++;
                         //array_push($filenameArr,$book->filename);
@@ -103,9 +106,10 @@ body{
                                       <font style="">Bought Already</font>
                                   </button>
                                 @else
-                                <form action=<?php echo url('shoppingcart/addtolibrary');?> method="post">
+                                <form action=<?php echo URL::route('payment');?> method="post">
                                     <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                    <input type="hidden" name="fidStr" value=<?php echo $checkid;?>>
+                                    <input type="hidden" name="fidStr" value=<?php echo $checkidStr;?>>
+                                    <input type="hidden" name="totalPrice" id="totalPrice" value="<?php echo $book->price;?>"/>
                                         <button class="btn btn-raised btn-warning">
                                             <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                                             Buy Now

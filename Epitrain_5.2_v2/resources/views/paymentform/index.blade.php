@@ -11,10 +11,8 @@
 
     $totalPrice = $totalPrice*100;
 
- 
-    $fidStrArray = explode(",", $fidStr); // retrieve the fid of the books user want to purchase
-
-    $sizeOfFidStrArray = count($fidStrArray);  //count how many books
+     $fidStrArray = explode(",", $fidStr); // retrieve the fid of the books user want to purchase
+     $sizeOfFidStrArray = count($fidStrArray);  //count how many books
  
         ?>
 
@@ -38,8 +36,7 @@
 
 
         <?php
-
-        for($start = 0; $start < $sizeOfFidStrArray-1; $start++ ){
+         for($start = 0; $start < $sizeOfFidStrArray-1; $start++ ){
 
             $fileentry_id = $fidStrArray[$start +1];
 
