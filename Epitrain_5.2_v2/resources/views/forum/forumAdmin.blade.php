@@ -10,12 +10,12 @@
     </div>
 </div>
 <?php
-	$categories = \DB::table('forumcategory') ->get();
+	$categories = \DB::table('category') ->get();
 
 	$discussions = \DB::table('forumdiscussion')
-		->join('forumcategory', 'forumdiscussion.category_id', '=', 'forumcategory.id')
+		->join('category', 'forumdiscussion.category_id', '=', 'category.id')
 		->join('users', 'forumdiscussion.user_id', '=', 'users.id')
-        ->select('forumdiscussion.*', 'forumcategory.categoryname', 'users.name')
+        ->select('forumdiscussion.*', 'category.categoryname', 'users.name')
         ->orderBy('created_at', 'desc') 
         ->paginate(5);
 
@@ -315,7 +315,7 @@
       @foreach($categories as $category)
         <a href="#"><font size="3"><?php echo $category->categoryname;?></font></a><br/>
           <option value=<?php echo $category->id;?> style=""><?php echo $category->categoryname;?></option>
-        @endforeach
+      @endforeach
     </select>
     
     <div class="form-group">

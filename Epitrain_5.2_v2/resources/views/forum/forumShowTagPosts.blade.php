@@ -15,12 +15,12 @@
     </div>
 </div>
 <?php
-	$categories = \DB::table('forumcategory') ->get();
+	$categories = \DB::table('category') ->get();
 	
 	$discussions = \DB::table('forumdiscussion') 
-		->join('forumcategory', 'forumdiscussion.category_id', '=', 'forumcategory.id')
+		->join('category', 'forumdiscussion.category_id', '=', 'category.id')
 		->join('users', 'forumdiscussion.user_id', '=', 'users.id')
-        ->select('forumdiscussion.*', 'forumcategory.categoryname', 'users.name')
+        ->select('forumdiscussion.*', 'category.categoryname', 'users.name')
         ->paginate(5);
         
     //Added Here
@@ -128,9 +128,9 @@
             
             //Changed Here
             $discussion = \DB::table('forumdiscussion')
-                ->join('forumcategory', 'forumdiscussion.category_id', '=', 'forumcategory.id')
+                ->join('category', 'forumdiscussion.category_id', '=', 'category.id')
                 ->join('users', 'forumdiscussion.user_id', '=', 'users.id')
-                ->select('forumdiscussion.*', 'forumcategory.categoryname', 'users.name')
+                ->select('forumdiscussion.*', 'category.categoryname', 'users.name')
                 -> where ('forumdiscussion.id', '=', $discId->discussion_id)
                 -> first();
             

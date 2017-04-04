@@ -5,7 +5,7 @@
 <link type="text/css" rel="stylesheet" href="css/fileentry.css"/>
 @section('content')
 <?php 
-
+  $categories = \DB::table('category') ->get();
 ?>
 <div class="row">
     <div class="col-sm-6">
@@ -41,7 +41,7 @@
     <!-- Jumbotron Header -->
         <header class="jumbotron col-md-6 col-md-offset-3">
           <div class="container">
-            <form action="fileentry/add" id="uploadform" method="post" enctype="multipart/form-data" style="max-width: 100%; min-height: 480px;margin:0 auto; border: 0px solid white;" onsubmit="" class="form-horizontal">
+            <form action=<?php echo URL::route('addentry');?> id="uploadform" method="post" enctype="multipart/form-data" style="max-width: 100%; min-height: 480px;margin:0 auto; border: 0px solid white;" onsubmit="" class="form-horizontal">
               <legend><strong>Upload New File</strong></legend>
             
                 <div class="form-group is-empty is-fileinput">
@@ -61,6 +61,9 @@
                 <label for="selectCat" class ="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Category</label>
                 <div class = "col-md-10">
                     <select name="category" style="font-size:14px" id = "selectCat" class="form-control" placeholder="Choose ebook category">
+                      @foreach($categories as $category)
+                          <option value=<?php echo $category->id;?>><font color="black" size = "3"><?php echo $category->categoryname;?></font></option>
+                      @endforeach
                       <option value="Trading" selected><font color="black" size = "3">Trading</font></option>
                       <option value="Risk Management"><font color="black" size = "3">Risk Management</font></option>
                       <option value="Fintech"><font color="black" size = "3">Fintech</font></option>
@@ -105,16 +108,16 @@
         <div class="row">
             <div class="col-sm-12">
                 <span style="color:black" class= "col-sm-4 col-sm-offset-4">Sort files by: 
-                      <form method="post" id="sortForm" action=<?php echo URL::route('fileSort');?>>
+                      <form method="get" id="sortForm" action=<?php echo URL::route('fileSort');?>>
                           <input type="hidden" id="mode" name="mode" value="<?php echo $mode;?>">
                           <input type="hidden" id="sortField" name="sortField" value="">
                           <input type="submit" value="Name" class="btn btn-primary btn-raised" onclick="populateField('original_filename')"></input>
-                          <input type="submit" value="Category" class="btn btn-primary btn-raised" onclick="populateField('category')"></input>
-                          <input type="submit" value="Price" class="btn btn-primary btn-raised" onclick="populateField('price')"></input>
+                          <input type="submit" value="category" class="btn btn-primary btn-raised" onclick="populateField('category')"></input>
+                          <input type="submit" value="price" class="btn btn-primary btn-raised" onclick="populateField('price')"></input>
                       </form>
                 </span>
                 <span style="color:black" class= "col-sm-4 col-sm-offset-4">Filter files by category: 
-                  <form method="post" id="filterForm" action=<?php echo URL::route('fileFilter');?>>
+                  <form method="get" id="filterForm" action=<?php echo URL::route('fileFilter');?>>
                     <input type="hidden" id="mode" name="mode" value="<?php echo $mode;?>">
                     <div class="form-group">
                       <div class = "col-sm-10 col-sm-offset-1">
@@ -162,6 +165,7 @@
                       $fileName = $entry->original_filename; 
                       $fileCategory = $entry->category;
                       $filePrice = $entry->price;
+                      $realFileName = $entry->filename;
                     ?>
                     @if(strlen($fileName) > 30)
                     <p style="font-size:14px"><strong>{{substr($fileName,0,30)."..." }}</strong></p>
@@ -178,9 +182,9 @@
 
                     @if (Auth::user()->isAdmin)
                       <!-- Button trigger modal for adding category -->
-                      <button type="button" class="btn btn-raised btn-warning" data-toggle="modal" data-target="#editModal" style = "font-size:14px" onclick="loadModal(<?php echo $fileName;?>, <?php echo $fileCategory;?>, <?php echo $filePrice;?>, <?php echo $entry->description;?>)">
-                           Edit
-                      </button>
+                      
+
+                      <?php echo '<button type="button" class="btn btn-raised btn-warning" data-toggle="modal" data-target="#editModal" onclick="loadModal(\'' . $realFileName . '\',\'' . $fileCategory . '\',\'' . $filePrice . '\',\'' . $entry->description . '\')" >Edit</button>'; ?>
 
                       {{ Form::open(array('method'
                       => 'DELETE', 'route' => array('deleteentry', $entry->filename))) }}
@@ -206,23 +210,12 @@
       <div class="modal-body">
         <!-- Add a form inside the edit category modal-->
           <font color='black'> 
-            <form action="fileentry/edit" id="editform" method="post" enctype="multipart/form-data" style="max-width: 100%; min-height: 480px;margin:0 auto; border: 0px solid white;" onsubmit="" class="form-horizontal">
-              <legend><strong>Upload File</strong></legend>
+            <form action=<?php echo URL::route('editentry');?> id="editform" method="post" style="max-width: 100%; min-height: 480px;margin:0 auto; border: 0px solid white;" onsubmit="" class="form-horizontal">
+              <legend><strong>Edit book details</strong></legend>
+              <div class="form-group">
+                <input type="hidden" name="oldFileName" id= "existingFile" class="form-control" value="">
+              </div>
 
-                <input type="hidden" name="oldFileName" value=<?php echo($entry->filename);?>>
-                <div class="form-group is-empty is-fileinput">
-                  <!--<div class="btn" style="padding-top:0px !important">-->
-                  <label for="inputFile" class="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Upload</label>   
-                    <!--<span size = "3" >Upload</span>-->
-                    <div class = "input-group col-md-9">
-                      <input type="text" readonly class="form-control" placeholder="Select file to upload" style ="font-size:18px" id="existingFile" value="">
-                      <input type="file" name="filefield" value="{{ csrf_token() }}" style="color:black" accept="application/pdf" value="">
-                    </div>
-                  <!--<div class="file-path-wrapper">
-                    <input class="file-path validate" type="text" placeholder="Select a file to upload" style="color:black;font-size:16px">
-                  </div>-->
-                </div>
-             
               <div class="form-group">
                 <label for="selectCatEdit" class ="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Category</label>
                 <div class = "col-md-10">

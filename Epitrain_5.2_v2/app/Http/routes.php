@@ -37,9 +37,13 @@ Route::group(['middleware' => ['auth','admin']], function() {
 	Route::get('/viewAllUsers', 'UserController@viewAllUsers');
 	Route::delete('fileentry/delete/{filename}', [
 	'as'=>'deleteentry', 'uses'=>'FileEntryController@delete']);
-	Route::post('fileentry/sort', ['as' => 'fileSort', 'uses' => 'FileEntryController@sort']);
-	Route::post('fileentry/filter', ['as' => 'fileFilter', 'uses' => 'FileEntryController@filter']);
-
+	Route::get('fileentry/sort', ['as' => 'fileSort', 'uses' => 'FileEntryController@sort']);
+	Route::get('fileentry/filter', ['as' => 'fileFilter', 'uses' => 'FileEntryController@filter']);
+	Route::post('fileentry/add', [
+		'as'=>'addentry', 'uses'=>'FileEntryController@add']);
+	Route::post('fileentry/edit', [
+		'as'=>'editentry', 'uses'=>'FileEntryController@edit']);
+	
 	Route::get('/forumAdmin', ['as'=>'forumAdmin', 'uses'=>'ForumController@indexAdmin']);
 	Route::post('/deleteDiscussion', ['as' => 'deleteDiscussion', 'uses' => 'ForumController@deleteDiscussion']);
 	Route::post('/closeDiscussion', ['as' => 'closeDiscussion', 'uses' => 'ForumController@closeDiscussion']);
@@ -76,11 +80,6 @@ Route::group(['middleware' => 'auth'], function() {
 
 	Route::get('fileentry/getViewer/{filename}', [
 		'as'=>'getviewer', 'uses'=>'FileEntryController@getPdfViewer']);
-
-	Route::post('fileentry/add', [
-		'as'=>'addentry', 'uses'=>'FileEntryController@add']);
-	Route::post('fileentry/edit', [
-		'as'=>'editentry', 'uses'=>'FileEntryController@edit']);
 
 	Route::get('mylibrary', 'MyLibraryController@index');
 	Route::get('shop', 'HomeController@shop');

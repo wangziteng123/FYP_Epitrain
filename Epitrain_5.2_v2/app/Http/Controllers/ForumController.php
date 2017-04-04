@@ -302,7 +302,7 @@ class ForumController extends Controller
 
         DB::table('forumdiscussion')->where('id','=', $discussion_id)->delete();
         
-        return view('forum.forumAdmin');
+        return redirect('forumAdmin');
     }
 
     public function deleteComment(Request $request){
@@ -365,22 +365,17 @@ class ForumController extends Controller
         
         $user->notify(new ClosedDiscussion($forumpageUrl));
          
-         //To here
+        //To here
          
-         DB::table('forumdiscussion')->where('id','=', $discussion_id)->update(['isOpen' => "1"]);
-
-
-          return view('forum.forumAdmin');
-
-
-
+        DB::table('forumdiscussion')->where('id','=', $discussion_id)->update(['isOpen' => "1"]);
+        return redirect('forumAdmin');
     }
 	
 	public function addCategory(Request $request){
 	    $error="";
 	    try{
 	        $categoryName = $request->get('categoryName');
-                $allCategory = DB::table('forumcategory') -> get();
+                $allCategory = DB::table('category') -> get();
                     $noOfCategories = sizeof($allCategory);
                      $categoryID = $noOfCategories + 1;
 
@@ -390,12 +385,9 @@ class ForumController extends Controller
                    $error = "failed";
 
                 }
-
-
             }
-
             if ($error == ""){
-                 DB::table('forumcategory')->insert(['id' => $categoryID, 'categoryname' => $categoryName]);
+                 DB::table('category')->insert(['id' => $categoryID, 'categoryname' => $categoryName]);
 
                  $error = "Category successfully added";
             }
