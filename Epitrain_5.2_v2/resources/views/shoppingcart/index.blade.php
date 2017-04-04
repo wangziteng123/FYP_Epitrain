@@ -9,6 +9,12 @@
         </ul>
     </div>
 </div>
+@if(Session::has('errorMsg'))
+    <div class="alert alert-danger">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <p style="font-size:18px"> <b>{{ Session::get('errorMsg') }}</b></p>
+    </div>
+@endif
 <?php
 
 		$shoppingcarts = \DB::table('shoppingcarts')
@@ -152,7 +158,10 @@ function callApi(url) {
  		</div>
 
  	 @endif
- 	
+
+
+
+ 	@if($totalprice > 0.5)
  	<div style="position:absolute;left:40px;top:90px">
 		<!-- form to link to the payment form index page -->
 		<form action=<?php echo URL::route('payment');?>  method="post"> 
@@ -164,6 +173,7 @@ function callApi(url) {
 			</button>
 		 </form>
  	</div>
+ 	@endif
  	
  </table>
  </div>

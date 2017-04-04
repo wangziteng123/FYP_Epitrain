@@ -74,7 +74,7 @@ class ShoppingController extends Controller
         return view('mylibrary.index');
     }
 
-
+// add books to library after payment
      public function addToLibrary(Request $request) {
         $user_id = $request->get('uid');
 

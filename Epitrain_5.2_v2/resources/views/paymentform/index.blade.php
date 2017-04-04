@@ -5,9 +5,9 @@
 
     <?php
 
-    $totalPrice = $value["totalPrice"];
-    $uid = $value["uid"];
-    $fidStr = $value["fidStr"];
+    $totalPrice = $value["totalPrice"]; //retrieve the total price of the books being purchase
+    $uid = $value["uid"];   //retrieve the user id
+    $fidStr = $value["fidStr"]; //retrieve all the id of the books being purchase
 
     $totalPrice = $totalPrice*100;
 
@@ -74,9 +74,6 @@
 
             </table>
 
-
- 	
-			
  		
 			
 <!-- Payment button from stripe -->

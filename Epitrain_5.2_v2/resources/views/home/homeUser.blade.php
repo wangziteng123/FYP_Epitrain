@@ -2,9 +2,7 @@
     <div class="container" style="positon:relatvie">
 
 
-        <div class="row">
-          <font size="3">WELCOME TO EPITRAIN</font><br/><br/>
-        </div>
+
         <div class="row">
           <h2>Epitrain provides training, resource development & consultancy</h2>
         </div>

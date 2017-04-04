@@ -33,20 +33,21 @@ class PaymentController extends Controller
             ];
 			
 			
-			
+			// only allow payment for price larger than 50 cents
 			if($totalPrice >0.5){
 				 //return view('paymentform.index');
 				return \View::make('paymentform.index')->with('value',$value);
 			}else{
 				$message = "Please let the admin know that you cannot purchase book of price less than 50 cents";
-				return \View::make('about.contact')->with('errorMsg',$message);
+				return redirect('shoppingcart')->with('errorMsg',$message);
+
 				
 			}
 
         
     }
 
-
+// receive the payment details, such as books and user id, from the purchase list
   public function paymentForm(Request $request){
          // $category_id = $request->get('category');
 
