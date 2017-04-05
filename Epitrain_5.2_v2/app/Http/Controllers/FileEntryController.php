@@ -71,32 +71,24 @@ class FileEntryController extends Controller
 		$category = $request->input('category');
 		$price = $request->input('price');
 		$description = $request->input('description');
+
+ 		//create record in fileentry table
+		//$file = Request::file('filefield');
 		$file = $request->file('filefield');
+		$extension = $file->getClientOriginalExtension();
+		Storage::disk('local')->put($file->getFilename().'.'.$extension,  File::get($file));
+		$entry = new Fileentry();
+		$entry->mime = $file->getClientMimeType();
+		$entry->original_filename = $file->getClientOriginalName();
+		$entry->filename = $file->getFilename().'.'.$extension;
 
-		if ($file != null) {
-			$n_file = File::get($file);
-			$extension = $file->getClientOriginalExtension();
-			if($extension === 'xlsm' || $extension === 'xls' || $extension === 'xlsx'){
-		      	$encrypted = Crypt::encrypt($n_file);
-		      	Storage::disk('s3')->put('spreadsheets/'.$file->getFilename().'.'.$extension,  $encrypted);
-		    } else {
-		    	Storage::disk('s3')->put('ebooks/'.$file->getFilename().'.'.$extension,  $n_file);
-		    }	
-			$entry = new Fileentry();
-			$entry->mime = $file->getClientMimeType();
-			$entry->original_filename = $file->getClientOriginalName();
-			$entry->filename = $file->getFilename().'.'.$extension;
-
-			$entry->category = $category;
-			$entry->price = $price;
-			$entry->description = $description;
-	 
-			$entry->save();
-	 
-			return redirect('fileentry')->with('success', "File successfully uploaded!");
-		} else {
-			return redirect('fileentry')->with('failure', "You haven't chosen any file to upload.");
-		}	
+		$entry->category = $category;
+		$entry->price = $price;
+		$entry->description = $description;
+ 
+		$entry->save();
+ 
+		return redirect('fileentry');
 	}
 
 	public function edit(Request $request) {
