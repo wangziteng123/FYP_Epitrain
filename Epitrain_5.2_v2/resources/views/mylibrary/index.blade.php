@@ -17,14 +17,16 @@
             ->get();
 
 ?>
-<div class="col-lg-12" style="position:relative">
+<div class="container" >
 
- <div class="col-lg-10" style="position:relative; left:90px">
+ <div class="col-sm-12">
 
                 <!-- Blog Post -->
 
                 <!-- Title -->
-                <h1 style="position: absolute;left: 14px;">My Library</h1>
+								<div class="row">
+									<h1>My Library</h1>
+								</div>
                 <br/><br/><br/>
                 <hr>
             <?php
@@ -38,7 +40,6 @@
                         array_push($filenameArr,$entry->filename);
                         $container = "container".$countNum;
                     ?>
-
                 <div class="col-sm-4 col-xs-5 col-md-3 hero-feature" >
 
                 <div class="thumbnail">

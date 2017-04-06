@@ -133,19 +133,19 @@ foreach($lastFiveMonthsArr as $monthyear) {
                 <div class="col-lg-3">
                     <div class="alert alert-success text-center">
                         <i class="fa fa-users fa-3x"></i>&nbsp;&nbsp;<b><?php echo $numOfUsers?> </b>total users
-                        <br/><br/><a href="{{ url('/viewAllUsers') }}" class="btn btn-default btn-block">Manage</a>
+                        <br/><br/><a href="{{ url('/viewAllUsers') }}" class="btn btn-default btn-raised">Manage</a>
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="alert alert-info text-center">
                         <i class="fa fa-book fa-3x"></i>&nbsp;&nbsp;<b><?php echo $numOfEbooks?> </b> ebooks in total
-                        <br/><br/><a href="{{ url('/fileentry') }}" class="btn btn-default btn-block">Manage</a>
+                        <br/><br/><a href="{{ url('/fileentry') }}" class="btn btn-default btn-raised">Manage</a>
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="alert alert-warning text-center">
                         <i class="fa fa-comments fa-3x"></i>&nbsp;&nbsp;<b><?php echo $numOfDiscussions?> </b> discussions in forum
-                        <br/><br/><a href="{{ url('/forumAdmin') }}" class="btn btn-default btn-block">Manage</a>
+                        <br/><br/><a href="{{ url('/forumAdmin') }}" class="btn btn-default btn-raised">Manage</a>
                     </div>
                 </div>
                 <!--end quick info section -->
@@ -158,14 +158,17 @@ foreach($lastFiveMonthsArr as $monthyear) {
 
                     <!--Area chart example -->
                     <div class="panel panel-primary">
+											
                         <div class="panel-heading">
                             <i class="fa fa-bar-chart-o fa-fw"></i>Revenue trend
                         </div>
 
                         <div class="panel-body">
+													<div class="container col-sm-3 col-lg-3">
                            <div id="line-example"></div>
+													</div>
                         </div>
-
+											
                     </div>
                     <!--End area chart example -->
                     <!--Simple table example -->

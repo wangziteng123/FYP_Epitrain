@@ -11,7 +11,9 @@
 
        <?php
          use Carbon\Carbon;
-
+         use Illuminate\Notifications\Notifiable;
+         use App\Notifications\SubscriptionExpiring;
+         
          $isSubscribe = Auth::user()->subscribe;
        ?>
 
@@ -25,6 +27,26 @@
               ->first();
 
             $end_Date = Carbon::createFromFormat('Y-m-d H:i:s', $userSubscribe->end_date);
+            
+            $expiring = $currentTime->diffInHours($end_Date);
+            
+            $informedEnding = $userSubscribe->informed_ending;
+            $homeUrl = URL::route('home');
+            
+            $user = Auth::user();
+            if($expiring <= 168){
+                if($informedEnding == 0){                    
+                    $user->notify(new SubscriptionExpiring($homeUrl));
+                    DB::table('subscription')
+                        -> where ('user_id', '=', $user->id)
+                        -> update(['informed_ending' => 1]);
+                }
+            } elseif($expiring > 168 && $userSubscribe->informed_ending == 1){
+                DB::table('subscription')
+                    -> where ('user_id', '=', $user->id)
+                    -> update(['informed_ending' => 0]);
+            }
+            
             $expireOrnot = $currentTime->lt($end_Date);
           ?>
           @if($expireOrnot)
@@ -101,9 +123,6 @@
 
           $price2 = $ebook->price; 
           $fid2 = $ebook->id;
-          $fid2Str = (string) $fid2; //convert to string so that i can pass to payment side when user purchase book
-          $fid2Str = ",".$fid2Str;
-
           $oriFilename2 = $ebook->original_filename;
           $description2= $ebook ->description;
 
@@ -165,10 +184,9 @@
                             </form>
                             <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:83px;top:105px"></i>
                         @else
-                            <form action=<?php echo URL::route('payment');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
+                            <form action=<?php echo url('shoppingcart/addToLibraryOne');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
                                 <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                <input type="hidden" name="fidStr" value=<?php echo $fid2Str?>>
-                                <input type="hidden" name="totalPrice" id="totalPrice" value=<?php echo $price2 ?> />
+                                <input type="hidden" name="fid" value=<?php echo $fid2?>>
                                 <button type="submit" style="border:none;background-color: Transparent">
                                    <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Purchase this book"></i>
                                 </button>
@@ -208,10 +226,9 @@
                         </form>
                         <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:83px;top:105px"></i>
                     @else
-                        <form action=<?php echo URL::route('payment');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
+                        <form action=<?php echo url('shoppingcart/addToLibraryOne');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
                             <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                            <input type="hidden" name="fidStr" value=<?php echo $fid2Str?>>
-                             <input type="hidden" name="totalPrice" id="totalPrice" value= <?php echo $price2 ?> />
+                            <input type="hidden" name="fid" value=<?php echo $fid2?>>
                             <button type="submit" style="border:none;background-color: Transparent">
                                <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Purchase this book"></i>
                             </button>
@@ -313,8 +330,6 @@
 
           $price4 = $ebook->price; 
           $fid4 = $ebook->id;
-          $fid4Str = (string) $fid4; //convert to string so that i can pass to payment side when user purchase book
-          $fid4Str = ",".$fid4Str;
           $oriFilename4 = $ebook->original_filename;
           $description4= $ebook ->description;
 
@@ -375,10 +390,9 @@
                                       </form>
                                       <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:83px;top:105px"></i>
                                   @else
-                                      <form action=<?php echo URL::route('payment');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
+                                      <form action=<?php echo url('shoppingcart/addToLibraryOne');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
                                           <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fidStr" value=<?php echo $fid4Str?>>
-                                           <input type="hidden" name="totalPrice" id="totalPrice" value=<?php echo $price4 ?> />
+                                          <input type="hidden" name="fid" value=<?php echo $fid4?>>
                                           <button type="submit" style="border:none;background-color: Transparent">
                                              <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Purchase this book"></i>
                                           </button>
@@ -420,10 +434,9 @@
                                       </form>
                                       <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:83px;top:105px"></i>
                                   @else
-                                      <form action=<?php echo URL::route('payment');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
+                                      <form action=<?php echo url('shoppingcart/addToLibraryOne');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
                                           <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fidStr" value=<?php echo $fid4Str?>>
-                                           <input type="hidden" name="totalPrice" id="totalPrice" value= <?php echo $price4 ?>/>
+                                          <input type="hidden" name="fid" value=<?php echo $fid4?>>
                                           <button type="submit" style="border:none;background-color: Transparent">
                                              <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Purchase this book"></i>
                                           </button>
@@ -524,9 +537,6 @@
 
           $price4 = $ebook->price; 
           $fid4 = $ebook->id;
-          $fid4Str = (string) $fid4; //convert to string so that i can pass to payment side when user purchase book
-          $fid4Str = ",".$fid4Str;
-
           $oriFilename4 = $ebook->original_filename;
           $description4= $ebook ->description;
 
@@ -586,10 +596,9 @@
                                       </form>
                                       <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:83px;top:105px"></i>
                                   @else
-                                      <form action=<?php echo URL::route('payment');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
+                                      <form action=<?php echo url('shoppingcart/addToLibraryOne');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
                                           <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fidStr" value=<?php echo $fid4Str?>>
-                                           <input type="hidden" name="totalPrice" id="totalPrice" value=<?php echo $price4 ?>/>
+                                          <input type="hidden" name="fid" value=<?php echo $fid4?>>
                                           <button type="submit" style="border:none;background-color: Transparent">
                                              <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Purchase this book"></i>
                                           </button>
@@ -632,10 +641,9 @@
                                       </form>
                                       <i class="fa fa-check-circle" aria-hidden="true" style="color:#82E0AA;position:absolute;right:83px;top:105px"></i>
                                   @else
-                                      <form action=<?php echo URL::route('payment');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
+                                      <form action=<?php echo url('shoppingcart/addToLibraryOne');?> method="post" style="position:absolute;right:85px;top:91px;border:none">
                                           <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                                          <input type="hidden" name="fidStr" value=<?php echo $fid4Str?>>
-                                           <input type="hidden" name="totalPrice" id="totalPrice" value=<?php echo $price4 ?>/>
+                                          <input type="hidden" name="fid" value=<?php echo $fid4?>>
                                           <button type="submit" style="border:none;background-color: Transparent">
                                              <i class="fa fa-shopping-bag fa-lg tooltipTipsy" aria-hidden="true" style="color:#808B96" title="Purchase this book"></i>
                                           </button>

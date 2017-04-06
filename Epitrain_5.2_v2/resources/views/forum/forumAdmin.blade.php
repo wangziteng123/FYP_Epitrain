@@ -11,13 +11,22 @@
 </div>
 <?php
 	$categories = \DB::table('category') ->get();
-
-	$discussions = \DB::table('forumdiscussion')
-		->join('category', 'forumdiscussion.category_id', '=', 'category.id')
-		->join('users', 'forumdiscussion.user_id', '=', 'users.id')
-        ->select('forumdiscussion.*', 'category.categoryname', 'users.name')
-        ->orderBy('created_at', 'desc') 
-        ->paginate(5);
+    
+    if(empty($discussions)){
+        $discussions = \DB::table('forumdiscussion') 
+            ->join('category', 'forumdiscussion.category_id', '=', 'category.id')
+            ->join('users', 'forumdiscussion.user_id', '=', 'users.id')
+            ->select('forumdiscussion.*', 'category.categoryname', 'users.name')
+            ->orderBy('created_at', 'desc') //Added This
+            ->paginate(5);
+    }
+    
+    if(empty($oldValue)){
+       $oldValue = ""; 
+    }
+    if(empty($count)){
+        $count = 0;
+    }
 
   $user = \DB::table('users')->where('id', Auth::user()->id)->value('id');
 
@@ -49,6 +58,9 @@
   <!-- Button trigger modal for adding category -->
     <button type="button" class="btn btn-raised btn-success" data-toggle="modal" data-target="#myModal" style = "font-size:14px">
          Add Category
+    </button>
+    <button type="button" class="btn btn-raised btn-success" data-toggle="modal" data-target="#myEditModal" style = "font-size:14px">
+         Edit Category
     </button>
     
     <div style="position:static; left:15px; " >
@@ -100,7 +112,43 @@
   </div>
 </div>
 </br>
+<!--Added Here-->
+<!-- Modal for editing category -->
+<div class="modal fade" id="myEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <font color='black'> <h4 class="modal-title" id="myModalLabel">Edit Category</h4></font>
+      </div>
+      <div class="modal-body"><form method="post" id="editCategory" action=<?php echo URL::route('editCategory');?>>
+        Choose Category Name to Edit:<br/>
+        <select name="category" required>
+          @foreach($categories as $category)
+            <a href="#"><font size="3"><?php echo $category->categoryname;?></font></a><br/>
+              <option value=<?php echo $category->id;?> style=""><?php echo $category->categoryname;?></option>
+          @endforeach
+        </select>
+        <br/><br/>
+        <!-- Add a form inside the add category modal-->
+           <font color='black'> 
+            New Category Name: <input type="text" name="categoryName" class="form-control" >
 
+
+        <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+        <input type="submit" value="Edit Category" class="btn btn-primary"></button>
+
+        </div>
+        </form></font>
+      </div>
+
+    </div>
+  </div>
+</div>
+</br>
+<!--To Here-->
     	<!--
     	<a href="#"><font size="3" style="color:white">All Discussion</font></a> -->
     	<br/>
@@ -109,6 +157,25 @@
         </div></div>
 </div>
 <div class="col-lg-9 col-md-9 col-s-12 center-block">
+    
+    <div style="position:static; left:px; " >
+    Sort discussion by: </br>
+      <form method="post" id="sortForm" action=<?php echo URL::route('discussionSort');?>>
+          <?php 
+            if (!empty($sortField)){
+                //echo $sortField;
+            }
+          ?> 
+          <input type="hidden" id="sortField" name="sortField" value="">
+          <input type="hidden" id="oldValue" name="oldValue" value="<?php echo $oldValue;?>">
+          <input type="hidden" id="count" name="count" value="<?php echo $count;?>">
+          <input type="submit" name="Date" value="Date" class="btn btn-primary btn-raised" onclick="populateField('date')"></input>
+          <input type="submit" name="Category" value="Category" class="btn btn-primary btn-raised" onclick="populateField('category')"></input>
+          <input type="submit" name="Likes" value="Likes" class="btn btn-primary btn-raised" onclick="populateField('likes')"></input>
+          <input type="submit" name="Views" value="Views" class="btn btn-primary btn-raised" onclick="populateField('views')"></input>
+      </form>
+    </div>
+    
     	@foreach($discussions as $discussion)
 
     	<?php

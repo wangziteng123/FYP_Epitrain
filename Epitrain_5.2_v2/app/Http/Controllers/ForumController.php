@@ -28,6 +28,113 @@ class ForumController extends Controller
         return view('forum.forumAdmin');
     }
 
+    //Added Here
+    public function dsort(Request $request){
+        $sortField = $request->input('sortField');
+        
+        $oldValue = $request->input('oldValue');
+        $count = $request->input('count');
+        if($count == null){
+            $count = 0;
+        }
+        
+        $dateVar = isset($_POST['Date']);
+        $categoryVar = isset($_POST['Category']);
+        $likesVar = isset($_POST['Likes']);
+        $viewsVar = isset($_POST['Views']);
+        if($dateVar=="Date"){
+            if(($oldValue==$dateVar && $count%2==0) || (empty($oldValue) && $count%2==0)){
+                $discussions = \DB::table('forumdiscussion')
+                                ->join('category', 'forumdiscussion.category_id', '=', 'category.id')
+                                ->join('users', 'forumdiscussion.user_id', '=', 'users.id')
+                                ->select('forumdiscussion.*', 'category.categoryname', 'users.name')
+                                -> orderBy('created_at', 'DESC')
+                                -> paginate(5);
+                
+                $oldValue = $dateVar;
+                $count = $count + 1;
+            } else{
+                $discussions = \DB::table('forumdiscussion')
+                                ->join('category', 'forumdiscussion.category_id', '=', 'category.id')
+                                ->join('users', 'forumdiscussion.user_id', '=', 'users.id')
+                                ->select('forumdiscussion.*', 'category.categoryname', 'users.name')
+                                -> orderBy('created_at', 'ASC')
+                                -> paginate(5);
+                $oldValue = $dateVar;
+                $count = 2;
+            }
+        } elseif($categoryVar=="Category"){
+            if(($oldValue==$categoryVar && $count%2==0) || (empty($oldValue) && $count%2==0)){
+                $discussions = \DB::table('forumdiscussion')
+                                ->join('category', 'forumdiscussion.category_id', '=', 'category.id')
+                                ->join('users', 'forumdiscussion.user_id', '=', 'users.id')
+                                ->select('forumdiscussion.*', 'category.categoryname', 'users.name')
+                                -> orderBy('categoryname', 'ASC')
+                                -> paginate(5);
+                
+                $oldValue = $categoryVar;
+                $count = $count + 1;
+            } else{
+                $discussions = \DB::table('forumdiscussion')
+                                ->join('category', 'forumdiscussion.category_id', '=', 'category.id')
+                                ->join('users', 'forumdiscussion.user_id', '=', 'users.id')
+                                ->select('forumdiscussion.*', 'category.categoryname', 'users.name')
+                                -> orderBy('categoryname', 'DESC')
+                                -> paginate(5);
+                $oldValue = $categoryVar;
+                $count = 2;
+            }
+        } elseif($likesVar=="Likes"){
+            if(($oldValue==$likesVar && $count%2==0) || (empty($oldValue) && $count%2==0)){
+                $discussions = \DB::table('forumdiscussion')
+                                ->join('category', 'forumdiscussion.category_id', '=', 'category.id')
+                                ->join('users', 'forumdiscussion.user_id', '=', 'users.id')
+                                ->select('forumdiscussion.*', 'category.categoryname', 'users.name')
+                                -> orderBy('likes', 'DESC')
+                                -> paginate(5);
+                
+                $oldValue = $likesVar;
+                $count = $count + 1;
+            } else{
+                $discussions = \DB::table('forumdiscussion')
+                                ->join('category', 'forumdiscussion.category_id', '=', 'category.id')
+                                ->join('users', 'forumdiscussion.user_id', '=', 'users.id')
+                                ->select('forumdiscussion.*', 'category.categoryname', 'users.name')
+                                -> orderBy('likes', 'ASC')
+                                -> paginate(5);
+                $oldValue = $likesVar;
+                $count = 2;
+            }
+        } elseif($viewsVar=="Views"){
+            if(($oldValue==$viewsVar && $count%2==0) || (empty($oldValue) && $count%2==0)){
+                $discussions = \DB::table('forumdiscussion')
+                                ->join('category', 'forumdiscussion.category_id', '=', 'category.id')
+                                ->join('users', 'forumdiscussion.user_id', '=', 'users.id')
+                                ->select('forumdiscussion.*', 'category.categoryname', 'users.name')
+                                -> orderBy('views', 'DESC')
+                                -> paginate(5);
+                
+                $oldValue = $viewsVar;
+                $count = $count + 1;
+            } else{
+                $discussions = \DB::table('forumdiscussion')
+                                ->join('category', 'forumdiscussion.category_id', '=', 'category.id')
+                                ->join('users', 'forumdiscussion.user_id', '=', 'users.id')
+                                ->select('forumdiscussion.*', 'category.categoryname', 'users.name')
+                                -> orderBy('views', 'ASC')
+                                -> paginate(5);
+                $oldValue = $viewsVar;
+                $count = 2;
+            }
+        }
+        if(empty($sortField)){
+            $sortField = "name";
+        }
+        //$entries = Fileentry::orderBy('original_filename', 'asc')->get();
+        //$mode = $request->input('mode');
+        return view('forum.forumAdmin', compact('discussions', 'oldValue', 'count'));
+    }
+    //To Here 
 
     public function createDiscussion(Request $request) {
     	$user_id = \Auth::user()->id;
@@ -42,7 +149,7 @@ class ForumController extends Controller
         );
         
         //exit($description);
-        //Added from here
+        
         $discussionId = DB::table('forumdiscussion')
                 -> where ('created_at', '=', $mytime)
                 -> where ('user_id', '=', $user_id)
@@ -125,11 +232,22 @@ class ForumController extends Controller
                     DB::table('discussionUserLike') ->insert(
                             ['discussion_id' => $discussionId,'user_id' => $userId]
                     );
+                    $numberOfLikes = DB::table('forumdiscussion')
+                        ->where('id', '=', $discussionId)
+                        ->value('likes');
+                    DB::table('forumdiscussion')
+                        ->update(['likes' => $numberOfLikes+1]);
                 } else {
                     DB::table('discussionUserLike')
                     -> where ('discussion_id', '=', $discussionId)
                     -> where ('user_id', '=', $userId)
                     -> delete();
+                    
+                    $numberOfLikes = DB::table('forumdiscussion')
+                        ->where('id', '=', $discussionId)
+                        ->value('likes');
+                    DB::table('forumdiscussion')
+                        ->update(['likes' => $numberOfLikes-1]);
                 }
             if (\Auth::user()->isAdmin){
                 return view('forum.forumAdmin');

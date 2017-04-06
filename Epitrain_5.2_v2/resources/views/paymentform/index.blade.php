@@ -13,7 +13,8 @@
 
      $fidStrArray = explode(",", $fidStr); // retrieve the fid of the books user want to purchase
      $sizeOfFidStrArray = count($fidStrArray);  //count how many books
-         ?>
+ 
+        ?>
 
 
 

@@ -48,6 +48,7 @@ Route::group(['middleware' => ['auth','admin']], function() {
 	Route::post('/deleteDiscussion', ['as' => 'deleteDiscussion', 'uses' => 'ForumController@deleteDiscussion']);
 	Route::post('/closeDiscussion', ['as' => 'closeDiscussion', 'uses' => 'ForumController@closeDiscussion']);
     Route::post('/addCategory', ['as' => 'addCategory', 'uses' => 'CategoryController@addCategory']);
+    Route::post('/editCategory', ['as' => 'editCategory', 'uses' => 'CategoryController@editCategory']);
     Route::post('/deleteComment', ['as' => 'deleteComment', 'uses' => 'ForumController@deleteComment']);
     //payment routes
 	Route::post('/payment', ['as' => 'payment', 'uses' => 'PaymentController@index']);
@@ -113,6 +114,8 @@ Route::group(['middleware' => 'auth'], function() {
         'as' => 'forumShowTagPosts'
     ]); 
     
+    Route::post('forumAdmin/sort', ['as' => 'discussionSort', 'uses' => 'ForumController@dsort']);
+    
 	Route::get('/forum', ['as'=>'forum', 'uses'=>'ForumController@index']);
 	Route::get('/forumpage', ['as'=>'forumpage', 'uses'=>'ForumController@toPage']);
 	Route::get('/forumResponsePage', ['as'=>'forumResponsePage', 'uses'=>'ForumController@showAllResponse']);
@@ -120,6 +123,7 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::post('/createResponse', ['as' => 'createResponse', 'uses' => 'ForumController@createResponse']);
 
 	Route::get('/category', ['as' => 'category', 'uses' => 'CategoryController@index']);
+	Route::get('/categoryEdit', ['as' => 'category', 'uses' => 'CategoryController@indexEdit']);
 
 	Route::post('/subscribe', ['as' => 'subscribe', 'uses' => 'SubscriptionController@addSubscription']);
 	//payment routes

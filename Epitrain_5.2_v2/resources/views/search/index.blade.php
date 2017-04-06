@@ -100,7 +100,7 @@ use App\Fileentry;
               <button class="btn btn-warning" style="background-color: darkblue">
                   <font style="">Bought Already</font>
               </button>
-            @else
+            @elseif (!Auth::user()->isAdmin)
             <form action=<?php echo url('shoppingcart/addtolibrary');?> method="post">
                 <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
                 <input type="hidden" name="fidStr" value=<?php echo $id?>>
@@ -119,7 +119,7 @@ use App\Fileentry;
               <button class="btn btn-warning" style="background-color: darkblue">
                   <font style="">Already Purchased</font>
               </button>
-            @else
+            @elseif (!Auth::user()->isAdmin)
             <form action=<?php echo url('shoppingcart/addtolibrary');?> method="post">
                 <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
                 <input type="hidden" name="fidStr" value=<?php echo $id?>>
