@@ -714,18 +714,29 @@
 
     <!-- Basic Slider-->
 
+    <?php
+      $subscriptionPlans = \DB::table('subscriptionplan')
+              ->get();
+
+    ?>
+
     <div id="basic" class="well" style="max-width:74em;">
         <h4><font color='black'>Choose a subscribtion plan:</font></h4>
       <form action=<?php echo url('/subscribe');?>  method="post">
-        <p><input type="radio" name="period" value="1" checked><font color='black'> 1 month</font></p>
+        @foreach($subscriptionPlans as $plan)
+        <p><input type="radio" name="period" value=<?php echo $plan->monthperiod?> checked><font color='black'> <?php echo $plan->monthperiod?> months</font></p>
+        <!-- <p><input type="radio" name="period" value="1" checked><font color='black'> 1 month</font></p>
         <p><input type="radio" name="period" value="6"><font color='black'> 6 months</font></p>
-        <p><input type="radio" name="period" value="12"><font color='black'> 1 year</font></p>
+        <p><input type="radio" name="period" value="12"><font color='black'> 1 year</font></p> -->
+         @endforeach
         <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-        <button type="submit" class="btn-success btn btn-raised">Subscribe</button>
-        <button class="basic_close btn btn-danger btn-raised">Cancel</button>
+        <button type="submit" class="btn-default btn">Subscribe</button>
+        <button class="basic_close btn btn-default">Cancel</button>
       </form>
     </div>
     <!--end of basic slider-->
+
+
 
 
 

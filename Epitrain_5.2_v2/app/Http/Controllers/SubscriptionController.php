@@ -41,4 +41,27 @@ class SubscriptionController extends Controller
 
     	return redirect('home');
     }
+
+
+    public function addSubscriptionPlan(Request $request) {
+        $monthperiod = $request->input('monthperiod');
+        $price = $request->input('price');
+
+        DB::table('subscriptionplan')->insert(
+            ['monthperiod' => (int)$monthperiod, 'price' => (double)$price]
+        );
+        return redirect(url('subscriptionplan'));
+
+    }
+
+    public function deleteSubscriptionPlan(Request $request) {
+        $id = $request->input('id');
+
+        DB::table('subscriptionplan')
+        ->where('id', '=', (int)$id)
+        ->delete();
+        
+        return redirect(url('subscriptionplan'));
+        
+    }
 }

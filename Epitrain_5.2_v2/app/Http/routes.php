@@ -64,6 +64,12 @@ Route::group(['middleware' => ['auth','admin']], function() {
 	    return view('faq.edit');
 	});
 	Route::post('/faq/editFaq', ['as' => 'faqEdit', 'uses' => 'FaqController@edit']);
+
+	Route::get('/subscriptionplan', function () {
+	    return view('subscriptionplan.subscriptionplan');
+	});
+	Route::post('/addSubscriptionPlan', 'SubscriptionController@addSubscriptionPlan');
+	Route::post('/deleteSubscriptionPlan', 'SubscriptionController@deleteSubscriptionPlan');
 });
 
 
