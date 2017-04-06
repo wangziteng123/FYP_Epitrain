@@ -14,12 +14,21 @@ use Illuminate\Notifications\Notifiable;
 
 	$categories = \DB::table('category') ->get();
 	
-	$discussions = \DB::table('forumdiscussion') 
-		->join('category', 'forumdiscussion.category_id', '=', 'category.id')
-		->join('users', 'forumdiscussion.user_id', '=', 'users.id')
-        ->select('forumdiscussion.*', 'category.categoryname', 'users.name')
-        ->orderBy('created_at', 'desc') //Added This
-        ->paginate(5);
+	if(empty($discussions)){
+        $discussions = \DB::table('forumdiscussion') 
+            ->join('category', 'forumdiscussion.category_id', '=', 'category.id')
+            ->join('users', 'forumdiscussion.user_id', '=', 'users.id')
+            ->select('forumdiscussion.*', 'category.categoryname', 'users.name')
+            ->orderBy('created_at', 'desc') //Added This
+            ->paginate(5);
+  }
+    
+  if(empty($oldValue)){
+     $oldValue = ""; 
+  }
+  if(empty($count)){
+      $count = 0;
+  }
 
     $user = \DB::table('users')->where('id', Auth::user()->id)->value('id');
 
@@ -60,6 +69,18 @@ use Illuminate\Notifications\Notifiable;
     
 </div>
 <div class="col-md-9 col-s-12 center-block">
+    <div style="position:static; left:px; " >
+    Sort discussion by: </br>
+      <form method="get" id="sortForm" action=<?php echo URL::route('discussionSort');?>>
+          <input type="hidden" id="sortField" name="sortField" value=""> 
+          <input type="hidden" id="oldValue" name="oldValue" value="<?php echo $oldValue;?>">
+          <input type="hidden" id="count" name="count" value="<?php echo $count;?>">
+          <input type="submit" value="Date" class="btn btn-primary btn-raised" onclick="populateField('date')"></input>
+          <input type="submit" value="Category" class="btn btn-primary btn-raised" onclick="populateField('category')"></input>
+          <input type="submit" value="Likes" class="btn btn-primary btn-raised" onclick="populateField('likes')"></input>
+          <input type="submit" value="Views" class="btn btn-primary btn-raised" onclick="populateField('views')"></input>
+      </form>
+    </div>
     @foreach($discussions as $discussion)
 
     	<?php
@@ -237,6 +258,9 @@ $(document).ready(function () {
     });
 
 });
+function populateField(fieldToSort){
+    document.getElementById('sortField').value=fieldToSort;
+}
 </script>
 
 

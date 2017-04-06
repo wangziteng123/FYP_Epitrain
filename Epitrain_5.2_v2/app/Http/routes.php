@@ -50,6 +50,7 @@ Route::group(['middleware' => ['auth','admin']], function() {
     Route::post('/addCategory', ['as' => 'addCategory', 'uses' => 'CategoryController@addCategory']);
     Route::post('/editCategory', ['as' => 'editCategory', 'uses' => 'CategoryController@editCategory']);
     Route::post('/deleteComment', ['as' => 'deleteComment', 'uses' => 'ForumController@deleteComment']);
+    Route::get('forumAdmin/sort', ['as' => 'discussionSort', 'uses' => 'ForumController@dsort']);
     //payment routes
 	Route::post('/payment', ['as' => 'payment', 'uses' => 'PaymentController@index']);
 
@@ -114,7 +115,7 @@ Route::group(['middleware' => 'auth'], function() {
         'as' => 'forumShowTagPosts'
     ]); 
     
-    Route::post('forumAdmin/sort', ['as' => 'discussionSort', 'uses' => 'ForumController@dsort']);
+    Route::get('forum/sort', ['as' => 'discussionSort', 'uses' => 'ForumController@dsort']);
     
 	Route::get('/forum', ['as'=>'forum', 'uses'=>'ForumController@index']);
 	Route::get('/forumpage', ['as'=>'forumpage', 'uses'=>'ForumController@toPage']);

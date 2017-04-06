@@ -31,19 +31,14 @@ class ForumController extends Controller
     //Added Here
     public function dsort(Request $request){
         $sortField = $request->input('sortField');
-        
         $oldValue = $request->input('oldValue');
         $count = $request->input('count');
         if($count == null){
             $count = 0;
         }
         
-        $dateVar = isset($_POST['Date']);
-        $categoryVar = isset($_POST['Category']);
-        $likesVar = isset($_POST['Likes']);
-        $viewsVar = isset($_POST['Views']);
-        if($dateVar=="Date"){
-            if(($oldValue==$dateVar && $count%2==0) || (empty($oldValue) && $count%2==0)){
+        if($sortField=="date"){
+            if(($oldValue==$sortField && $count%2==0) || (empty($oldValue) && $count%2==0)){
                 $discussions = \DB::table('forumdiscussion')
                                 ->join('category', 'forumdiscussion.category_id', '=', 'category.id')
                                 ->join('users', 'forumdiscussion.user_id', '=', 'users.id')
@@ -51,7 +46,7 @@ class ForumController extends Controller
                                 -> orderBy('created_at', 'DESC')
                                 -> paginate(5);
                 
-                $oldValue = $dateVar;
+                $oldValue = $sortField;
                 $count = $count + 1;
             } else{
                 $discussions = \DB::table('forumdiscussion')
@@ -60,11 +55,11 @@ class ForumController extends Controller
                                 ->select('forumdiscussion.*', 'category.categoryname', 'users.name')
                                 -> orderBy('created_at', 'ASC')
                                 -> paginate(5);
-                $oldValue = $dateVar;
+                $oldValue = $sortField;
                 $count = 2;
             }
-        } elseif($categoryVar=="Category"){
-            if(($oldValue==$categoryVar && $count%2==0) || (empty($oldValue) && $count%2==0)){
+        } elseif($sortField=="category"){
+            if(($oldValue==$sortField && $count%2==0) || (empty($oldValue) && $count%2==0)){
                 $discussions = \DB::table('forumdiscussion')
                                 ->join('category', 'forumdiscussion.category_id', '=', 'category.id')
                                 ->join('users', 'forumdiscussion.user_id', '=', 'users.id')
@@ -72,7 +67,7 @@ class ForumController extends Controller
                                 -> orderBy('categoryname', 'ASC')
                                 -> paginate(5);
                 
-                $oldValue = $categoryVar;
+                $oldValue = $sortField;
                 $count = $count + 1;
             } else{
                 $discussions = \DB::table('forumdiscussion')
@@ -81,11 +76,11 @@ class ForumController extends Controller
                                 ->select('forumdiscussion.*', 'category.categoryname', 'users.name')
                                 -> orderBy('categoryname', 'DESC')
                                 -> paginate(5);
-                $oldValue = $categoryVar;
+                $oldValue = $sortField;
                 $count = 2;
             }
-        } elseif($likesVar=="Likes"){
-            if(($oldValue==$likesVar && $count%2==0) || (empty($oldValue) && $count%2==0)){
+        } elseif($sortField=="likes"){
+            if(($oldValue==$sortField && $count%2==0) || (empty($oldValue) && $count%2==0)){
                 $discussions = \DB::table('forumdiscussion')
                                 ->join('category', 'forumdiscussion.category_id', '=', 'category.id')
                                 ->join('users', 'forumdiscussion.user_id', '=', 'users.id')
@@ -93,7 +88,7 @@ class ForumController extends Controller
                                 -> orderBy('likes', 'DESC')
                                 -> paginate(5);
                 
-                $oldValue = $likesVar;
+                $oldValue = $sortField;
                 $count = $count + 1;
             } else{
                 $discussions = \DB::table('forumdiscussion')
@@ -102,11 +97,11 @@ class ForumController extends Controller
                                 ->select('forumdiscussion.*', 'category.categoryname', 'users.name')
                                 -> orderBy('likes', 'ASC')
                                 -> paginate(5);
-                $oldValue = $likesVar;
+                $oldValue = $sortField;
                 $count = 2;
             }
-        } elseif($viewsVar=="Views"){
-            if(($oldValue==$viewsVar && $count%2==0) || (empty($oldValue) && $count%2==0)){
+        } elseif($sortField=="views"){
+            if(($oldValue==$sortField && $count%2==0) || (empty($oldValue) && $count%2==0)){
                 $discussions = \DB::table('forumdiscussion')
                                 ->join('category', 'forumdiscussion.category_id', '=', 'category.id')
                                 ->join('users', 'forumdiscussion.user_id', '=', 'users.id')
@@ -114,7 +109,7 @@ class ForumController extends Controller
                                 -> orderBy('views', 'DESC')
                                 -> paginate(5);
                 
-                $oldValue = $viewsVar;
+                $oldValue = $sortField;
                 $count = $count + 1;
             } else{
                 $discussions = \DB::table('forumdiscussion')
@@ -123,16 +118,20 @@ class ForumController extends Controller
                                 ->select('forumdiscussion.*', 'category.categoryname', 'users.name')
                                 -> orderBy('views', 'ASC')
                                 -> paginate(5);
-                $oldValue = $viewsVar;
+                $oldValue = $sortField;
                 $count = 2;
             }
         }
-        if(empty($sortField)){
+        /*if(empty($sortField)){
             $sortField = "name";
-        }
+        }*/
         //$entries = Fileentry::orderBy('original_filename', 'asc')->get();
         //$mode = $request->input('mode');
-        return view('forum.forumAdmin', compact('discussions', 'oldValue', 'count'));
+        if (\Auth::user()->isAdmin) {
+            return view('forum.forumAdmin', compact('discussions', 'oldValue', 'count'));
+        } else {
+            return view('forum.forum', compact('discussions', 'oldValue', 'count'));
+        }
     }
     //To Here 
 
@@ -336,7 +335,6 @@ class ForumController extends Controller
                             -> where ('user_id', '=', $user_id)
                             -> where ('created_at', '=', $timeCreated)                            
                             -> first();
-                    //var_dump($thisComment);
                     array_push($arrayOfTags, $hashtags);
                     $tagExistInForumTags = DB::table('forumtags') 
                             -> where ('forum_tag', '=', $tagname)
@@ -432,7 +430,6 @@ class ForumController extends Controller
                     -> where ('comment_id', '=', $comment_id)
                     -> get();
 
-        //exit(var_dump($tagsInThisComment)."discussion id: ".$discussion_id." comment id: ".$comment_id);
         if ($tagsInThisComment != null) {
             foreach($tagsInThisComment as $thisTag) {
                 $tagCountInForumTags = DB::table('forumtags')
