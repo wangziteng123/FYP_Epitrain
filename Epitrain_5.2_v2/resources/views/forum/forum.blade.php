@@ -215,7 +215,20 @@ use Illuminate\Notifications\Notifiable;
   	  </div>
     </div>
     @endforeach
-    {{ $discussions->links() }}
+    <?php
+          $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+          $parts = parse_url($url);
+          if (isset($parts['query'])) {
+              parse_str($parts['query'], $query);
+              $thisSortField = $query['sortField'];
+              $thisCount = $query['count'];
+          } else {
+              $thisSortField = "";
+              $thisCount = 0;
+          }
+
+      ?>
+      {{ $discussions->appends(['oldValue' => $oldValue, 'count' => $thisCount, 'sortField' => $thisSortField])->links() }}
 </div>
 
 

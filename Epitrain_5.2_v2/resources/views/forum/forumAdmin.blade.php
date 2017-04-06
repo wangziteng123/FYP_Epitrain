@@ -362,10 +362,11 @@
               $thisCount = $query['count'];
           } else {
               $thisSortField = "";
+              $thisCount = 0;
           }
 
       ?>
-      {{ $discussions->appends(['oldValue' => $oldValue, 'count' => $thisCount, 'count' => $count, 'sortField' => $thisSortField])->links() }}
+      {{ $discussions->appends(['oldValue' => $oldValue, 'count' => $thisCount, 'sortField' => $thisSortField])->links() }}
     </div>
 
 
