@@ -31,14 +31,106 @@ class CategoryController extends Controller
 
     	if(strcmp($category, 'All') == 0) {
     		$entries = Fileentry::paginate(20);
-    		return view('category.categoryEdit', compact('entries'),compact('category'));
+    		return view('category.category', compact('entries'),compact('category'));
     	} 
     	
     	$entries = Fileentry::where('category', $category)
     	->paginate(20);
     	
-    	return view('category.categoryEdit', compact('entries'),compact('category'));
+    	return view('category.category', compact('entries'),compact('category'));
     }
+    public function setForumCategory(Request $request) {
+        $input = $request->toArray();
+        $enabledCat = array();
+        list($catList, $status) = array_divide($input);
+        foreach ($catList as $forumCat) {
+            $catArr = explode("_", $forumCat);
+            $categoryName = "";
+            foreach ($catArr as $component) {
+                $categoryName .= $component." ";
+            }
+            $categoryName = substr($categoryName, 0, -2);
+            $enabledCat[] = $categoryName;
+        }
+        $categoriesFromDB = DB::table('category')->get();
+        foreach ($categoriesFromDB as $catFromDB) {
+            $catFromDBName = $catFromDB->categoryname;
+            //exit(var_dump($enabledCat));
+            if (in_array($catFromDBName, $enabledCat) == null) {
+                DB::table('category')
+                    ->where('categoryname', $catFromDBName)
+                    ->update(['shownInForumCat' => 0]);
+            } else {
+                DB::table('category')
+                    ->where('categoryname', $catFromDBName)
+                    ->update(['shownInForumCat' => 1]);
+            }
+        }
+        return view('category.category');
+    }
+
+
+    public function setEbookCategory(Request $request) {
+        $input = $request->toArray();
+        $enabledCat = array();
+        list($catList, $status) = array_divide($input);
+        foreach ($catList as $ebookCat) {
+            $catArr = explode("_", $ebookCat);
+            $categoryName = "";
+            foreach ($catArr as $component) {
+                $categoryName .= $component." ";
+            }
+            $categoryName = substr($categoryName, 0, -2);
+            $enabledCat[] = $categoryName;
+        }
+        $categoriesFromDB = DB::table('category')->get();
+        foreach ($categoriesFromDB as $catFromDB) {
+            $catFromDBName = $catFromDB->categoryname;
+            //exit(var_dump($enabledCat));
+            if (in_array($catFromDBName, $enabledCat) == null) {
+                DB::table('category')
+                    ->where('categoryname', $catFromDBName)
+                    ->update(['shownInEbookCat' => 0]);
+            } else {
+                DB::table('category')
+                    ->where('categoryname', $catFromDBName)
+                    ->update(['shownInEbookCat' => 1]);
+            }
+        }
+        return view('category.category');
+    }
+
+
+    public function setEbookShortcut(Request $request) {
+        $input = $request->toArray();
+        $enabledCat = array();
+        list($catList, $status) = array_divide($input);
+        foreach ($catList as $userCat) {
+            $catArr = explode("_", $userCat);
+            $categoryName = "";
+            foreach ($catArr as $component) {
+                $categoryName .= $component." ";
+            }
+            $categoryName = substr($categoryName, 0, -2);
+            $enabledCat[] = $categoryName;
+        }
+        $categoriesFromDB = DB::table('category')->get();
+        foreach ($categoriesFromDB as $catFromDB) {
+            $catFromDBName = $catFromDB->categoryname;
+            //exit(var_dump($enabledCat));
+            if (in_array($catFromDBName, $enabledCat) == null) {
+                DB::table('category')
+                    ->where('categoryname', $catFromDBName)
+                    ->update(['shownInUserCategories' => 0]);
+            } else {
+                DB::table('category')
+                    ->where('categoryname', $catFromDBName)
+                    ->update(['shownInUserCategories' => 1]);
+            }
+        }
+        return view('category.category');
+    }
+
     
     public function addCategory(Request $request){
         $status="";

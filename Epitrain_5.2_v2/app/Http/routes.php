@@ -32,9 +32,12 @@ Route::post('contact', ['as' => 'contact_store', 'uses' => 'AboutController@stor
 
 Route::group(['middleware' => ['auth','admin']], function() {
 	
+	//user routes
 	Route::post('/store', 'UserController@store');
 	Route::get('/createUser', 'HomeController@create');
 	Route::get('/viewAllUsers', 'UserController@viewAllUsers');
+
+	//file entries (ebook) routes
 	Route::delete('fileentry/delete/{filename}', [
 	'as'=>'deleteentry', 'uses'=>'FileEntryController@delete']);
 	Route::get('fileentry/sort', ['as' => 'fileSort', 'uses' => 'FileEntryController@sort']);
@@ -44,6 +47,7 @@ Route::group(['middleware' => ['auth','admin']], function() {
 	Route::post('fileentry/edit', [
 		'as'=>'editentry', 'uses'=>'FileEntryController@edit']);
 	
+	//forum routes
 	Route::get('/forumAdmin', ['as'=>'forumAdmin', 'uses'=>'ForumController@indexAdmin']);
 	Route::post('/deleteDiscussion', ['as' => 'deleteDiscussion', 'uses' => 'ForumController@deleteDiscussion']);
 	Route::post('/closeDiscussion', ['as' => 'closeDiscussion', 'uses' => 'ForumController@closeDiscussion']);
@@ -51,9 +55,19 @@ Route::group(['middleware' => ['auth','admin']], function() {
     Route::post('/editCategory', ['as' => 'editCategory', 'uses' => 'CategoryController@editCategory']);
     Route::post('/deleteComment', ['as' => 'deleteComment', 'uses' => 'ForumController@deleteComment']);
     Route::get('forumAdmin/sort', ['as' => 'discussionSort', 'uses' => 'ForumController@dsort']);
+    
+    //category route
+	Route::get('/category', ['as' => 'category', 'uses' => 'CategoryController@index']);
+	Route::get('/categoryEdit', ['as' => 'category', 'uses' => 'CategoryController@indexEdit']);
+	Route::post('/setForumCat', ['as' => 'setForumCat', 'uses' => 'CategoryController@setForumCategory']);
+	Route::post('/setEbookCat', ['as' => 'setEbookCat', 'uses' => 'CategoryController@setEbookCategory']);
+	Route::post('/setEbookShortcut', ['as' => 'setEbookShortcut', 'uses' => 'CategoryController@setEbookShortcut']);
+
+
     //payment routes
 	Route::post('/payment', ['as' => 'payment', 'uses' => 'PaymentController@index']);
 
+	//FAQ routes
 	Route::get('/faq', ['as' => 'faq', 'uses' => 'FaqController@index']);
 	Route::get('/faq/create', function () {
 	    return view('faq.create');
@@ -65,11 +79,13 @@ Route::group(['middleware' => ['auth','admin']], function() {
 	});
 	Route::post('/faq/editFaq', ['as' => 'faqEdit', 'uses' => 'FaqController@edit']);
 
+	//subscription routes
 	Route::get('/subscriptionplan', function () {
 	    return view('subscriptionplan.subscriptionplan');
 	});
 	Route::post('/addSubscriptionPlan', 'SubscriptionController@addSubscriptionPlan');
 	Route::post('/deleteSubscriptionPlan', 'SubscriptionController@deleteSubscriptionPlan');
+		Route::post('/subscribe', ['as' => 'subscribe', 'uses' => 'SubscriptionController@addSubscription']);
 });
 
 
@@ -129,10 +145,6 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::post('/createDiscussion', ['as' => 'createDiscussion', 'uses' => 'ForumController@createDiscussion']);
 	Route::post('/createResponse', ['as' => 'createResponse', 'uses' => 'ForumController@createResponse']);
 
-	Route::get('/category', ['as' => 'category', 'uses' => 'CategoryController@index']);
-	Route::get('/categoryEdit', ['as' => 'category', 'uses' => 'CategoryController@indexEdit']);
-
-	Route::post('/subscribe', ['as' => 'subscribe', 'uses' => 'SubscriptionController@addSubscription']);
 	//payment routes
 	Route::post('/payment', ['as' => 'payment', 'uses' => 'PaymentController@index']);
 	Route::post('/paymentForm', ['as' => 'paymentForm', 'uses' => 'PaymentController@paymentForm']);

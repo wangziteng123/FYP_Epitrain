@@ -116,7 +116,9 @@
             $count = count($shoppingcartExist);
         } 
     }
-    $categories = \DB::table('category') ->get();
+    $categories = \DB::table('category')
+        ->where('shownInUserCategories','=',1)
+        ->get();
 ?>
     <header>
     <nav class="navbar navbar-inverse" >
@@ -149,7 +151,7 @@
 							<li class="dropdown">
 								<a class="dropdown-toggle" data-toggle="dropdown">Categories<b class="caret"></b></a>
 								<ul class="dropdown-menu">
-                                    @for ($i = 1; $i < 9; $i++)
+                                    @for ($i = 1; $i < sizeof($categories); $i++)
                                         <?php $category = $categories[$i]; ?>
                                         <li><a id =<?php echo "link-".$i;?> href='/shop'><span class="white-text text-darken-2" id=<?php echo "cat-".$i;?>><?php echo $category->categoryname; ?></span></a></li>
                                     @endfor
@@ -185,17 +187,14 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/fileentry') }}"><i class="material-icons">library_add</i>Manage Library</a></li>
-								<li class="divider"></li>
 								<li><a href="{{ url('/createUser') }}"><i class="material-icons">person_add</i>Create User</a></li>
-								<li class="divider"></li>
 								<li><a href="{{ url('/forumAdmin') }}"><i class="material-icons">speaker_notes</i>Discussion Forum</a></li>
-								<li class="divider"></li>
+                                <li><a href="{{ url('/category') }}"><i class="material-icons">settings</i>Customize categories</a></li>
+                                <li><a href="{{ url('/subscriptionplan') }}"><i class="material-icons">subscriptions</i>Customize subscription</a></li>
+                                
 								<li><a href="{{ url('/viewAllUsers') }}"><i class="material-icons">group</i>View All Users</a></li>
-								<li class="divider"></li>
 								<li><a href="{{ url('/update') }}"><i class="material-icons">perm_identity</i>Update Personal Info</a></li>
-								<li class="divider"></li>
                                 <li><a href="{{ url('/faq') }}"><i class="material-icons">question_answer</i>FAQ</a></li>
-                                <li class="divider"></li>
 								<li><a href="{{ url('/logout') }}"><i class="material-icons">cancel</i>Logout</a></li>
                             </ul>
                         </li>

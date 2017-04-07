@@ -5,7 +5,9 @@
 <link type="text/css" rel="stylesheet" href="css/fileentry.css"/>
 @section('content')
 <?php 
-  $categories = \DB::table('category') ->get();
+  $categories = \DB::table('category')
+        ->where('shownInEbookCat','=',1)
+        ->get();
 ?>
 <div class="row">
     <div class="col-sm-6">
@@ -64,14 +66,6 @@
                       @foreach($categories as $category)
                           <option value=<?php echo $category->id;?>><font color="black" size = "3"><?php echo $category->categoryname;?></font></option>
                       @endforeach
-                      <option value="Trading" selected><font color="black" size = "3">Trading</font></option>
-                      <option value="Risk Management"><font color="black" size = "3">Risk Management</font></option>
-                      <option value="Fintech"><font color="black" size = "3">Fintech</font></option>
-                      <option value="Project Management"><font color="black" size = "3">Project Management</font></option>
-                      <option value="Finance"><font color="black" size = "3">Finance</font></option> 
-                      <option value="Business Management"><font color="black" size = "3">Business Management</font></option>
-                      <option value="Leadership"><font color="black" size = "3">Leadership</font></option>
-                      <option value="Financial Market"><font color="black" size = "3">Financial market</font></option>
                     </select>
                 </div>
               </div>
@@ -122,15 +116,10 @@
                     <div class="form-group">
                       <div class = "col-sm-10 col-sm-offset-1">
                           <select name="filterCat" style="font-size:14px" id = "selectFilterCat" class="form-control" placeholder="Choose ebook category">
-                            <option value="Trading" selected><font color="black" size = "3">Trading</font></option>
-                            <option value="Risk Management"><font color="black" size = "3">Risk Management</font></option>
-                            <option value="Fintech"><font color="black" size = "3">Fintech</font></option>
-                            <option value="Project Management"><font color="black" size = "3">Project Management</font></option>
-                            <option value="Finance"><font color="black" size = "3">Finance</font></option> 
-                            <option value="Business Management"><font color="black" size = "3">Business Management</font></option>
-                            <option value="Leadership"><font color="black" size = "3">Leadership</font></option>
-                            <option value="Financial Market"><font color="black" size = "3">Financial market</font></option>
-                            <option value=""><font color="black" size = "3">All categories</font></option>
+                            @foreach($categories as $category)
+                                <option value=<?php echo $category->categoryname;?>><font color="black" size = "3"><?php echo $category->categoryname;?></font></option>
+                            @endforeach
+                            <option value="all"><font color="black" size = "3">All categories</font></option>
                           </select>
                       </div>
                     </div>

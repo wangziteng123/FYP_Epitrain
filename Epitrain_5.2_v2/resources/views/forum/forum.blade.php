@@ -12,7 +12,9 @@
 <?php
 use Illuminate\Notifications\Notifiable;
 
-	$categories = \DB::table('category') ->get();
+	$categories = \DB::table('category')
+      ->where('shownInForumCat','=',1)
+      ->get();
 	
 	if(empty($discussions)){
         $discussions = \DB::table('forumdiscussion') 

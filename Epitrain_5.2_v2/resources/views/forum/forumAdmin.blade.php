@@ -10,7 +10,9 @@
     </div>
 </div>
 <?php
-	$categories = \DB::table('category') ->get();
+	$categories = \DB::table('category')
+      ->where('shownInForumCat','=',1)
+      ->get();
     
     if(empty($discussions)){
         $discussions = \DB::table('forumdiscussion') 
@@ -111,7 +113,6 @@
     </div>
   </div>
 </div>
-</br>
 <!--Added Here-->
 <!-- Modal for editing category -->
 <div class="modal fade" id="myEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

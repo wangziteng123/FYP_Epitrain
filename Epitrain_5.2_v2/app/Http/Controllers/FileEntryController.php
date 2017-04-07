@@ -56,13 +56,13 @@ class FileEntryController extends Controller
 		}
 		$modeArr = explode("-", $mode);
 		$filterCat = $request->input('filterCat');
-		if (strlen($filterCat) != 0) {
+		if (strlen($filterCat) != 0 && strcmp($filterCat,"all") != 0) {
 			$entries = Fileentry::orderBy($modeArr[0], $modeArr[1])
 			->where('category', '=', $filterCat)->paginate(12);
 		} else {
 			$entries = Fileentry::orderBy($modeArr[0], $modeArr[1])->paginate(12);
 		}
-		
+	
 		return view('fileentries.index', compact('entries','mode'));
 	}
 	public function add(Request $request) {

@@ -40,9 +40,9 @@ body{
 
                 <div class="panel-body">
                   <?php if (strcmp($chosenCategory['cat'], "viewAll") == 0) { ?>
-                    <h1><font color="black">All books in shop</font></h1>
+                    <h2><font color="black">All books in shop</font></h2>
                   <?php } else { ?>
-                    <h1><font color="black">Books under <?php echo $chosenCategory['cat'];?> category</font></h1>
+                    <h2><font color="black">Books under <?php echo $chosenCategory['cat'];?> </font></h2>
                   <?php };?>
                 </div>
 
