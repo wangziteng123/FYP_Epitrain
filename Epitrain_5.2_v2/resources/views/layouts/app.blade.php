@@ -153,7 +153,6 @@
                                         <?php $category = $categories[$i]; ?>
                                         <li><a id =<?php echo "link-".$i;?> href='/shop'><span class="white-text text-darken-2" id=<?php echo "cat-".$i;?>><?php echo $category->categoryname; ?></span></a></li>
                                     @endfor
-									<li><a id = 'link-1' href='/shop'> <span class="white-text text-darken-2" id="cat-1">Trading</span></a></li>
 									
 									<li><a href='/shop?cat=viewAll'> <span class="white-text text-darken-2">View All</span></a></li>
 								</ul>
