@@ -44,6 +44,7 @@ http://sourceforge.net/adobe/cmap/wiki/License/
     <script src="pdf/build/pdf.js"></script>
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
 
 
     <script src="pdf/debugger.js"></script>
@@ -88,13 +89,11 @@ http://sourceforge.net/adobe/cmap/wiki/License/
   <body tabindex="1" class="loadingInProgress">
   <div class="row">
     <div class="col-sm-6">
-			<div style="background-color:white">
         <ul class="breadcrumb pull-left" style="margin-bottom: 5px;font-size:20px">
             <li style="font-size:16px;font-color:black"><a href="/">Home</a></li>
             <li style="font-size:16px;font-color:black"><a href="/mylibrary">My Library</a></li>
             <li style="font-size:16px;font-color:black" class="active">Ebook Reader</li>
         </ul>
-			<div>
     </div>
   </div>
 	
