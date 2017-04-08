@@ -38,6 +38,7 @@ Route::group(['middleware' => ['auth','admin']], function() {
 	Route::get('/viewAllUsers', 'UserController@viewAllUsers');
 
 	//file entries (ebook) routes
+	Route::get('fileentry', 'FileEntryController@index');
 	Route::delete('fileentry/delete/{filename}', [
 	'as'=>'deleteentry', 'uses'=>'FileEntryController@delete']);
 	Route::get('fileentry/sort', ['as' => 'fileSort', 'uses' => 'FileEntryController@sort']);
@@ -85,7 +86,10 @@ Route::group(['middleware' => ['auth','admin']], function() {
 	});
 	Route::post('/addSubscriptionPlan', 'SubscriptionController@addSubscriptionPlan');
 	Route::post('/deleteSubscriptionPlan', 'SubscriptionController@deleteSubscriptionPlan');
-		
+
+	Route::get('classmanagement', 'ClassManagementController@index');
+	Route::post('classmanagement/addCourse', ['as' => 'addCourse', 'uses' => 'ClassManagementController@addCourse']);
+	Route::post('classmanagement/deleteCourse', ['as' => 'deleteCourse', 'uses' => 'ClassManagementController@deleteCourse']);
 });
 
 
@@ -94,7 +98,6 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('/update', 'UserController@index');
 	Route::get('users/{id}', 'UserController@update');
 	//For file upload and download
-	Route::get('fileentry', 'FileEntryController@index');
 	
 	Route::get('fileentry/get/{filename}', [
 		'as'=>'getentry', 'uses'=>'FileEntryController@get']);
