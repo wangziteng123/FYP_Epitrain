@@ -85,7 +85,7 @@ Route::group(['middleware' => ['auth','admin']], function() {
 	});
 	Route::post('/addSubscriptionPlan', 'SubscriptionController@addSubscriptionPlan');
 	Route::post('/deleteSubscriptionPlan', 'SubscriptionController@deleteSubscriptionPlan');
-		Route::post('/subscribe', ['as' => 'subscribe', 'uses' => 'SubscriptionController@addSubscription']);
+		
 });
 
 
@@ -149,6 +149,9 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::post('/payment', ['as' => 'payment', 'uses' => 'PaymentController@index']);
 	Route::post('/paymentForm', ['as' => 'paymentForm', 'uses' => 'PaymentController@paymentForm']);
 	Route::get('/faq', ['as' => 'faq', 'uses' => 'FaqController@index']);
+
+	//subscribe
+	Route::post('/subscribe', ['as' => 'subscribe', 'uses' => 'SubscriptionController@addSubscription']);
 });
 
 // // Download Route
