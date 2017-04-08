@@ -34,7 +34,7 @@
                  $title="";
 
             $fidDescription = $allChargeDetails[$start][0]; // getting the description
-            $totalAmount = $allChargeDetails[$start][1];
+            $totalAmount = $allChargeDetails[$start][1]/100;
             $emailReceipt = $allChargeDetails[$start][2];
 
             $fidStrArray= explode(",", $fidDescription);
