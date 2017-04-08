@@ -87,9 +87,15 @@ Route::group(['middleware' => ['auth','admin']], function() {
 	Route::post('/addSubscriptionPlan', 'SubscriptionController@addSubscriptionPlan');
 	Route::post('/deleteSubscriptionPlan', 'SubscriptionController@deleteSubscriptionPlan');
 
+	//Class management routes
 	Route::get('classmanagement', 'ClassManagementController@index');
 	Route::post('classmanagement/addCourse', ['as' => 'addCourse', 'uses' => 'ClassManagementController@addCourse']);
 	Route::post('classmanagement/deleteCourse', ['as' => 'deleteCourse', 'uses' => 'ClassManagementController@deleteCourse']);
+	Route::post('classmanagement/addEnrolment', ['as' => 'addEnrolment', 'uses' => 'ClassManagementController@addEnrolment']);
+	Route::post('classmanagement/deleteEnrolment', ['as' => 'deleteEnrolment', 'uses' => 'ClassManagementController@deleteEnrolment']);
+	Route::post('classmanagement/addMaterial', ['as' => 'addMaterial', 'uses' => 'ClassManagementController@addMaterial']);
+	Route::post('classmanagement/deleteMaterial', ['as' => 'deleteMaterial', 'uses' => 'ClassManagementController@deleteMaterial']);
+	
 });
 
 

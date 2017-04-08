@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DB;
 use Validator;
+use App\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -15,7 +16,11 @@ class ClassManagementController extends Controller
     	$courseList = \DB::table('course')->get();
         $categories = \DB::table('category')->get();
         $materialList = \DB::table('courseMaterial')->get();
-        return view('classmanagement.index', compact('courseList','categories','materialList'));
+        $students = User::where('subscribe','=','0')->where('isAdmin','=','0')->get();
+        $enrolmentList = \DB::table('enrolment')->get();
+        $fileentries = \DB::table('fileentries')->get();
+
+        return view('classmanagement.index', compact('courseList','categories','materialList','students','enrolmentList','fileentries'));
     }
 
 
@@ -74,6 +79,88 @@ class ClassManagementController extends Controller
 
         DB::table('course')
         ->where('courseID', '=', $id)
+        ->delete();
+        
+        return redirect('classmanagement');
+    }
+
+    public function addEnrolment(Request $request) {        
+        $courseID = $request->input('courseID');
+        $studentList = $request->input('studentList');
+        $isActive = $request->input('isActive');
+
+        $this->validate($request, [
+            'courseID' => 'required|max:64',
+            'studentList' => 'required',
+        ]);
+        if ($isActive == null) {
+            foreach($studentList as $studentID) {
+                DB::table('enrolment')->insert(
+                    ['courseID' => $courseID, 
+                     'userID' => $studentID
+                     ]
+                );
+            }
+        } else {
+            foreach($studentList as $studentID) {
+                DB::table('enrolment')->insert(
+                    ['courseID' => $courseID, 
+                     'userID' => $studentID,
+                     'isActive' => $isActive
+                     ]
+                );
+            }
+        }
+        
+        return redirect('classmanagement');
+    }
+
+    public function deleteEnrolment(Request $request) {
+        $id = $request->input('id');
+
+        DB::table('enrolment')
+        ->where('id', '=', $id)
+        ->delete();
+        
+        return redirect('classmanagement');
+    }
+
+    public function addMaterial(Request $request) {        
+        $courseID = $request->input('courseID');
+        $materialList = $request->input('materialList');
+        $isActive = $request->input('isActive');
+
+        $this->validate($request, [
+            'courseID' => 'required|max:64',
+            'materialList' => 'required',
+        ]);
+        if ($isActive == null) {
+            foreach($materialList as $materialID) {
+                DB::table('courseMaterial')->insert(
+                    ['courseID' => $courseID, 
+                     'fileEntriesID' => $materialID
+                     ]
+                );
+            }
+        } else {
+            foreach($materialList as $studentID) {
+                DB::table('courseMaterial')->insert(
+                    ['courseID' => $courseID, 
+                     'fileEntriesID' => $materialID,
+                     'isActive' => $isActive
+                     ]
+                );
+            }
+        }
+        
+        return redirect('classmanagement');
+    }
+
+    public function deleteMaterial(Request $request) {
+        $id = $request->input('id');
+
+        DB::table('enrolment')
+        ->where('id', '=', $id)
         ->delete();
         
         return redirect('classmanagement');

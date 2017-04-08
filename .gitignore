@@ -1,4 +1,9 @@
-
 Epitrain_5.2_v2/Archive.zip
-
 *.zip
+Epitrain_5.2_v2/node_modules
+Epitrain_5.2_v2/public/storage
+Homestead.yaml
+Homestead.json
+Epitrain_5.2_v2/.env
+Epitrain_5.2_v2/.idea
+.DS_Store
