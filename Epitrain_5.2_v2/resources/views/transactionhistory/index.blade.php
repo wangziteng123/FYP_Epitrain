@@ -18,7 +18,7 @@
             <thead>
                 <tr>
 
-            <th   style="color:black;text-align:center">Book Purchased</th>
+            <th   style="color:black;text-align:center">Book Purchased per transaction</th>
             <th   style="color:black;text-align:center">Email for receipt</th>
             <th   style="color:black;text-align:center">Total Amount</th>
 
