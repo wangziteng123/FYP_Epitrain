@@ -221,7 +221,7 @@
                                 <li><a href="{{ url('/mylibrary') }}"><i class="material-icons">library_books</i>My Library</a></li>
                                 <li><a href="{{ url('/forum') }}"><i class="material-icons">recent_actors</i>Discussion Forum</a></li>
                                 <li><a href="{{ url('/update') }}"><i class="material-icons">group</i>Update Personal Info</a></li>
-                                <li><a href="{{ url('/transactionHistory') }}"><i class="material-icons">record_voice_over</i>Transaction History</a></li>
+                                <li><a href="{{ url('/transactionHistory') }}"><i class="material-icons">monetization_on</i>Transaction History</a></li>
                                 <li><a href="{{ url('/contact') }}"><i class="material-icons">record_voice_over</i>Contact Admin</a></li>
                                 <li><a href="{{ url('/faq') }}"><i class="material-icons">question_answer</i>FAQ</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="material-icons">cancel</i>Logout</a></li>
