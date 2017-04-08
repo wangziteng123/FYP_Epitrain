@@ -191,7 +191,7 @@
 								<li><a href="{{ url('/forumAdmin') }}"><i class="material-icons">speaker_notes</i>Discussion Forum</a></li>
                                 <li><a href="{{ url('/category') }}"><i class="material-icons">settings</i>Customize categories</a></li>
                                 <li><a href="{{ url('/subscriptionplan') }}"><i class="material-icons">subscriptions</i>Customize subscription</a></li>
-                                
+                                <li><a href="{{ url('/classmanagement') }}"><i class="material-icons">view_list</i>Class management</a></li>
 								<li><a href="{{ url('/viewAllUsers') }}"><i class="material-icons">group</i>View All Users</a></li>
 								<li><a href="{{ url('/update') }}"><i class="material-icons">perm_identity</i>Update Personal Info</a></li>
                                 <li><a href="{{ url('/faq') }}"><i class="material-icons">question_answer</i>FAQ</a></li>
