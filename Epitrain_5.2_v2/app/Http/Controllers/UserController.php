@@ -6,7 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-
+use Mail;
 
 
 class UserController extends Controller
@@ -62,19 +62,47 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
         ]);
         $user = new User;
         
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = bcrypt($request->password);
+				$random_password = $this->rand_string(16);
+        $user->password = bcrypt($random_password);
+				
+				$isAdmin = $request->input('make-admin');
+				if($isAdmin !== "0") {
+					$user->isAdmin = 1;
+				} else {
+					$user->isAdmin = 0;
+				}
         if($user->save()) {
+						Mail::send('emails.UserCreated',
+							array(
+									'name' => $user->name,
+									'username' => $user->email,
+									'password' => $random_password
+							), function($message) use ($user)
+						{
+								$message->from('cavetzii@gmail.com','Epitrain Elearning Platform Robot');
+								$message->to($user->email, $user->name)->subject('Welcome to Epitrain');
+						});
             return redirect('createUser')->with('success', "User successfully created!");
         } else {
             return redirect('createUser')->with('failure', "Please fill in all the details!");
         }
     }
+		
+		function rand_string( $length ) {
+			$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";	
+			$str = "";
+			$size = strlen( $chars );
+			for( $i = 0; $i < $length; $i++ ) {
+				$str .= $chars[ rand( 0, $size - 1 ) ];
+			}
+
+			return $str;
+		}
 
     /**
      * Display the specified resource.

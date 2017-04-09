@@ -68,7 +68,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                        <!--<div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <label for="password" class="col-sm-4 control-label"><font color="black" size = "3">Password</font></label>
 
                             <div class="col-sm-6">
@@ -93,6 +93,23 @@
                                         <strong>{{ $errors->first('password_confirmation') }}</strong>
                                     </span>
                                 @endif
+                            </div>
+                        </div>-->
+												
+												<div class="form-group">
+                            <div class="col-md-6 col-md-offset-3">
+                                <div class="radio radio-primary">
+                                   <label>
+																			<input type="radio" name="make-admin" id="make-admin" value="0" checked="">
+																			StandardUser
+																		</label>
+                                </div>
+																<div class="radio radio-primary">
+                                   <label>
+																			<input type="radio" name="make-admin" id="make-admin" value="1">
+																			Administrator
+																		</label>
+                                </div>
                             </div>
                         </div>
 

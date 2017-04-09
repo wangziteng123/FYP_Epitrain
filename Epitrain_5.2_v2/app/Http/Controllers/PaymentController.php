@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use Carbon\Carbon;
 
+use Auth;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -31,8 +32,8 @@ class PaymentController extends Controller
             "uid"=>$uid ,
             "fidStr" =>$fidStr
             ];
-			
-			
+
+
 			// only allow payment for price larger than 50 cents
 			if($totalPrice >0.5){
 				 //return view('paymentform.index');
@@ -46,10 +47,10 @@ class PaymentController extends Controller
 
 				return redirect('shoppingcart')->with('errorMsg',$message);
 
-				
+
 			}
 
-        
+
     }
 
 // receive the payment details, such as books and user id, from the purchase list
@@ -88,10 +89,12 @@ class PaymentController extends Controller
            ];
 
          $response= $pay->makepayment($valueForPayment);  // calling a method in payment class
+         $chargeID = $response["chargeID"];
+            $chargeOutcome = $response["chargeOutcome"];
 
-
-         if($response == "Payment complete."){
-              app('App\Http\Controllers\ShoppingController')->addToLibrary($request); // call add to library method in shopping controller
+         if($chargeOutcome == "Payment complete."){
+             app('App\Http\Controllers\ShoppingController')->addToLibrary($request); // call add to library method in shopping controller
+            DB::insert('insert into transactionhistory (user_id, chargeID) values (?, ?)', [$uid,$chargeID ]);
              //return view('mylibrary.index');
              return view('shoppingcart.index');
 
@@ -103,6 +106,44 @@ class PaymentController extends Controller
 
 
 
+      }
+
+      public function viewTransaction(){
+            $user_id = Auth::user()->id;
+            $userCharges = DB::table('transactionhistory')
+            ->where('user_id', '=', $user_id)
+            ->get();
+
+
+             $sizeOfUserChargesArray = count($userCharges);
+                $chargeIDArray = array();
+                $allChargeDetails = array(); // this array to store all charges details-> amount & description
+                $oneChargeDetails = array(); // this array to store one charges details-> amount & description of one particular charge
+            //retrieve charges from stripe
+            \Stripe\Stripe::setApiKey("sk_test_wZZaGd7Ztp3yQaOUuScbg6op");
+
+
+             for($start=0; $start < $sizeOfUserChargesArray; $start++){
+
+                echo "hello";
+                $chargeIDArray[$start]= $userCharges[$start]->chargeID;
+                $charge= \Stripe\Charge::retrieve($chargeIDArray[$start]);
+
+                $oneChargeDetails[0] = $charge->description;
+                $oneChargeDetails[1] = $charge->amount;
+                $oneChargeDetails[2] = $charge->receipt_email;
+
+                $allChargeDetails[$start] = $oneChargeDetails;
+
+
+
+
+             }
+
+
+
+
+            return \View::make('transactionhistory.index')->with('allChargeDetails',$allChargeDetails);
       }
 
 
