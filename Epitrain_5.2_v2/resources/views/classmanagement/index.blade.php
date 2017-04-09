@@ -101,13 +101,13 @@
                                 Course Area:
                                     <select name="courseArea" style="font-size:14px" class="form-control" placeholder="Choose ebook category">
                                         @foreach($categories as $category)
-                                            <option value=<?php echo $category->id;?>><font color="black" size = "3"><?php echo $category->categoryname;?></font></option>
+                                            <option value=<?php echo $category->categoryname;?>><font color="black" size = "3"><?php echo $category->categoryname;?></font></option>
                                         @endforeach
                                     </select>
                                     Start Date:
-                                    <input type="date" class="form-control datepicker" name="startDate" required>
+                                    <input type="date" class="form-control" id ="startDate" name="startDate" required>
                                     End Date:
-                                    <input type="date" class="form-control datepicker" name="endDate" required>
+                                    <input type="date" class="form-control" id ="endDate" name="endDate" required>
                                     <div class="checkbox">
                                       <label>
                                           <input type="checkbox" name="isActive"><font color="black">  Activate course</font>
@@ -158,7 +158,11 @@
                                                         <td><?php echo $enrolment->courseID;?></td>
                                                         <td><?php echo $enrolledStud->email;?></td>
                                                         <td><?php echo $enrolledStud->name;?></td>
-                                                        <td><?php echo $enrolment->isActive;?></td>
+                                                         <?php if ($enrolment->isActive == 0) { ?>
+                                                            <td>Inactive</td>
+                                                        <?php } else { ?>
+                                                            <td>Active</td>
+                                                        <?php } ;?>
                                                         <td>
                                                             <form action=<?php echo URL::route('deleteEnrolment');?> method="post" >
                                                               <input type="hidden" name="id" value=<?php echo $enrolment->id;?>>
@@ -200,7 +204,7 @@
                                           <div class="form-group">
                                             <label for="selectStudents" class="col-md-2 control-label"> Student <br/><br/> List</label>
                                             <div class="col-md-10">
-                                              <select id="selectStudents" multiple="" class="form-control" name="studentList[]">
+                                              <select id="selectStudents" multiple="" class="form-control" name="studentList[]" required>
                                                 @foreach($students as $student)
                                                     <option value=<?php echo $student->id;?>><font color="black" size = "3"><?php echo $student->name.'('.$student->email.')';?></font></option>
                                                 @endforeach
@@ -306,7 +310,7 @@
                                             <div class="form-group">
                                             <label for="selectMaterials" class="col-md-2 control-label"> Material <br/><br/> List</label>
                                             <div class="col-md-10">
-                                              <select id="selectMaterials" multiple="" class="form-control" name="materialList[]">
+                                              <select id="selectMaterials" multiple="" class="form-control" name="materialList[]" required>
                                                 @foreach($fileentries as $file)
                                                     <option value=<?php echo $file->id;?>><font color="black" size = "3"><?php echo $file->original_filename;?></font></option>
                                                 @endforeach
@@ -345,9 +349,19 @@
 
 <script>
     $(document).ready(function () {
-        $('.datepicker').datepicker({
+        var startDate = $('#startDate').datepicker({
             format: 'yyyy-mm-dd',
-            viewMode: 'months',
+            viewMode: 'months',  
+        });
+        var endDate = $('#endDate').datepicker({
+            format: 'yyyy-mm-dd',
+            viewMode: 'months',  
+        });
+    });
+
+    $(function () {   
+        $(".datepicker").on("dp.change", function (e) {    
+            $('.datepicker').datepicker("hide");
         });
     });
 </script>

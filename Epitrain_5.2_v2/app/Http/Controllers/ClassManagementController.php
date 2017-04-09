@@ -159,7 +159,7 @@ class ClassManagementController extends Controller
     public function deleteMaterial(Request $request) {
         $id = $request->input('id');
 
-        DB::table('enrolment')
+        DB::table('courseMaterial')
         ->where('id', '=', $id)
         ->delete();
         
