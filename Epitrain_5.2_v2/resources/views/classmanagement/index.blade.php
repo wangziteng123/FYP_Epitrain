@@ -150,9 +150,10 @@
                                             </thead>
                                             <tbody>
                                                 @foreach($enrolmentList as $enrolment)
-                                                    <?php
-                                                        $enrolledStud = User::where('id','=',$enrolment->userID)->firstOrFail();
-                                                    ?>
+                                                <?php
+                                                    $enrolledStud = User::where('id','=',$enrolment->userID)->first();
+                                                    if ($enrolledStud != null) {
+                                                ?>
                                                     <tr>
                                                         <td><?php echo $enrolment->courseID;?></td>
                                                         <td><?php echo $enrolledStud->email;?></td>
@@ -167,6 +168,7 @@
                                                             </form>
                                                         </td>
                                                     </tr>
+                                                <?php } ?>
                                                 @endforeach
                                             </tbody>
                                         </table>

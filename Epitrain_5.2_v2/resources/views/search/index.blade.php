@@ -11,7 +11,11 @@
 </div>
 <?php
 use App\Fileentry;
+use Carbon\Carbon;
+use Illuminate\Notifications\Notifiable;
+use App\Notifications\SubscriptionExpiring;
 
+    $user = Auth::user();
     $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     $parts = parse_url($url);
     parse_str($parts['query'], $query);
@@ -39,45 +43,6 @@ use App\Fileentry;
         ->where('user_id', $user->id)
         ->where('fileentry_id', $id)
         ->get();
-?>
-<?php
-   use Carbon\Carbon;
-   use Illuminate\Notifications\Notifiable;
-   use App\Notifications\SubscriptionExpiring;
-   
-   $isSubscribe = Auth::user()->subscribe;
- ?>
-
-@if($isSubscribe)
-  <?php
-    $currentTime = Carbon::now();
-    $userSubscribe = \DB::table('subscription')
-      ->where('user_id', $user->id)
-      ->orderBy('id','desc')
-      ->first();
-
-    $end_Date = Carbon::createFromFormat('Y-m-d H:i:s', $userSubscribe->end_date);
-    
-    $expiring = $currentTime->diffInHours($end_Date);
-    
-    $informedEnding = $userSubscribe->informed_ending;
-    $homeUrl = URL::route('home');
-    
-    $user = Auth::user();
-    if($expiring <= 168){
-        if($informedEnding == 0){                    
-            $user->notify(new SubscriptionExpiring($homeUrl));
-            DB::table('subscription')
-                -> where ('user_id', '=', $user->id)
-                -> update(['informed_ending' => 1]);
-        }
-    } elseif($expiring > 168 && $userSubscribe->informed_ending == 1){
-        DB::table('subscription')
-            -> where ('user_id', '=', $user->id)
-            -> update(['informed_ending' => 0]);
-    }
-    
-    $notYetExpired = $currentTime->lt($end_Date);
 
     $coursesOfThisBook = \DB::table('courseMaterial')
                           ->where('fileEntriesID', $id)
@@ -95,9 +60,41 @@ use App\Fileentry;
            break;
         }
     }
+
+    $isSubscribe = Auth::user()->subscribe;
+?>
+
+@if($isSubscribe)
+  <?php
+    $currentTime = Carbon::now();
+    $userSubscribe = \DB::table('subscription')
+      ->where('user_id', $user->id)
+      ->orderBy('id','desc')
+      ->first();
+
+    $end_Date = Carbon::createFromFormat('Y-m-d H:i:s', $userSubscribe->end_date);
+    
+    $expiring = $currentTime->diffInHours($end_Date);
+    
+    $informedEnding = $userSubscribe->informed_ending;
+    $homeUrl = URL::route('home');
+    
+    if($expiring <= 168){
+        if($informedEnding == 0){                    
+            $user->notify(new SubscriptionExpiring($homeUrl));
+            DB::table('subscription')
+                -> where ('user_id', '=', $user->id)
+                -> update(['informed_ending' => 1]);
+        }
+    } elseif($expiring > 168 && $userSubscribe->informed_ending == 1){
+        DB::table('subscription')
+            -> where ('user_id', '=', $user->id)
+            -> update(['informed_ending' => 0]);
+    }
+    
+    $notYetExpired = $currentTime->lt($end_Date);
 ?>
 @endif
-
 <div class="col-sm-12 col-xs-12" style="position:relative">
 
  <div class="col-sm-10 col-xs-10" style="position:relative">

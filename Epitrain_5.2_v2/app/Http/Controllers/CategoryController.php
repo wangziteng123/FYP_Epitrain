@@ -37,7 +37,7 @@ class CategoryController extends Controller
     	$entries = Fileentry::where('category', $category)
     	->paginate(20);
     	
-    	return view('category.category', compact('entries'),compact('category'));
+    	return redirect()->back();
     }
     public function setForumCategory(Request $request) {
         $input = $request->toArray();
