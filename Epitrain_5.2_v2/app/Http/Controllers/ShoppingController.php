@@ -26,7 +26,7 @@ class ShoppingController extends Controller
             ['fileentry_id' => $fileentry_id, 'user_id' => $user_id]
         );
  
-        return redirect()->route('home');
+        return redirect()->back();
     }
 
     public function deleteOne(Request $request) {

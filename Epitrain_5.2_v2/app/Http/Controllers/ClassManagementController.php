@@ -66,7 +66,7 @@ class ClassManagementController extends Controller
                  'courseArea' => $courseArea, 
                  'startDate' => $startDate, 
                  'endDate' => $endDate,
-                 'isActive' => $isActive
+                 'isActive' => '1'
                  ]
             );
         }
@@ -106,7 +106,7 @@ class ClassManagementController extends Controller
                 DB::table('enrolment')->insert(
                     ['courseID' => $courseID, 
                      'userID' => $studentID,
-                     'isActive' => $isActive
+                     'isActive' => '1'
                      ]
                 );
             }

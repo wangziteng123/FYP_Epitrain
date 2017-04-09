@@ -40,7 +40,46 @@ use App\Fileentry;
         ->where('fileentry_id', $id)
         ->get();
 ?>
+<?php
+   use Carbon\Carbon;
+   use Illuminate\Notifications\Notifiable;
+   use App\Notifications\SubscriptionExpiring;
+   
+   $isSubscribe = Auth::user()->subscribe;
+ ?>
 
+@if($isSubscribe)
+  <?php
+    $currentTime = Carbon::now();
+    $userSubscribe = \DB::table('subscription')
+      ->where('user_id', Auth::user()->id)
+      ->orderBy('id','desc')
+      ->first();
+
+    $end_Date = Carbon::createFromFormat('Y-m-d H:i:s', $userSubscribe->end_date);
+    
+    $expiring = $currentTime->diffInHours($end_Date);
+    
+    $informedEnding = $userSubscribe->informed_ending;
+    $homeUrl = URL::route('home');
+    
+    $user = Auth::user();
+    if($expiring <= 168){
+        if($informedEnding == 0){                    
+            $user->notify(new SubscriptionExpiring($homeUrl));
+            DB::table('subscription')
+                -> where ('user_id', '=', $user->id)
+                -> update(['informed_ending' => 1]);
+        }
+    } elseif($expiring > 168 && $userSubscribe->informed_ending == 1){
+        DB::table('subscription')
+            -> where ('user_id', '=', $user->id)
+            -> update(['informed_ending' => 0]);
+    }
+    
+    $notYetExpired = $currentTime->lt($end_Date);
+?>
+@endif
 
 <div class="col-sm-12 col-xs-12" style="position:relative">
 
@@ -54,85 +93,295 @@ use App\Fileentry;
     <hr>
 
     <!--display search result-->
-    <div class="jumbotron" style="background:#E1DFDE">
-      <div class = "row">
-          <div id="searchContainer" class="col-sm-1 col-sm-offset-1 hidden-xs"></div>
-          <div class="col-sm-7 col-xs-8 col-xs-offset-1">
-            <font color="darkblue" style="font-size: 25px;font-weight: bold;"><?php echo $original_filename;?></font>
+    @if($isSubscribe || $isStudent)
+      <!-- if user is a subscriber -->
+      @if($isSubscribe)
+        @if($notYetExpired)
+          <div class="jumbotron" style="background:#E1DFDE">
+            <div class = "row">
+                <div id="searchContainer" class="col-sm-1 col-sm-offset-1 hidden-xs"></div>
+                <div class="col-sm-7 col-xs-8 col-xs-offset-1">
+                  <font color="darkblue" style="font-size: 25px;font-weight: bold;"><?php echo $original_filename;?></font>
+                </div>
+            </div>
+            <div class = "row">
+              <div class="col-sm-9 col-xs-9 col-xs-offset-1 col-sm-offset-1"><font color="black" size='4'><strong>Category:</strong>  <?php echo $category;?></font>
+              </div>
+              <div class="col-sm-offset-1 col-sm-9 hidden-xs">
+                <font color="black" size='4'><strong>Description:</strong>  <?php 
+                  if (strlen($description) == 0) {
+                    echo "No description";
+                  } else {
+                    echo $description;
+                  } 
+                  ?></font>
+              </div>
+            </div>
+            <div class = "row center-block">
+              <div class="col-sm-3 col-xs-3 col-xs-offset-2 hidden-xs">
+                  @if (count($libraryExist))
+                    <button class="btn btn-warning" style="background-color: darkblue">
+                        <font style="">Already Purchased</font>
+                    </button>
+                  @elseif (!Auth::user()->isAdmin)
+                  <form action=<?php echo url('shoppingcart/addtolibrary');?> method="post">
+                      <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                      <input type="hidden" name="fidStr" value=<?php echo $id;?>>
+                          <button class="btn btn-raised btn-warning">
+                              <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                              Add To Library
+                          </button>
+                   </form>
+
+                  @endif
+              </div>
+            </div>
+            <div class = "row center-block visible-xs">
+              <div class="col-sm-3 col-xs-3 col-xs-offset-2">
+                @if (count($libraryExist))
+                    <button class="btn btn-warning" style="background-color: darkblue">
+                        <font style="">Already Purchased</font>
+                    </button>
+                  @elseif (!Auth::user()->isAdmin)
+                  <form action=<?php echo url('shoppingcart/addtolibrary');?> method="post">
+                      <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                      <input type="hidden" name="fidStr" value=<?php echo $id;?>>
+                          <button class="btn btn-raised btn-warning">
+                              <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                              Add To Library
+                          </button>
+                   </form>
+                  @endif
+              </div>
+            </div>
           </div>
-          <div class="col-sm-1 col-xs-1">
-            <font color="black" style="font-size:28px">S$<?php echo $price?>
-            </font>
-          </div>
-      </div>
-      <div class = "row">
-        <div class="col-sm-9 col-xs-9 col-xs-offset-1 col-sm-offset-1"><font color="black" size='4'><strong>Category:</strong>  <?php echo $category;?></font>
-        </div>
-        <div class="col-sm-offset-1 col-sm-9 hidden-xs">
-          <font color="black" size='4'><strong>Description:</strong>  <?php 
-            if (strlen($description) == 0) {
-              echo "No description";
-            } else {
-              echo $description;
-            } 
-            ?></font>
-        </div>
-      </div>
-      <div class = "row center-block">
-        <div class="col-sm-3 col-xs-3 col-xs-offset-2">
-          @if (count($shoppingcartExist))
-              <button class="btn btn-warning" style="background-color: darkblue">
-                  <font>Already Added</font>
-              </button>
-          @else
-              <form action=<?php echo url('shoppingcart/add');?> method="post">
-                  <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                  <input type="hidden" name="fid" value=<?php echo $id?>>
-                      <button  class="btn btn-raised btn-info">
-                          <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                          Add to Cart
+        @else
+          <div class="jumbotron" style="background:#E1DFDE">
+            <div class = "row">
+                <div id="searchContainer" class="col-sm-1 col-sm-offset-1 hidden-xs"></div>
+                <div class="col-sm-7 col-xs-8 col-xs-offset-1">
+                  <font color="darkblue" style="font-size: 25px;font-weight: bold;"><?php echo $original_filename;?></font>
+                </div>
+                <div class="col-sm-1 col-xs-1">
+                  <font color="black" style="font-size:28px">S$<?php echo $price;?>
+                  </font>
+                </div>
+            </div>
+            <div class = "row">
+              <div class="col-sm-9 col-xs-9 col-xs-offset-1 col-sm-offset-1"><font color="black" size='4'><strong>Category:</strong>  <?php echo $category;?></font>
+              </div>
+              <div class="col-sm-offset-1 col-sm-9 hidden-xs">
+                <font color="black" size='4'><strong>Description:</strong>  <?php 
+                  if (strlen($description) == 0) {
+                    echo "No description";
+                  } else {
+                    echo $description;
+                  } 
+                  ?></font>
+              </div>
+            </div>
+            <div class = "row center-block">
+              <div class="col-sm-3 col-xs-3 col-xs-offset-2">
+                @if (count($shoppingcartExist))
+                    <button class="btn btn-warning" style="background-color: darkblue">
+                        <font>Already Added</font>
+                    </button>
+                @else
+                    <form action=<?php echo url('shoppingcart/add');?> method="post">
+                        <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                        <input type="hidden" name="fid" value=<?php echo $id;?>>
+                            <button  class="btn btn-raised btn-info">
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                Add to Cart
+                            </button>
+                     </form>
+                @endif
+              </div>
+              <div class="col-sm-3 col-xs-3 col-xs-offset-2 hidden-xs">
+                  @if (count($libraryExist))
+                    <button class="btn btn-warning" style="background-color: darkblue">
+                        <font style="">Already Purchased</font>
+                    </button>
+                  @elseif (!Auth::user()->isAdmin)
+                  <form action=<?php echo URL::route('payment');?> method="post">
+                      <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                      <input type="hidden" name="fidStr" value=<?php echo $id;?>>
+                      <input type="hidden" name="totalPrice" id="totalPrice" value="<?php echo $price;?>"/>
+                      <button class="btn btn-raised btn-warning">
+                          <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                          Buy Now
                       </button>
+                   </form>
+
+                  @endif
+              </div>
+            </div>
+            <div class = "row center-block visible-xs">
+              <div class="col-sm-3 col-xs-3 col-xs-offset-2">
+                @if (count($libraryExist))
+                    <button class="btn btn-warning" style="background-color: darkblue">
+                        <font style="">Already Purchased</font>
+                    </button>
+                  @elseif (!Auth::user()->isAdmin)
+                  <form action=<?php echo URL::route('payment');?> method="post">
+                      <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                      <input type="hidden" name="fidStr" value=<?php echo $id;?>>
+                      <input type="hidden" name="totalPrice" id="totalPrice" value="<?php echo $price;?>"/>
+                      <button class="btn btn-raised btn-warning">
+                          <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                          Buy Now
+                      </button>
+                   </form>
+
+                  @endif
+              </div>
+            </div>
+          </div>
+        @endif
+      @else 
+        <!-- if user is a student -->
+        <div class="jumbotron" style="background:#E1DFDE">
+            <div class = "row">
+                <div id="searchContainer" class="col-sm-1 col-sm-offset-1 hidden-xs"></div>
+                <div class="col-sm-7 col-xs-8 col-xs-offset-1">
+                  <font color="darkblue" style="font-size: 25px;font-weight: bold;"><?php echo $original_filename;?></font>
+                </div>
+            </div>
+            <div class = "row">
+              <div class="col-sm-9 col-xs-9 col-xs-offset-1 col-sm-offset-1"><font color="black" size='4'><strong>Category:</strong>  <?php echo $category;?></font>
+              </div>
+              <div class="col-sm-offset-1 col-sm-9 hidden-xs">
+                <font color="black" size='4'><strong>Description:</strong>  <?php 
+                  if (strlen($description) == 0) {
+                    echo "No description";
+                  } else {
+                    echo $description;
+                  } 
+                  ?></font>
+              </div>
+            </div>
+            <div class = "row center-block">
+              <div class="col-sm-3 col-xs-3 col-xs-offset-2 hidden-xs">
+                  @if (count($libraryExist))
+                    <button class="btn btn-warning" style="background-color: darkblue">
+                        <font style="">Already Purchased</font>
+                    </button>
+                  @elseif (!Auth::user()->isAdmin)
+                  <form action=<?php echo url('shoppingcart/addtolibrary');?> method="post">
+                      <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                      <input type="hidden" name="fidStr" value=<?php echo $id;?>>
+                          <button class="btn btn-raised btn-warning">
+                              <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                              Add To Library
+                          </button>
+                   </form>
+
+                  @endif
+              </div>
+            </div>
+            <div class = "row center-block visible-xs">
+              <div class="col-sm-3 col-xs-3 col-xs-offset-2">
+                @if (count($libraryExist))
+                    <button class="btn btn-warning" style="background-color: darkblue">
+                        <font style="">Already Purchased</font>
+                    </button>
+                  @elseif (!Auth::user()->isAdmin)
+                  <form action=<?php echo url('shoppingcart/addtolibrary');?> method="post">
+                      <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                      <input type="hidden" name="fidStr" value=<?php echo $id;?>>
+                          <button class="btn btn-raised btn-warning">
+                              <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                              Add To Library
+                          </button>
+                   </form>
+                  @endif
+              </div>
+            </div>
+          </div>
+      @endif
+    @else
+      <!-- if user is a normal user -->
+      <div class="jumbotron" style="background:#E1DFDE">
+        <div class = "row">
+            <div id="searchContainer" class="col-sm-1 col-sm-offset-1 hidden-xs"></div>
+            <div class="col-sm-7 col-xs-8 col-xs-offset-1">
+              <font color="darkblue" style="font-size: 25px;font-weight: bold;"><?php echo $original_filename;?></font>
+            </div>
+            <div class="col-sm-1 col-xs-1">
+              <font color="black" style="font-size:28px">S$<?php echo $price;?>
+              </font>
+            </div>
+        </div>
+        <div class = "row">
+          <div class="col-sm-9 col-xs-9 col-xs-offset-1 col-sm-offset-1"><font color="black" size='4'><strong>Category:</strong>  <?php echo $category;?></font>
+          </div>
+          <div class="col-sm-offset-1 col-sm-9 hidden-xs">
+            <font color="black" size='4'><strong>Description:</strong>  <?php 
+              if (strlen($description) == 0) {
+                echo "No description";
+              } else {
+                echo $description;
+              } 
+              ?></font>
+          </div>
+        </div>
+        <div class = "row center-block">
+          <div class="col-sm-3 col-xs-3 col-xs-offset-2">
+            @if (count($shoppingcartExist))
+                <button class="btn btn-warning" style="background-color: darkblue">
+                    <font>Already Added</font>
+                </button>
+            @else
+                <form action=<?php echo url('shoppingcart/add');?> method="post">
+                    <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                    <input type="hidden" name="fid" value=<?php echo $id;?>>
+                        <button  class="btn btn-raised btn-info">
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                            Add to Cart
+                        </button>
+                 </form>
+            @endif
+          </div>
+          <div class="col-sm-3 col-xs-3 col-xs-offset-2 hidden-xs">
+              @if (count($libraryExist))
+                <button class="btn btn-warning" style="background-color: darkblue">
+                    <font style="">Already Purchased</font>
+                </button>
+              @elseif (!Auth::user()->isAdmin)
+              <form action=<?php echo URL::route('payment');?> method="post">
+                  <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                  <input type="hidden" name="fidStr" value=<?php echo $id;?>>
+                  <input type="hidden" name="totalPrice" id="totalPrice" value="<?php echo $price;?>"/>
+                  <button class="btn btn-raised btn-warning">
+                      <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                      Buy Now
+                  </button>
                </form>
-          @endif
+
+              @endif
+          </div>
         </div>
-        <div class="col-sm-3 col-xs-3 col-xs-offset-2 hidden-xs">
+        <div class = "row center-block visible-xs">
+          <div class="col-sm-3 col-xs-3 col-xs-offset-2">
             @if (count($libraryExist))
-              <button class="btn btn-warning" style="background-color: darkblue">
-                  <font style="">Bought Already</font>
-              </button>
-            @elseif (!Auth::user()->isAdmin)
-            <form action=<?php echo url('shoppingcart/addtolibrary');?> method="post">
-                <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                <input type="hidden" name="fidStr" value=<?php echo $id?>>
-                    <button class="btn btn-raised btn-warning">
-                        <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-                        Buy Now
-                    </button>
-             </form>
-
-            @endif
+                <button class="btn btn-warning" style="background-color: darkblue">
+                    <font style="">Already Purchased</font>
+                </button>
+              @elseif (!Auth::user()->isAdmin)
+              <form action=<?php echo URL::route('payment');?> method="post">
+                  <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+                  <input type="hidden" name="fidStr" value=<?php echo $id;?>>
+                  <input type="hidden" name="totalPrice" id="totalPrice" value="<?php echo $price;?>"/>
+                  <button class="btn btn-raised btn-warning">
+                      <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                      Buy Now
+                  </button>
+               </form>
+              @endif
+          </div>
         </div>
       </div>
-      <div class = "row center-block visible-xs">
-        <div class="col-sm-3 col-xs-3 col-xs-offset-2">
-          @if (count($libraryExist))
-              <button class="btn btn-warning" style="background-color: darkblue">
-                  <font style="">Already Purchased</font>
-              </button>
-            @elseif (!Auth::user()->isAdmin)
-            <form action=<?php echo url('shoppingcart/addtolibrary');?> method="post">
-                <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                <input type="hidden" name="fidStr" value=<?php echo $id?>>
-                    <button class="btn btn-raised btn-warning">
-                        <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-                        Buy Now
-                    </button>
-             </form>
-
-            @endif
-        </div>
-      </div>
-    </div>
+    @endif
   </div>
 </div>
 

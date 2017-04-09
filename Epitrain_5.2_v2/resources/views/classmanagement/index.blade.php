@@ -94,26 +94,26 @@
                     <div class="col-lg-12">
                         <div class="table-responsive">
                             <form action=<?php echo URL::route('addCourse');?> method="post" >
-                             Course ID:
-    											  <input type="text" class="form-control" name="courseID" required>
-											       Course Name:
-    											  <input type="text" class="form-control" name="courseName" required>
-                             Course Area:
-                            <select name="courseArea" style="font-size:14px" class="form-control" placeholder="Choose ebook category">
-                                @foreach($categories as $category)
-                                    <option value=<?php echo $category->id;?>><font color="black" size = "3"><?php echo $category->categoryname;?></font></option>
-                                @endforeach
-                            </select>
-                            Start Date:
-                            <input type="date" class="form-control datepicker" name="startDate" required>
-                            End Date:
-                            <input type="date" class="form-control datepicker" name="endDate" required>
-                            <div class="checkbox">
-                              <label>
-                                  <input type="checkbox" name="isActive"><font color="black">  Activate course</font>
-                              </label>
-                            </div>
-											      <input type="submit" class="btn btn-success btn-raised" value="Submit">
+                                Course ID:
+    							  <input type="text" class="form-control" name="courseID" required>
+    						       Course Name:
+    							  <input type="text" class="form-control" name="courseName" required>
+                                Course Area:
+                                    <select name="courseArea" style="font-size:14px" class="form-control" placeholder="Choose ebook category">
+                                        @foreach($categories as $category)
+                                            <option value=<?php echo $category->id;?>><font color="black" size = "3"><?php echo $category->categoryname;?></font></option>
+                                        @endforeach
+                                    </select>
+                                    Start Date:
+                                    <input type="date" class="form-control datepicker" name="startDate" required>
+                                    End Date:
+                                    <input type="date" class="form-control datepicker" name="endDate" required>
+                                    <div class="checkbox">
+                                      <label>
+                                          <input type="checkbox" name="isActive"><font color="black">  Activate course</font>
+                                      </label>
+                                    </div>
+							      <input type="submit" class="btn btn-success btn-raised" value="Submit">
                             </form>
                           </div>
                         </div>

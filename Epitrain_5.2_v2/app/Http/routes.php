@@ -133,7 +133,7 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::post('shoppingcart/deleteShoppcart', 'ShoppingController@delete');
 
 	Route::post('shoppingcart/addtolibrary', 'ShoppingController@addToLibrary');
-	Route::post('shoppingcart/addToLibraryOne', 'ShoppingController@addToLibraryOne');
+	Route::post('shoppingcart/addToLibraryOne', ['as' => 'addToLibraryOne','uses' =>'ShoppingController@addToLibraryOne']);
 	Route::post('shoppingcart/checkout', 'ShoppingController@checkout');
 	
 	Route::get('/forum/{discussionId}/{userId}',[
