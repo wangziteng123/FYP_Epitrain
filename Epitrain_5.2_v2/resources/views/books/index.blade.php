@@ -112,18 +112,18 @@ body{
                           ->where('fileEntriesID', $checkid)
                           ->pluck('courseID');
 
-                          $coursesOfThisUser = \DB::table('enrolment')
-                          ->where('userID', Auth::user()->id)
-                          ->where('isActive','=',1)
-                          ->pluck('courseID');
+                        $coursesOfThisUser = \DB::table('enrolment')
+                        ->where('userID', Auth::user()->id)
+                        ->where('isActive','=',1)
+                        ->pluck('courseID');
 
-                          $isStudent = false;
-                          foreach ($coursesOfThisBook as $course) {
-                              if(in_array($course, $coursesOfThisUser)) {
-                                 $isStudent = true;
-                                 break;
-                              }
-                          }
+                        $isStudent = false;
+                        foreach ($coursesOfThisBook as $course) {
+                            if(in_array($course, $coursesOfThisUser)) {
+                               $isStudent = true;
+                               break;
+                            }
+                        }
 
                     ?>
                       @if($isSubscribe || $isStudent)

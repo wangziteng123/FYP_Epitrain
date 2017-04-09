@@ -31,12 +31,12 @@ use App\Fileentry;
 
      //whether the book is in shoppingcart or not / library
      $shoppingcartExist = \DB::table('shoppingcarts')
-        ->where('user_id', Auth::user()->id)
+        ->where('user_id', $user->id)
         ->where('fileentry_id', $id)
         ->get();
 
      $libraryExist = \DB::table('libraries')
-        ->where('user_id', Auth::user()->id)
+        ->where('user_id', $user->id)
         ->where('fileentry_id', $id)
         ->get();
 ?>
@@ -52,7 +52,7 @@ use App\Fileentry;
   <?php
     $currentTime = Carbon::now();
     $userSubscribe = \DB::table('subscription')
-      ->where('user_id', Auth::user()->id)
+      ->where('user_id', $user->id)
       ->orderBy('id','desc')
       ->first();
 
@@ -78,6 +78,23 @@ use App\Fileentry;
     }
     
     $notYetExpired = $currentTime->lt($end_Date);
+
+    $coursesOfThisBook = \DB::table('courseMaterial')
+                          ->where('fileEntriesID', $id)
+                          ->pluck('courseID');
+
+    $coursesOfThisUser = \DB::table('enrolment')
+    ->where('userID', $user->id)
+    ->where('isActive','=',1)
+    ->pluck('courseID');
+
+    $isStudent = false;
+    foreach ($coursesOfThisBook as $course) {
+        if(in_array($course, $coursesOfThisUser)) {
+           $isStudent = true;
+           break;
+        }
+    }
 ?>
 @endif
 
@@ -118,9 +135,9 @@ use App\Fileentry;
               </div>
             </div>
             <div class = "row center-block">
-              <div class="col-sm-3 col-xs-3 col-xs-offset-2 hidden-xs">
+              <div class="col-sm-4 col-xs-4 col-xs-offset-4 hidden-xs">
                   @if (count($libraryExist))
-                    <button class="btn btn-warning" style="background-color: darkblue">
+                    <button class="btn btn-warning" style="background-color: darkblue; color: yellow">
                         <font style="">Already Purchased</font>
                     </button>
                   @elseif (!Auth::user()->isAdmin)
@@ -137,9 +154,9 @@ use App\Fileentry;
               </div>
             </div>
             <div class = "row center-block visible-xs">
-              <div class="col-sm-3 col-xs-3 col-xs-offset-2">
+              <div class="col-sm-4 col-xs-4 col-xs-offset-4">
                 @if (count($libraryExist))
-                    <button class="btn btn-warning" style="background-color: darkblue">
+                    <button class="btn btn-warning" style="background-color: darkblue; color: yellow">
                         <font style="">Already Purchased</font>
                     </button>
                   @elseif (!Auth::user()->isAdmin)
@@ -183,7 +200,7 @@ use App\Fileentry;
             <div class = "row center-block">
               <div class="col-sm-3 col-xs-3 col-xs-offset-2">
                 @if (count($shoppingcartExist))
-                    <button class="btn btn-warning" style="background-color: darkblue">
+                    <button class="btn btn-warning" style="background-color: darkblue; color: yellow">
                         <font>Already Added</font>
                     </button>
                 @else
@@ -199,7 +216,7 @@ use App\Fileentry;
               </div>
               <div class="col-sm-3 col-xs-3 col-xs-offset-2 hidden-xs">
                   @if (count($libraryExist))
-                    <button class="btn btn-warning" style="background-color: darkblue">
+                    <button class="btn btn-warning" style="background-color: darkblue; color: yellow">
                         <font style="">Already Purchased</font>
                     </button>
                   @elseif (!Auth::user()->isAdmin)
@@ -219,7 +236,7 @@ use App\Fileentry;
             <div class = "row center-block visible-xs">
               <div class="col-sm-3 col-xs-3 col-xs-offset-2">
                 @if (count($libraryExist))
-                    <button class="btn btn-warning" style="background-color: darkblue">
+                    <button class="btn btn-warning" style="background-color: darkblue; color: yellow">
                         <font style="">Already Purchased</font>
                     </button>
                   @elseif (!Auth::user()->isAdmin)
@@ -261,9 +278,9 @@ use App\Fileentry;
               </div>
             </div>
             <div class = "row center-block">
-              <div class="col-sm-3 col-xs-3 col-xs-offset-2 hidden-xs">
+              <div class="col-sm-4 col-xs-4 col-xs-offset-4 hidden-xs">
                   @if (count($libraryExist))
-                    <button class="btn btn-warning" style="background-color: darkblue">
+                    <button class="btn btn-warning" style="background-color: darkblue; color: yellow">
                         <font style="">Already Purchased</font>
                     </button>
                   @elseif (!Auth::user()->isAdmin)
@@ -280,9 +297,9 @@ use App\Fileentry;
               </div>
             </div>
             <div class = "row center-block visible-xs">
-              <div class="col-sm-3 col-xs-3 col-xs-offset-2">
+              <div class="col-sm-4 col-xs-4 col-xs-offset-4">
                 @if (count($libraryExist))
-                    <button class="btn btn-warning" style="background-color: darkblue">
+                    <button class="btn btn-warning" style="background-color: darkblue; color: yellow">
                         <font style="">Already Purchased</font>
                     </button>
                   @elseif (!Auth::user()->isAdmin)
@@ -328,7 +345,7 @@ use App\Fileentry;
         <div class = "row center-block">
           <div class="col-sm-3 col-xs-3 col-xs-offset-2">
             @if (count($shoppingcartExist))
-                <button class="btn btn-warning" style="background-color: darkblue">
+                <button class="btn btn-warning" style="background-color: darkblue; color: yellow">
                     <font>Already Added</font>
                 </button>
             @else
@@ -344,7 +361,7 @@ use App\Fileentry;
           </div>
           <div class="col-sm-3 col-xs-3 col-xs-offset-2 hidden-xs">
               @if (count($libraryExist))
-                <button class="btn btn-warning" style="background-color: darkblue">
+                <button class="btn btn-warning" style="background-color: darkblue; color: yellow">
                     <font style="">Already Purchased</font>
                 </button>
               @elseif (!Auth::user()->isAdmin)
@@ -364,7 +381,7 @@ use App\Fileentry;
         <div class = "row center-block visible-xs">
           <div class="col-sm-3 col-xs-3 col-xs-offset-2">
             @if (count($libraryExist))
-                <button class="btn btn-warning" style="background-color: darkblue">
+                <button class="btn btn-warning" style="background-color: darkblue; color: yellow">
                     <font style="">Already Purchased</font>
                 </button>
               @elseif (!Auth::user()->isAdmin)
