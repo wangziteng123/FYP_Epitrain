@@ -122,9 +122,9 @@
 </br>
 
 <div class="col-md-9 col-sm-12 center-block">
-    	@foreach($discussionsWithTag as $discId)
+      @foreach($discussionsWithTag as $discId)
 
-    	<?php
+      <?php
             
             //Changed Here
             $discussion = \DB::table('forumdiscussion')
@@ -133,23 +133,23 @@
                 ->select('forumdiscussion.*', 'category.categoryname', 'users.name')
                 -> where ('forumdiscussion.id', '=', $discId->discussion_id)
                 -> first();
-            
+            //echo var_dump($discussion->id);
             $forumpageUrl = URL::route('forumpage');
-	    	$forumpageUrl = $forumpageUrl."?id=".$discussion->id;
+        $forumpageUrl = $forumpageUrl."?id=".$discussion->id;
 
             $isOpen= $discussion->isOpen; // needed to see if the discussion is still open for reply
-	    	$showResponsePageUrl = URL::route('forumResponsePage');
-	    	$showResponsePageUrl= $showResponsePageUrl."?id=".$discussion->id;
+        $showResponsePageUrl = URL::route('forumResponsePage');
+        $showResponsePageUrl= $showResponsePageUrl."?id=".$discussion->id;
 
             $likes = DB::table('discussionUserLike')
                 -> where ('discussion_id', '=', $discussion->id)
                 -> count();
             
-	    	$discussionId = $discussion->id;
+        $discussionId = $discussion->id;
             
-	    	$responses = \DB::table('forumresponse')
-            		->where('discussion_id', $discussionId)
-            		->get();
+        $responses = \DB::table('forumresponse')
+                ->where('discussion_id', $discussionId)
+                ->get();
 
             $numOfResponses = count($responses);
            //echo var_dump($numOfResponses);
@@ -158,18 +158,19 @@
             
             $tagCount = 0;
             $tagsDisc = \DB::table('forumtags_discussion')
-            		->where('discussion_id', $discussionId)
-            		->get();
+                ->where('discussion_id', $discussionId)
+                ->get();
             shuffle($tagsDisc);
            //To Here
             
-	    ?>
+      ?>
 
 
     <div class="jumbotron" >
         <div class="row center-block">
 
         <div class="col-sm-8 center-block"><font color='black'><h2>
+           
             <?php $title = app('profanityFilter')->filter($discussion->title);?>
             <b><?php echo $title;?></b></h2></font>
             <font color='black'>
@@ -179,10 +180,10 @@
                 ?>
               </h4>
             </font>
-  		      <font color='black' size="3"><b>Posted by:</b> <?php echo $discussion->name;?></font>
+
+            <font color='black' size="3"><b>Posted by:</b> <?php echo $discussion->name;?></font>
             <font color='grey' size="3"><?php  $creationDate= $discussion->created_at;
               $d= strtotime($creationDate);
-
               $convertD = date("Y-m-d h:i:sa", $d);
               $convertDToDateFormat= date_create($convertD);
               $currentDate = date("Y-m-d h:i:sa");
@@ -197,10 +198,12 @@
               else {
                    echo $dateDiff;
               }
+         
+
             ;?></font><br/><br/><br/>
             <?php $desc = app('profanityFilter')->filter($discussion->description);?>
               @if(strlen($desc) < 170)
-    			      <font color='black' size='4'><?php echo $desc;?></font>
+                <font color='black' size='4'><?php echo $desc;?></font>
               @else
                 <font color='black' size='4'>{{substr($desc,0,170)}}</font>
                 <a style="font-size:20px" href=<?php echo $forumpageUrl?> data-toggle="tooltip" data-placement="bottom" title="Click here to view the whole post">
@@ -210,6 +213,7 @@
               <br/>
               </br>
             <?php
+ 
                 //check if the discussion has been closed or not
                 if ($isOpen == 0){ ?>
                     <a style="display:block; font-size:20px" href=<?php echo $forumpageUrl?>>
@@ -232,7 +236,7 @@
                 }
 
             ?>
-
+  
             <!-- Button trigger modal for deleting discussion -->
             @if (Auth::user()->isAdmin)
               <button type="button" class="btn btn-danger btn-raised" data-toggle="modal" data-target="#myModalDeleteDiscussion" onclick="loadModal( <?php echo $discussionId;?>)">
@@ -268,15 +272,16 @@
                 </div>
               </div>
             @endif
-  	    </div>
-  	    <div class="col-sm-4 center-block">
+        </div>
+        
+        <div class="col-sm-4 center-block">
             <font color='black' style="font-size:34px">
               <a href="#" data-toggle="tooltip" data-placement="bottom" title="Number of views" style="color:black">
                 <i class="fa fa-eye" aria-hidden="true" style="color:navy"></i>
                 <?php echo $discussion->views; ?>
               </a>
             </font>
-
+            
             <font color='black' style="font-size:34px"><a style="color:black" href=<?php echo $showResponsePageUrl?> data-toggle="tooltip" data-placement="bottom" title="Number of responses">
               <i class="fa fa-comment-o" style="color:navy"></i>
                 <?php echo '' + $numOfResponses ?>
@@ -289,6 +294,7 @@
               </a>
             </font>
         </div>
+        
         @foreach($tagsDisc as $tags)
             <?php 
                 $tagsToPass = substr($tags->forum_tag,1);
@@ -305,8 +311,8 @@
             
             </br>
         @endforeach
-
-  	  </div>
+        
+      </div>
     </div>
     @endforeach
 </div>

@@ -32,8 +32,11 @@ http://sourceforge.net/adobe/cmap/wiki/License/
     <script type="text/javascript">
         $(document).ready(function() {
            $('.disableEvent').bind('cut copy paste', function (e) {
-            e.preventDefault();
-        });
+              e.preventDefault();
+          });
+           $("body").on("contextmenu",function(e){
+              return false;
+          });
         });
     </script>
 

@@ -151,7 +151,7 @@
 							<li class="dropdown">
 								<a class="dropdown-toggle" data-toggle="dropdown">Categories<b class="caret"></b></a>
 								<ul class="dropdown-menu">
-                                    @for ($i = 1; $i < sizeof($categories); $i++)
+                                    @for ($i = 0; $i < sizeof($categories); $i++)
                                         <?php $category = $categories[$i]; ?>
                                         <li><a id =<?php echo "link-".$i;?> href='/shop'><span class="white-text text-darken-2" id=<?php echo "cat-".$i;?>><?php echo $category->categoryname; ?></span></a></li>
                                     @endfor
@@ -293,7 +293,7 @@
             });
     </script>
     <script>
-        for(i = 1; i < 9; i++) {
+        for(i = 0; i < <?php echo sizeof($categories); ?>; i++) {
             document.getElementById("link-".concat(i)).href = "shop?cat=".concat(document.getElementById("cat-".concat(i)).innerHTML);
         }
     </script>
@@ -308,6 +308,33 @@
 			$.material.init();
 		});
       <!--$('body').bootstrapMaterialDesign();-->
+      //setInterval(function(){ 
+        //alert("Hello"); 
+      //}, 300000);
+    </script>
+
+    <script>
+    /*
+     var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+                }
+             }
+
+       xmlhttp.open("GET", "Caller.php", true);
+            xmlhttp.send();   
+    
+     window.onbeforeunload = function () {
+        return "Are you sure?";
+    }
+
+    $(function () {
+        $('input[type="checkbox"]').click(function () {
+            window.onbeforeunload = function () { };
+        });
+    });
+    */
     </script>
 </body>
 </html>

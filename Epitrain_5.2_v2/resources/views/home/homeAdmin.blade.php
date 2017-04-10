@@ -152,7 +152,7 @@ foreach($lastFiveMonthsArr as $monthyear) {
             </div>
 
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-md-8">
 
 
 
@@ -164,9 +164,9 @@ foreach($lastFiveMonthsArr as $monthyear) {
                         </div>
 
                         <div class="panel-body">
-													<div class="container col-sm-3 col-lg-3">
-                           <div id="line-example"></div>
-													</div>
+							<div class="container col-sm-12 col-xs-12">
+                            <div id="line-example"></div>
+							</div>
                         </div>
 											
                     </div>
