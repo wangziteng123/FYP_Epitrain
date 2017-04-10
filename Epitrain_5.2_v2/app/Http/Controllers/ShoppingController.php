@@ -104,10 +104,6 @@ class ShoppingController extends Controller
                     ->delete();
             }
 
-            DB::table('libraries') ->insert(
-                ['fileentry_id' => $fileentry_id, 'user_id' => $user_id]
-            );
-
 
          }
 
