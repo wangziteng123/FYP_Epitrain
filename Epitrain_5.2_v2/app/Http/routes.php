@@ -91,11 +91,19 @@ Route::group(['middleware' => ['auth','admin']], function() {
 	Route::get('classmanagement', 'ClassManagementController@index');
 	Route::post('classmanagement/addCourse', ['as' => 'addCourse', 'uses' => 'ClassManagementController@addCourse']);
 	Route::post('classmanagement/deleteCourse', ['as' => 'deleteCourse', 'uses' => 'ClassManagementController@deleteCourse']);
+
+	Route::get('enrolment', ['as' => 'enrolment', 'uses' => 'ClassManagementController@enrolment']);
 	Route::post('classmanagement/addEnrolment', ['as' => 'addEnrolment', 'uses' => 'ClassManagementController@addEnrolment']);
 	Route::post('classmanagement/deleteEnrolment', ['as' => 'deleteEnrolment', 'uses' => 'ClassManagementController@deleteEnrolment']);
+	Route::post('classmanagement/filterStudents', ['as' => 'filterStudents', 'uses' => 'ClassManagementController@filterStudents']);
+	Route::post('classmanagement/filterEnrolment', ['as' => 'filterEnrolment', 'uses' => 'ClassManagementController@filterEnrolment']);
+
+	Route::get('courseMaterials', ['as' => 'courseMaterials', 'uses' => 'ClassManagementController@courseMaterials']);	
 	Route::post('classmanagement/addMaterial', ['as' => 'addMaterial', 'uses' => 'ClassManagementController@addMaterial']);
-	Route::post('classmanagement/deleteMaterial', ['as' => 'deleteMaterial', 'uses' => 'ClassManagementController@deleteMaterial']);
-	
+	Route::post('classmanagement/deleteMaterial', ['as' => 'deleteMaterial', 'uses' => 'ClassManagementController@deleteMaterial']);	
+	Route::post('classmanagement/filterEbooks', ['as' => 'filterEbooks', 'uses' => 'ClassManagementController@filterEbooks']);
+	Route::post('classmanagement/filterCourseMaterials', ['as' => 'filterCourseMaterials', 'uses' => 'ClassManagementController@filterCourseMaterials']);
+	Route::post('classmanagement/filterCourses', ['as' => 'filterCourses', 'uses' => 'ClassManagementController@filterCourses']);
 });
 
 

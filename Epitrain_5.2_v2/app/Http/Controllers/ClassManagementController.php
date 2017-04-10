@@ -13,16 +13,191 @@ use App\Http\Controllers\Controller;
 class ClassManagementController extends Controller
 {
     public function index() {
+
     	$courseList = \DB::table('course')->get();
         $categories = \DB::table('category')->get();
-        $materialList = \DB::table('courseMaterial')->get();
-        $students = User::where('subscribe','=','0')->where('isAdmin','=','0')->get();
-        $enrolmentList = \DB::table('enrolment')->get();
-        $fileentries = \DB::table('fileentries')->get();
 
-        return view('classmanagement.index', compact('courseList','categories','materialList','students','enrolmentList','fileentries'));
+        return view('classmanagement.index', compact('courseList','categories'));
     }
 
+    public function enrolment() {
+
+        $courseList = \DB::table('course')->get();
+        $students = User::where('subscribe','=','0')->where('isAdmin','=','0')->get();
+        $enrolmentList = \DB::table('enrolment')->get();
+
+        return view('classmanagement.enrolment', compact('courseList','students','enrolmentList'));
+    }
+
+    public function courseMaterials() {
+
+        $courseList = \DB::table('course')->get();
+        $materialList = \DB::table('courseMaterial')->get();
+        $fileentries = \DB::table('fileentries')->get();
+
+        return view('classmanagement.courseMaterials', compact('courseList','materialList','fileentries'));
+    }
+
+    public function filterStudents(Request $request) {
+        $filterInput = $request->input('studentInput');
+
+        $courseList = \DB::table('course')->get();
+        $enrolmentList = \DB::table('enrolment')->get();
+        $students = null;
+
+        //if admin entered something that contains @, assume it's email
+        if (strpos($filterInput,'@') == true) {
+            $students = User::where('subscribe','=','0')
+                ->where('isAdmin','=','0')
+                ->where('email','like','%'.$filterInput.'%')
+                ->get();
+        //else, assume it's name
+        } else {
+            $students = User::where('subscribe','=','0')
+                ->where('isAdmin','=','0')
+                ->where('name','like','%'.$filterInput.'%')
+                ->get();
+        }
+
+        return view('classmanagement.enrolment', compact('courseList','students','enrolmentList'));
+    }
+
+    public function filterEbooks(Request $request) {
+        $filterInput = $request->input('courseIDInput');
+
+        $courseList = \DB::table('course')->get();
+        $materialList = \DB::table('courseMaterial')->get();
+        $fileentries = \DB::table('fileentries')
+            ->where('original_filename','like','%'.$filterInput.'%')
+            ->get();
+
+        return view('classmanagement.courseMaterials', compact('courseList','materialList','fileentries'));
+    }
+
+    public function filterCourses(Request $request) {
+        $courseIDInput = $request->input('courseIDInput');
+        $courseNameInput = $request->input('courseNameInput');
+        $courseAreaInput = $request->input('courseAreaInput');
+        $startDateInput = $request->input('startDateInput');
+        $endDateInput = $request->input('endDateInput');
+        $statusInput = $request->input('statusInput');
+
+        
+        if ($courseIDInput == null) {
+           $courseIDInput = '';
+        }
+        if ($courseNameInput == null) {
+           $courseNameInput = '';
+        }
+        if ($courseAreaInput == null) {
+          $courseAreaInput  = '';
+        }
+        if ($startDateInput == null) {
+           $startDateInput = '';
+        }
+        if ($endDateInput == null) {
+          $endDateInput  = '';
+        }
+        if ($statusInput == null) {
+           $statusInput = '';
+        }
+
+        $categories = \DB::table('category')->get();
+
+        if($startDateInput == '' && $endDateInput == '') {
+            $courseList = \DB::table('course')
+            ->where('courseID','like','%'.$courseIDInput.'%')
+            ->where('courseName','like','%'.$courseNameInput.'%')
+            ->where('courseArea','like','%'.$courseAreaInput.'%')
+            ->whereBetween('startDate',[$startDateInput, $endDateInput])
+            ->where('isActive','=', $statusInput)
+            ->get();
+        } else if($startDateInput == '') {
+            $courseList = \DB::table('course')
+            ->where('courseID','like','%'.$courseIDInput.'%')
+            ->where('courseName','like','%'.$courseNameInput.'%')
+            ->where('courseArea','like','%'.$courseAreaInput.'%')
+            ->where('endDate','<=', $endDateInput)
+            ->where('isActive','=', $statusInput)
+            ->get();
+        } else if($endDateInput == '') {
+            $courseList = \DB::table('course')
+            ->where('courseID','like','%'.$courseIDInput.'%')
+            ->where('courseName','like','%'.$courseNameInput.'%')
+            ->where('courseArea','like','%'.$courseAreaInput.'%')
+            ->where('startDate','>=',$startDateInput)
+            ->where('isActive','=', $statusInput)
+            ->get();
+        } else {
+            $courseList = \DB::table('course')
+            ->where('courseID','like','%'.$courseIDInput.'%')
+            ->where('courseName','like','%'.$courseNameInput.'%')
+            ->where('courseArea','like','%'.$courseAreaInput.'%')
+            ->where('isActive','=', $statusInput)
+            ->get();
+        }
+        
+        return view('classmanagement.index', compact('courseList','categories'));
+    }
+
+    public function filterEnrolment(Request $request) {
+        $courseIDInput = $request->input('courseIDInput');
+        $studEmailInput = $request->input('studEmailInput');
+        $studNameInput = $request->input('studNameInput');
+        $statusInput = $request->input('statusInput');
+
+        
+        if ($courseIDInput == null) {
+           $courseIDInput = '';
+        }
+        if ($studEmailInput == null) {
+           $studEmailInput = '';
+        }
+        if ($studNameInput == null) {
+          $studNameInput  = '';
+        }
+        if ($statusInput == null) {
+           $statusInput = '';
+        }
+        $courseList = \DB::table('course')->get();
+        $students = User::where('subscribe','=','0')->where('isAdmin','=','0')->get();
+        $enrolmentList = \DB::table('enrolment')
+            ->join('users', function ($join) use ($studEmailInput, $studNameInput, $courseIDInput, $statusInput) {
+                $join->on('users.id', '=', 'enrolment.userID')
+                     ->where('users.email', 'like', '%'.$studEmailInput.'%')
+                     ->where('users.name','like','%'.$studNameInput.'%')
+                     ->where('enrolment.courseID','like','%'.$courseIDInput.'%')
+                     ->where('enrolment.isActive','like','%'.$statusInput.'%');
+                })
+                ->get();
+
+        return view('classmanagement.enrolment', compact('courseList','students','enrolmentList'));
+    }
+
+    public function filterCourseMaterials(Request $request) {
+        $courseIDInput = $request->input('courseIDInput');
+        $materialsInput = $request->input('materialsInput');
+
+        if ($courseIDInput == null) {
+           $courseIDInput = '';
+        }
+        if ($materialsInput == null) {
+           $materialsInput = '';
+        }
+        $courseList = \DB::table('course')->get();
+        $materialList = \DB::table('courseMaterial')->get();
+        $fileentries = \DB::table('fileentries')->get();
+
+        $materialList = \DB::table('courseMaterial')
+            ->join('fileentries', function ($join) use ($materialsInput, $courseIDInput) {
+                $join->on('fileentries.id', '=', 'courseMaterial.fileEntriesID')
+                     ->where('fileentries.original_filename', 'like', '%'.$materialsInput.'%')
+                     ->where('courseMaterial.courseID','like','%'.$courseIDInput.'%');
+                })
+                ->get();
+
+        return view('classmanagement.courseMaterials', compact('courseList','materialList','fileentries'));
+    }
 
     public function addCourse(Request $request) {
         $courseList = \DB::table('course')->get();
@@ -112,7 +287,7 @@ class ClassManagementController extends Controller
             }
         }
         
-        return redirect('classmanagement');
+        return redirect('enrolment');
     }
 
     public function deleteEnrolment(Request $request) {
@@ -122,7 +297,7 @@ class ClassManagementController extends Controller
         ->where('id', '=', $id)
         ->delete();
         
-        return redirect('classmanagement');
+        return redirect('enrolment');
     }
 
     public function addMaterial(Request $request) {        
@@ -153,7 +328,7 @@ class ClassManagementController extends Controller
             }
         }
         
-        return redirect('classmanagement');
+        return redirect('courseMaterials');
     }
 
     public function deleteMaterial(Request $request) {
@@ -163,7 +338,7 @@ class ClassManagementController extends Controller
         ->where('id', '=', $id)
         ->delete();
         
-        return redirect('classmanagement');
+        return redirect('courseMaterials');
     }
     
 }
