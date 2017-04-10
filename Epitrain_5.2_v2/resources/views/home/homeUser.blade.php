@@ -826,22 +826,23 @@
 
     ?>
 
-    <div id="basic" class="well" style="max-width:74em;">
+     <div id="basic" class="well" style="max-width:74em;">
         <h4><font color='black'>Choose a subscribtion plan:</font></h4>
       <form action=<?php echo url('/subscribe');?>  method="post">
         @foreach($subscriptionPlans as $plan)
-        <p><input type="radio" name="period" value=<?php echo $plan->monthperiod?> checked><font color='black'> <?php echo $plan->monthperiod?> months</font></p>
+        <p><input type="radio" onclick="pay()" name="period" id=<?php echo $plan->monthperiod?> value=<?php echo $plan->monthperiod?> checked><font color='black'> <?php echo $plan->monthperiod?> months at $<?php echo $plan->price?></font></p>
         <!-- <p><input type="radio" name="period" value="1" checked><font color='black'> 1 month</font></p>
         <p><input type="radio" name="period" value="6"><font color='black'> 6 months</font></p>
         <p><input type="radio" name="period" value="12"><font color='black'> 1 year</font></p> -->
          @endforeach
         <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+        <input type="hidden" id="amount" name="amount" value="" />
+        <input type="hidden" id="period" name="period" value="" />
         <button type="submit" class="btn-default btn">Subscribe</button>
         <button class="basic_close btn btn-default">Cancel</button>
       </form>
     </div>
     <!--end of basic slider-->
-
 
 
 
@@ -991,6 +992,34 @@ $(document).ready(function () {
         var url = "http://" + mainUrl + "/fileentry/get/" + filename_array6[y - 1];
         var divId = "6container" + y;
         getPreview(url, divId);
-    }             
+    } 
+
+
+//to get the price of the selected subscription plan upon clicking
+     function pay() {
+     		var subscriptionPlans = <?php echo json_encode($subscriptionPlans)?>;
+      		var price = "";
+      		var period = "";
+     		var mainUrl = window.location.hostname;
+     		var countFinal = 0;
+              console.log("h");
+            var count = <?php echo count($subscriptionPlans)?>;
+     		for(i = 0; i < count; i++) {
+     			if(document.getElementById(subscriptionPlans[i].monthperiod).checked) {
+     			    price= subscriptionPlans[i].price;
+     			    period = subscriptionPlans[i].monthperiod;
+     console.log(price);
+
+     			}
+     		}
+
+            // countTotalprice();
+           //  document.querySelector('#totalPrice').value = totalprice;
+
+            document.querySelector('#period').value = period;
+            document.querySelector('#amount').value = price;
+
+
+     	}	
                
 </script>

@@ -161,9 +161,9 @@ Route::group(['middleware' => 'auth'], function() {
 
 	Route::get('/transactionHistory', ['as' => 'transactionHistory', 'uses' => 'PaymentController@viewTransaction']);
 
-
 	//subscribe
-	Route::post('/subscribe', ['as' => 'subscribe', 'uses' => 'SubscriptionController@addSubscription']);
+	Route::post('/subscribe', ['as' => 'subscribe', 'uses' => 'PaymentController@paymentForSubscription']);
+	Route::post('/subscribePaymentForm', ['as' => 'subscribePaymentForm', 'uses' => 'PaymentController@subscriptionPaymentForm']);
 });
 
 // // Download Route
