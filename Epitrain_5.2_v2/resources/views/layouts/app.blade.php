@@ -167,7 +167,7 @@
                 @if(Auth::check())
                     <form class="typeahead navbar-form navbar-left" role="search">
                       <div class="form-group">
-                        <input type="search" name="q" class="search-input form-control" placeholder="Search Book or Spreadsheet" autocomplete="off" style="width:235px">
+                        <input type="search" name="q" class="search-input form-control" placeholder="Search for materials" autocomplete="off" style="width:235px">
                       </div>
                     </form>
                 @endif

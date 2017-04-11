@@ -222,7 +222,7 @@ class ClassManagementController extends Controller
             'courseID' => 'required|max:64',
             'courseName' => 'required|max:128',
             'courseArea' => 'required',
-            'startDate' => 'required|date|after:today',
+            'startDate' => 'required|date|after:yesterday',
             'endDate' => 'required|date|after:startDate',
         ]);
         if ($isActive == null) {

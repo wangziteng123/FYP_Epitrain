@@ -142,8 +142,13 @@
           
           // check if this user is a student in a course that requires this book
           $coursesOfThisBook = \DB::table('courseMaterial')
-          ->where('fileEntriesID', $ebook->id)
-          ->pluck('courseID');
+            ->join('course', function ($join) use ($ebook) {
+                $join->on('course.courseID', '=', 'courseMaterial.courseID')
+                     ->where('courseMaterial.fileEntriesID', '=', $ebook->id)
+                     ->where('course.isActive','=','1');
+                })
+                ->distinct()
+                ->pluck('courseMaterial.courseID');
 
           $coursesOfThisUser = \DB::table('enrolment')
           ->where('userID', Auth::user()->id)

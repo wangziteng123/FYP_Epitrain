@@ -109,8 +109,13 @@ body{
                             ->get();
 
                         $coursesOfThisBook = \DB::table('courseMaterial')
-                          ->where('fileEntriesID', $checkid)
-                          ->pluck('courseID');
+                          ->join('course', function ($join) use ($checkid) {
+                              $join->on('course.courseID', '=', 'courseMaterial.courseID')
+                                   ->where('courseMaterial.fileEntriesID', '=', $checkid)
+                                   ->where('course.isActive','=','1');
+                              })
+                              ->distinct()
+                              ->pluck('courseMaterial.courseID');
 
                         $coursesOfThisUser = \DB::table('enrolment')
                         ->where('userID', Auth::user()->id)

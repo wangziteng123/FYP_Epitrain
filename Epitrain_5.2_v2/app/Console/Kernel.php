@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use DB;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -24,7 +25,33 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+         $schedule->call(function () {
+            $today = date("Y-m-d");
+
+            $courses = \DB::table('course')
+                ->get();
+
+            foreach($courses as $course) {
+                if ($course->startDate >= $today && $course->isActive == 0) {
+                    DB::table('course')
+                        ->where('courseID', $course->courseID)
+                        ->update(['isActive' => 1]);
+
+                    DB::table('enrolment')
+                        ->where('courseID', $course->courseID)
+                        ->update(['isActive' => 1]);
+
+                } elseif ($course->endDate > $today && $course->isActive == 1) {
+                    DB::table('course')
+                        ->where('courseID', $course->courseID)
+                        ->update(['isActive' => 0]);
+
+                    DB::table('enrolment')
+                        ->where('courseID', $course->courseID)
+                        ->update(['isActive' => 0]);
+                }
+            }
+
+        })->everyFiveMinutes();
     }
 }

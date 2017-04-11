@@ -45,8 +45,13 @@ use App\Notifications\SubscriptionExpiring;
         ->get();
 
     $coursesOfThisBook = \DB::table('courseMaterial')
-                          ->where('fileEntriesID', $id)
-                          ->pluck('courseID');
+        ->join('course', function ($join) use ($checkid) {
+            $join->on('course.courseID', '=', 'courseMaterial.courseID')
+                 ->where('courseMaterial.fileEntriesID', '=', $id)
+                 ->where('course.isActive','=','1');
+            })
+            ->distinct()
+            ->pluck('courseMaterial.courseID');
 
     $coursesOfThisUser = \DB::table('enrolment')
     ->where('userID', $user->id)
