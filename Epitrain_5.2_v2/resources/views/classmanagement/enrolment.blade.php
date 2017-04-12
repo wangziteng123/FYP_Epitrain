@@ -18,13 +18,20 @@
   <li><a href=<?php echo URL::route('courseMaterials');?>>Manage Course Materials</a></li>
 </ul>
 @if (count($errors) > 0)
+    <br/>
     <div class="alert alert-danger">
         @foreach ($errors->all() as $error)
             {{ $error }}
         @endforeach
     </div>
 @endif
-
+@if(Session::has('success'))
+    <br/>
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <p style="font-size:18px">{{ Session::get('success') }}</p>
+    </div>
+@endif
 <!-- Manage students -->
 <div class="container" style="positon:relative;top:300px">
      <div id="page-wrapper" style="margin:10px">
@@ -107,9 +114,22 @@
                                                         <td>
                                                             <form action=<?php echo URL::route('deleteEnrolment');?> method="post" >
                                                               <input type="hidden" name="id" value=<?php echo $enrolment->id;?>>
-                                                              <button class="btn btn-warning btn-raised btn-sm">
+                                                              <button class="btn btn-danger btn-raised btn-sm">
                                                                 <i class="fa fa-window-close" aria-hidden="true"></i>
                                                               </button>
+                                                            </form>
+                                                            <form action=<?php echo URL::route('activateEnrolment');?> method="post" >
+                                                              <input type="hidden" name="id" value=<?php echo $enrolment->id;?>>
+                                                              <input type="hidden" name="status" value=<?php echo $enrolment->isActive;?>>
+                                                              <?php if ($enrolment->isActive == 0) { ?>
+                                                                  <button class="btn btn-raised btn-sm" style="background-color: #01466F; color: #fff">
+                                                                    Activate
+                                                                  </button>
+                                                              <?php } else { ?> 
+                                                                  <button class="btn btn-warning btn-raised btn-sm">
+                                                                    Deactivate
+                                                                  </button>
+                                                              <?php } ;?>
                                                             </form>
                                                         </td>
                                                     </tr>

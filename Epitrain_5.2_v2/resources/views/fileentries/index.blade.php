@@ -189,6 +189,8 @@
 </div>
 <?php $thisSortField = explode("-", $mode)[0]; ?>
 {{ $entries->appends(['sort' => $mode, 'sortField' => $thisSortField])->links() }}
+
+
 <!-- Modal for editing category -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">

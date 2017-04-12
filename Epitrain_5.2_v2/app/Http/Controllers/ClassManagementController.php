@@ -246,7 +246,59 @@ class ClassManagementController extends Controller
             );
         }
         
-        return redirect('classmanagement');
+        return redirect('classmanagement')->with('success','Course was added successfully!');
+    }
+
+    public function editCourse(Request $request) {
+        $courseList = \DB::table('course')->get();
+        $categories = \DB::table('category')->get();
+        
+        $courseID = $request->input('courseID');
+        $courseName = $request->input('courseName');
+        $courseArea = $request->input('courseArea');
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
+        $isActive = $request->input('isActive');
+
+        $messages = [
+            'before_or_equal' => 'Course end date must be after course start date',
+        ];
+
+        /*Validator::extend('before_or_equal', function($attribute, $value, $parameters, $validator) {
+            return strtotime($validator->getData()[$parameters[0]]) >= strtotime($value);
+        });*/
+        //exit(var_dump($courseID));
+
+        $this->validate($request, [
+            'courseID' => 'max:64',
+            'courseName' => 'max:128',
+            'startDate' => 'date|after:yesterday',
+            'endDate' => 'date|after:startDate',
+        ]);
+        if ($isActive == null) {
+            DB::table('course')
+                ->where('courseID', '=', $courseID)
+                ->update(
+                ['courseName' => $courseName, 
+                 'courseArea' => $courseArea, 
+                 'startDate' => $startDate, 
+                 'endDate' => $endDate
+                 ]
+            );
+        } else {
+            DB::table('course')
+                ->where('courseID', '=', $courseID)
+                ->update(
+                ['courseName' => $courseName, 
+                 'courseArea' => $courseArea, 
+                 'startDate' => $startDate, 
+                 'endDate' => $endDate,
+                 'isActive' => '1'
+                 ]
+            );
+        }
+        
+        return redirect('classmanagement')->with('success','Course was updated successfully!');;
     }
 
     public function deleteCourse(Request $request) {
@@ -256,7 +308,24 @@ class ClassManagementController extends Controller
         ->where('courseID', '=', $id)
         ->delete();
         
-        return redirect('classmanagement');
+        return redirect('classmanagement')->with('success','Course was deleted successfully!');;
+    }
+
+    public function activateCourse(Request $request) {
+        $id = $request->input('id');
+        $status = $request->input('status');
+
+        if ($status == 0) {
+            DB::table('course')
+            ->where('courseID', '=', $id)
+            ->update(['isActive' => 1]);
+        } else {
+            DB::table('course')
+            ->where('courseID', '=', $id)
+            ->update(['isActive' => 0]);
+        }
+        
+        return redirect('classmanagement')->with('success','Course was activated successfully!');;
     }
 
     public function addEnrolment(Request $request) {        
@@ -287,7 +356,24 @@ class ClassManagementController extends Controller
             }
         }
         
-        return redirect('enrolment');
+        return redirect('enrolment')->with('success','Students were successfully added to course!');;
+    }
+
+    public function activateEnrolment(Request $request) {
+        $id = $request->input('id');
+        $status = $request->input('status');
+
+        if ($status == 0) {
+            DB::table('enrolment')
+            ->where('id', '=', $id)
+            ->update(['isActive' => 1]);
+        } else {
+            DB::table('enrolment')
+            ->where('id', '=', $id)
+            ->update(['isActive' => 0]);
+        }
+        
+        return redirect('enrolment')->with('success','Student enrolment were successfully activated!');;
     }
 
     public function deleteEnrolment(Request $request) {
@@ -297,7 +383,7 @@ class ClassManagementController extends Controller
         ->where('id', '=', $id)
         ->delete();
         
-        return redirect('enrolment');
+        return redirect('enrolment')->with('success','Student enrolment were successfully removed!');
     }
 
     public function addMaterial(Request $request) {        
@@ -328,7 +414,7 @@ class ClassManagementController extends Controller
             }
         }
         
-        return redirect('courseMaterials');
+        return redirect('courseMaterials')->with('success','Course materials were successfully added!');
     }
 
     public function deleteMaterial(Request $request) {
@@ -338,7 +424,7 @@ class ClassManagementController extends Controller
         ->where('id', '=', $id)
         ->delete();
         
-        return redirect('courseMaterials');
+        return redirect('courseMaterials')>with('success','Course materials were successfully deleted!');
     }
     
 }

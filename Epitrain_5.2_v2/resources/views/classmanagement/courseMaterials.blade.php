@@ -18,13 +18,20 @@
   <li class="active"><a href="javascript:void(0)">Manage Course Materials</a></li>
 </ul>
 @if (count($errors) > 0)
+    <br/>
     <div class="alert alert-danger">
         @foreach ($errors->all() as $error)
             {{ $error }}
         @endforeach
     </div>
 @endif
-
+@if(Session::has('success'))
+    <br/>
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <p style="font-size:18px">{{ Session::get('success') }}</p>
+    </div>
+@endif
  <div class="container" style="positon:relative;top:300px">
  	
 	 <div id="page-wrapper" style="margin:10px">

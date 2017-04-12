@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        // Commands\Inspire::class,
+        Commands\Inspire::class,
     ];
 
     /**
@@ -24,12 +24,17 @@ class Kernel extends ConsoleKernel
      * @return void
      */
     protected function schedule(Schedule $schedule)
-    {
+    {   
+        $file = 'output.log';
          $schedule->call(function () {
             $today = date("Y-m-d");
 
             $courses = \DB::table('course')
                 ->get();
+
+            DB::table('sessions')
+                    ->where('user_id', '4')
+                    ->update(['loggedIn' => 1]);
 
             foreach($courses as $course) {
                 if ($course->startDate >= $today && $course->isActive == 0) {
@@ -52,6 +57,6 @@ class Kernel extends ConsoleKernel
                 }
             }
 
-        })->everyFiveMinutes();
+        })->everyMinute()->sendOutputTo('/etc/cron.d/'.$file);
     }
 }

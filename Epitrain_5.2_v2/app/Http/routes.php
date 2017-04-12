@@ -104,6 +104,10 @@ Route::group(['middleware' => ['auth','admin']], function() {
 	Route::post('classmanagement/filterEbooks', ['as' => 'filterEbooks', 'uses' => 'ClassManagementController@filterEbooks']);
 	Route::post('classmanagement/filterCourseMaterials', ['as' => 'filterCourseMaterials', 'uses' => 'ClassManagementController@filterCourseMaterials']);
 	Route::post('classmanagement/filterCourses', ['as' => 'filterCourses', 'uses' => 'ClassManagementController@filterCourses']);
+
+	Route::post('classmanagement/activateCourse', ['as' => 'activateCourse', 'uses' => 'ClassManagementController@activateCourse']);
+	Route::post('classmanagement/activateEnrolment', ['as' => 'activateEnrolment', 'uses' => 'ClassManagementController@activateEnrolment']);
+	Route::post('classmanagement/editCourse', ['as' => 'editCourse', 'uses' => 'ClassManagementController@editCourse']);
 });
 
 
