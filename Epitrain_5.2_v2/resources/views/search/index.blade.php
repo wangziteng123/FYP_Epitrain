@@ -318,7 +318,7 @@ use App\Notifications\SubscriptionExpiring;
             </div>
           </div>
       @endif
-    @else
+    @elseif(!$user->isAdmin)
       <!-- if user is a normal user -->
       <div class="jumbotron" style="background:#E1DFDE">
         <div class = "row">
@@ -400,10 +400,104 @@ use App\Notifications\SubscriptionExpiring;
           </div>
         </div>
       </div>
+    @else
+      <!-- if user is admin -->
+      <div class="jumbotron" style="background:#E1DFDE">
+          <div class = "row">
+              <div id="searchContainer" class="col-sm-1 col-sm-offset-1 hidden-xs"></div>
+              <div class="col-sm-7 col-xs-8 col-xs-offset-1">
+                <font color="darkblue" style="font-size: 25px;font-weight: bold;"><?php echo $original_filename;?></font>
+              </div>
+          </div>
+          <div class = "row">
+            <div class="col-sm-9 col-xs-9 col-xs-offset-1 col-sm-offset-1"><font color="black" size='4'><strong>Category:</strong>  <?php echo $category;?></font>
+            </div>
+            <div class="col-sm-offset-1 col-sm-9 hidden-xs">
+              <font color="black" size='4'><strong>Description:</strong>  <?php 
+                if (strlen($description) == 0) {
+                  echo "No description";
+                } else {
+                  echo $description;
+                } 
+                ?></font>
+            </div>
+          </div>
+          <div class = "row">
+              <a href="{{route('getentry', $filename)}}" class="btn btn-raised btn-info">View Document</a>
+              <!-- Button trigger modal for adding category -->
+            
+              <?php echo '<button type="button" class="btn btn-raised btn-warning" data-toggle="modal" data-target="#editModal" onclick="loadModal(\'' . $filename . '\',\'' . $category . '\',\'' . $price . '\',\'' . $description . '\')" >Edit Details</button>'; ?>
+
+              {{ Form::open(array('method'
+              => 'DELETE', 'route' => array('deleteentry', $filename))) }}
+              {{ Form::submit('Delete', array('class' => 'btn btn-raised btn-danger')) }}
+              {{ Form::close() }}
+          </div>
+        </div>
     @endif
   </div>
 </div>
 
+
+<!-- Modal for editing category -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <font color='black'> <h4 class="modal-title" id="myModalLabel">Edit book details</h4></font>
+      </div>
+      <div class="modal-body">
+        <!-- Add a form inside the edit category modal-->
+          <font color='black'> 
+            <form action=<?php echo URL::route('editentry');?> id="editform" method="post" style="max-width: 100%; min-height: 480px;margin:0 auto; border: 0px solid white;" onsubmit="" class="form-horizontal">
+              <legend><strong>Edit book details</strong></legend>
+              <div class="form-group">
+                <input type="hidden" name="oldFileName" id= "existingFile" class="form-control" value="">
+              </div>
+
+              <div class="form-group">
+                <label for="selectCatEdit" class ="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Category</label>
+                <div class = "col-md-10">
+                    <select name="category" style="font-size:14px" id = "selectCatEdit" class="form-control" placeholder="">
+                      <option value="Trading"><font color="black" size = "3">Trading</font></option>
+                      <option value="Risk Management"><font color="black" size = "3">Risk Management</font></option>
+                      <option value="Fintech"><font color="black" size = "3">Fintech</font></option>
+                      <option value="Project Management"><font color="black" size = "3">Project Management</font></option>
+                      <option value="Finance"><font color="black" size = "3">Finance</font></option> 
+                      <option value="Business Management"><font color="black" size = "3">Business Management</font></option>
+                      <option value="Leadership"><font color="black" size = "3">Leadership</font></option>
+                      <option value="Financial Market"><font color="black" size = "3">Financial market</font></option>
+                    </select>
+                </div>
+              </div>
+                
+              <div class="form-group is-empty">
+                <label for="existingPrice" class ="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Price</label>
+                <div class = "col-md-10">
+                  <input type="number" name="price" id="existingPrice" step="any" style="font-size:16px" placeholder="Enter ebook price" class="form-control" value="">
+                </div>
+              </div>
+                 
+              <div class="form-group is-empty">
+                <label for="existingDescription" class ="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Description</label>
+                <div class = "col-md-10">
+                <textarea class="form-control" rows="3" id="existingDescription" name="description" placeholder="Enter description of ebook" value=""></textarea>
+                </div>
+              </div>
+                
+              <div class="form-group">
+                <div class = "col-md-9 col-md-offset-2">
+                  <button type="submit" class="btn btn-raised" style="background-color: darkblue; color:white">Update<div class="ripple-container"></div></button>
+                </div>
+              </div>
+            </form>
+          </font>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 
 <script>
