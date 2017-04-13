@@ -214,7 +214,7 @@
               <div class="form-group">
                 <label for="selectCatEdit" class ="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Category</label>
                 <div class = "col-md-10">
-                    <select name="category" style="font-size:14px" id = "selectCat" class="form-control" placeholder="Choose ebook category">
+                    <select name="category" style="font-size:14px" id = "selectCatEdit" class="form-control" placeholder="Choose ebook category">
                       @foreach($categories as $category)
                           <option value=<?php echo $category->categoryname;?>><font color="black" size = "3"><?php echo $category->categoryname;?></font></option>
                       @endforeach
@@ -233,8 +233,6 @@
                 <label for="existingDescription" class ="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Description</label>
                 <div class = "col-md-10">
                 <textarea class="form-control" rows="3" id="existingDescription" name="description" placeholder="Enter another description of ebook" value=""></textarea>
-                <!--<textarea class="form-control" rows="3" id="existingDescription" name="description" placeholder="Enter description of ebook" value=""></textarea>-->
-                <textarea class="form-control" rows="3" id="existingDescription" name="description" placeholder="Enter description of ebook" value=""></textarea>
                 </div>
               </div>
 							
@@ -340,7 +338,7 @@ function populateField(fieldToSort){
 }
 function loadModal(filename, category, price, description){
     document.getElementById('existingFile').value = filename;
-    document.getElementById('selectCatEdit').placeholder = category;
+    document.getElementById('selectCatEdit').value = category;
     document.getElementById('existingPrice').value = price;
     document.getElementById('existingDescription').value = description;
 }

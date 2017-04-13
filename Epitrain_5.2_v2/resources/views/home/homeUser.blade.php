@@ -331,7 +331,7 @@
     <!--Best Sellers in Financial Market-->
 <br/>
         <div class="row">
-          <div class="col-sm-2">
+          <div class="col-sm-3">
         <font style="font-family:Book Antiqua;font-weight:10" size="6">Financial Market</font>
         <hr style="">
           </div>
