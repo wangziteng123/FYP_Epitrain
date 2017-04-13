@@ -156,16 +156,15 @@
           ->pluck('courseID');
 
           $isStudent = false;
+          $hasSample = false;
+          if($ebook->samplename != null){
+            $hasSample = true;
+          }
           foreach ($coursesOfThisBook as $course) {
               if(in_array($course, $coursesOfThisUser)) {
                  $isStudent = true;
                  break;
               }
-					$hasSample = false;
-					if($ebook->samplename != null){
-						$hasSample = true;
-					}
-							
           }
 
           ?>                      
