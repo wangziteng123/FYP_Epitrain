@@ -207,14 +207,14 @@ class PaymentController extends Controller
             app('App\Http\Controllers\SubscriptionController')->addSubscription($request); // call add to subscription method in subscription controller
                
             //return view('homeUser.blade');
-			           return redirect('homeUser.blade');
+			           return redirect('home');
 
 
         }
         else{
 
             //return view('homeUser.blade');
-			           return redirect('homeUser.blade');
+			           return redirect('home');
 
         }
 
