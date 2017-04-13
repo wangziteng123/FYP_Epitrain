@@ -234,7 +234,7 @@
               <div class="form-group is-empty">
                 <label for="existingDescription" class ="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Description</label>
                 <div class = "col-md-10">
-                <textarea class="form-control" rows="3" id="existingDescription" name="description" form="uploadform" placeholder="Enter description of ebook" value=""></textarea>
+                <textarea class="form-control" rows="3" id="existingDescription" name="description" placeholder="Enter description of ebook" value=""></textarea>
                 </div>
               </div>
                 
