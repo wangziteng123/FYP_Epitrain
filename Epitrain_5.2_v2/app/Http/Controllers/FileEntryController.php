@@ -15,6 +15,7 @@ use Illuminate\Encryption\Encrypter;
 use Illuminate\Filesystem\Filesystem;
 use Imagick;
 use Crypt;
+use DB;
 
 class FileEntryController extends Controller
 {
@@ -72,6 +73,7 @@ class FileEntryController extends Controller
 		$price = $request->input('price');
 		$description = $request->input('description');
 		$file = $request->file('filefield');
+		$sample = $request->file('samplefile');
 
 		if ($file != null) {
 			$n_file = File::get($file);
@@ -80,8 +82,18 @@ class FileEntryController extends Controller
 		      	$encrypted = Crypt::encrypt($n_file);
 		      	Storage::disk('s3')->put('spreadsheets/'.$file->getFilename().'.'.$extension,  $encrypted);
 		    } else {
-		    	Storage::disk('s3')->put('ebooks/'.$file->getFilename().'.'.$extension,  $n_file);
-		    }	
+					//uncomment to try on local environment
+		    	//Storage::disk('local')->put($file->getFilename().'.'.$extension,  $n_file); //taken out 'ebooks'. for testing
+					Storage::disk('s3')->put('/ebooks/'.$file->getFilename().'.'.$extension,  $n_file);
+		  }
+			if($sample != null){
+				
+				$sample_content = File::get($sample);
+				//uncomment to try on local environment
+				//Storage::disk('local')->put($sample->getFilename().'.'.$sample->getClientOriginalExtension(), $sample_content);
+				Storage::disk('s3')->put('/ebooks/'.$sample->getFilename().'.'.$sample->getClientOriginalExtension(), $sample_content);
+			}
+			
 			$entry = new Fileentry();
 			$entry->mime = $file->getClientMimeType();
 			$entry->original_filename = $file->getClientOriginalName();
@@ -90,6 +102,10 @@ class FileEntryController extends Controller
 			$entry->category = $category;
 			$entry->price = $price;
 			$entry->description = $description;
+			
+			if($sample != null){
+				$entry->samplename = $sample->getFilename();
+			}
 	 
 			$entry->save();
 	 
@@ -107,15 +123,39 @@ class FileEntryController extends Controller
 		$description = $request->input('description');
 		$file = $request->file('filefield');
 		$oldFileName = $request->input('oldFileName');
+		
+		$sample = $request->file('samplefile');
 		//exit(var_dump($oldFileName));
 		$entry = Fileentry::where('filename', '=', $oldFileName)->firstOrFail();
-
-		$entry->category = $category;
-		$entry->price = $price;
-		$entry->description = $description;
- 
-		$entry->save();			
+	
+			if($sample != null){
+				if($entry->samplename != null){
+					// delete the old sample first
+					//Storage::disk('local')->delete($entry->samplename.'.'.$sample->getClientOriginalExtension());
+					//uncomment to try on local environment
+					Storage::disk('s3')->delete('/ebooks/'.$entry->samplename.'.'.$sample->getClientOriginalExtension());
+				}
+				$newSamplename = $sample->getFilename();
+				$entry->samplename = $newSamplename;
+				$samplecontent = File::get($sample);
+				//Storage::disk('local')->put($sample->getFilename().'.'.$sample->getClientOriginalExtension(), $samplecontent);
+				//uncomment to try on local environment
+				Storage::disk('s3')->put('/ebooks/'.$sample->getFilename().'.'.$sample->getClientOriginalExtension(), $samplecontent);
+				DB::table('fileentries')
+            ->where('filename', $oldFileName)
+            ->update(['category' => $category,
+											'price' => $price,
+											'description' => $description,
+											'samplename' => $newSamplename]);
+			} else{
+				DB::table('fileentries')
+							->where('filename', $oldFileName)
+							->update(['category' => $category,
+												'price' => $price,
+												'description' => $description]);
 			
+			}
+		
 		return redirect('fileentry')->with('success', "File updated successfully!");
 	}
 
@@ -131,9 +171,11 @@ class FileEntryController extends Controller
         
         //version 3.6
         $entry = Fileentry::where('filename', '=', $filename)->firstOrFail();
-        $url = "s3-".env('S3_REGION')."amazonaws.com/".env('S3_BUCKET')."/ebooks/".$entry->filename;
+        //$url = "s3-".env('S3_REGION')."amazonaws.com/".env('S3_BUCKET')."/ebooks/".$entry->filename;
 		//$file = Storage::disk('s3')->get("http://sample-env-1.2uqmcfeudi.us-west-2.elasticbeanstalk.com/ebook/".$entry->filename.".pdf");
  		$file = Storage::disk('s3')->get('/ebooks/'.$entry->filename);
+		//uncomment to try on local environment
+		//$file = Storage::disk('local')->get($entry->filename);
 		return (new Response($file, 200))
                ->header('Content-Type', $entry->mime);
 
@@ -188,8 +230,9 @@ class FileEntryController extends Controller
         return $response;
 	}
 	public function getPdfViewer($filename) {
-		$add = "fileentry/get/".$filename; 
-		$baseUrl = url($add);
+		$add = "fileentry/get/".$filename;
+		$baseUrl = "http://localhost:8000/".$add;
+		//$baseUrl = url($add);
 		//$pdfUrl = "http://localhost:8000/fileentry/get/php8D98.tmp.pdf";
 		return redirect()->route('pdfreader', array('file' => $baseUrl));
 	}

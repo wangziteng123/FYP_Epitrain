@@ -129,6 +129,10 @@ body{
                                break;
                             }
                         }
+												$hasSample = false;
+												if($book->samplename != null){
+													$hasSample = true;
+												}
 
                     ?>
                       @if($isSubscribe || $isStudent)
@@ -204,12 +208,20 @@ body{
                                           <input type="hidden" name="fid" value=<?php echo $checkid;?>>
                                               <button  class="btn btn-raised btn-info">
                                                   <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                                  Add to Cart
+                                                  Add to Cart 
                                               </button>
                                        </form>
                                   @endif
                                 </div>
-                                <div class="col-sm-3 col-xs-3 col-xs-offset-2 hidden-xs">
+																
+																@if($hasSample)
+																	<div class="col-sm-2 col-xs-3 hidden-xs">
+																			<a href="{{route('getviewer', $book->samplename)}}" class="btn-raised btn-info btn">View Sample</a> 
+																		
+																	</div>
+																@endif
+																
+                                <div class="col-sm-3 col-xs-3 hidden-xs">
                                   @if (count($libraryExist))
                                     <button class="btn btn-warning" style="background-color: darkblue; color:yellow">
                                         <font style="">Already purchased</font>
@@ -308,7 +320,14 @@ body{
                                    </form>
                               @endif
                             </div>
-                            <div class="col-sm-3 col-xs-3 col-xs-offset-2 hidden-xs">
+														@if($hasSample)
+																	<div class="col-sm-2 col-xs-3">
+																			<a href="{{route('getviewer', $book->samplename)}}" class="btn-raised btn-info btn">View Sample</a> 
+																		
+																	</div>
+																@endif
+														
+                            <div class="col-sm-3 col-xs-3 hidden-xs">
                               @if (count($libraryExist))
                                 <button class="btn btn-warning" style="background-color: darkblue; color:yellow">
                                     <font style="">Already purchased</font>

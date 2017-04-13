@@ -47,16 +47,19 @@
               <legend><strong>Upload New File</strong></legend>
             
                 <div class="form-group is-empty is-fileinput">
-                  <!--<div class="btn" style="padding-top:0px !important">-->
                   <label for="inputFile" class="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Upload</label>   
-                    <!--<span size = "3" >Upload</span>-->
                     <div class = "input-group col-md-9">
                       <input type="text" readonly class="form-control" placeholder="Select file to upload" style ="font-size:18px">
                       <input type="file" name="filefield" value="{{ csrf_token() }}" style="color:black" accept="application/pdf" required>
                     </div>
-                  <!--<div class="file-path-wrapper">
-                    <input class="file-path validate" type="text" placeholder="Select a file to upload" style="color:black;font-size:16px">
-                  </div>-->
+                </div>
+								
+								<div class="form-group is-empty is-fileinput">
+                  <label for="sampleFile" class="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Sample</label>   
+                    <div class = "input-group col-md-9">
+                      <input type="text" readonly class="form-control" placeholder="Select a sample of the book" style ="font-size:18px">
+                      <input type="file" name="samplefile" value="{{ csrf_token() }}" style="color:black" accept="application/pdf">
+                    </div>
                 </div>
              
               <div class="form-group">
@@ -234,9 +237,19 @@
               <div class="form-group is-empty">
                 <label for="existingDescription" class ="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Description</label>
                 <div class = "col-md-10">
+                <textarea class="form-control" rows="3" id="existingDescription" name="description" placeholder="Enter another description of ebook" value=""></textarea>
+                <!--<textarea class="form-control" rows="3" id="existingDescription" name="description" placeholder="Enter description of ebook" value=""></textarea>-->
                 <textarea class="form-control" rows="3" id="existingDescription" name="description" placeholder="Enter description of ebook" value=""></textarea>
                 </div>
               </div>
+							
+							<div class="form-group is-empty is-fileinput">
+                  <label for="sampleFile" class="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Sample</label>   
+                    <div class = "input-group col-md-9">
+                      <input type="text" readonly class="form-control" placeholder="Select a different sample of the book" style ="font-size:18px">
+                      <input type="file" name="samplefile" value="{{ csrf_token() }}" style="color:black" accept="application/pdf">
+                    </div>
+                </div>
                 
               <div class="form-group">
                 <div class = "col-md-9 col-md-offset-2">

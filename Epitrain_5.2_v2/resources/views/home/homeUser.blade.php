@@ -161,6 +161,11 @@
                  $isStudent = true;
                  break;
               }
+					$hasSample = false;
+					if($ebook->samplename != null){
+						$hasSample = true;
+					}
+							
           }
 
           ?>                      
@@ -302,9 +307,11 @@
 
 
                     @endif
-                  
-                   
-                    
+										@if($hasSample)
+										<div>
+                        <a href="{{route('getviewer', $ebook->samplename)}}" class="btn-raised btn-info btn">View Sample</a> 
+                    </div>
+                    @endif
                       
                     <p style="position:absolute;right:12px;top:89px">
                         <button class="btn btn-info btn-raised btn-sm slide_open"  onclick="passtoSlide(<?php echo $fid2;?>,'<?php echo $oriFilename2;?>',<?php echo $price2;?>,'<?php echo $description2;?>')">
