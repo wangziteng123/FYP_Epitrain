@@ -127,6 +127,8 @@ Route::group(['middleware' => 'auth'], function() {
 		'as'=>'getviewer', 'uses'=>'FileEntryController@getPdfViewer']);
 
 	Route::get('mylibrary', 'MyLibraryController@index');
+	Route::get('mylibrary/sort', ['as' => 'libSort', 'uses' => 'MyLibraryController@sort']);
+	Route::get('mylibrary/filterLibrary', ['as' => 'filterLibrary', 'uses' => 'MyLibraryController@filterLibrary']);
 	Route::get('shop', 'HomeController@shop');
 	//Route::get('shop/{category_name}', 'HomeController@shop');
 	Route::get('buy/{book_id}', ['as'=>'buy', 'uses'=>'LibraryController@buy']);
