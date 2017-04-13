@@ -231,8 +231,8 @@ class FileEntryController extends Controller
 	}
 	public function getPdfViewer($filename) {
 		$add = "fileentry/get/".$filename;
-		$baseUrl = "http://localhost:8000/".$add;
-		//$baseUrl = url($add);
+		//$baseUrl = "http://localhost:8000/".$add;
+		$baseUrl = url($add);
 		//$pdfUrl = "http://localhost:8000/fileentry/get/php8D98.tmp.pdf";
 		return redirect()->route('pdfreader', array('file' => $baseUrl));
 	}
