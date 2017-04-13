@@ -67,7 +67,7 @@
                 <div class = "col-md-10">
                     <select name="category" style="font-size:14px" id = "selectCat" class="form-control" placeholder="Choose ebook category">
                       @foreach($categories as $category)
-                          <option value=<?php echo $category->id;?>><font color="black" size = "3"><?php echo $category->categoryname;?></font></option>
+                          <option value=<?php echo $category->categoryname;?>><font color="black" size = "3"><?php echo $category->categoryname;?></font></option>
                       @endforeach
                     </select>
                 </div>
@@ -150,7 +150,7 @@
         ?>
          <div class="col-sm-6 col-md-4" style="height:395px">
             <div class="thumbnail" style="height:95%">
-                <div id=<?php echo $container?> style="height:42%"></div>
+                <div id=<?php echo $container;?> style="height:42%"></div>
                 <div class="caption">
 
                     <?php 
@@ -214,15 +214,10 @@
               <div class="form-group">
                 <label for="selectCatEdit" class ="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Category</label>
                 <div class = "col-md-10">
-                    <select name="category" style="font-size:14px" id = "selectCatEdit" class="form-control" placeholder="">
-                      <option value="Trading"><font color="black" size = "3">Trading</font></option>
-                      <option value="Risk Management"><font color="black" size = "3">Risk Management</font></option>
-                      <option value="Fintech"><font color="black" size = "3">Fintech</font></option>
-                      <option value="Project Management"><font color="black" size = "3">Project Management</font></option>
-                      <option value="Finance"><font color="black" size = "3">Finance</font></option> 
-                      <option value="Business Management"><font color="black" size = "3">Business Management</font></option>
-                      <option value="Leadership"><font color="black" size = "3">Leadership</font></option>
-                      <option value="Financial Market"><font color="black" size = "3">Financial market</font></option>
+                    <select name="category" style="font-size:14px" id = "selectCat" class="form-control" placeholder="Choose ebook category">
+                      @foreach($categories as $category)
+                          <option value=<?php echo $category->categoryname;?>><font color="black" size = "3"><?php echo $category->categoryname;?></font></option>
+                      @endforeach
                     </select>
                 </div>
               </div>

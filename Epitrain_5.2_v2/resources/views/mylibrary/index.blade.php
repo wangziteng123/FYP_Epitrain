@@ -40,10 +40,10 @@
                         array_push($filenameArr,$entry->filename);
                         $container = "container".$countNum;
                     ?>
-                <div class="col-sm-4 col-xs-5 col-md-3 hero-feature" >
+                <div class="col-sm-4 col-xs-5 col-md-3 hero-feature" style="height:395px">
 
-                <div class="thumbnail">
-                    <div id=<?php echo $container?> style=""></div>
+                <div class="thumbnail" style="height:95%">
+                    <div id=<?php echo $container;?> style="height:42%"></div>
 
                     <div class="caption">
                        <!--  <h3>{{$entry->original_filename}}</h3> -->
