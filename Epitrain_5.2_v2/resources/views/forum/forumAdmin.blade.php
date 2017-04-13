@@ -161,10 +161,10 @@
           <input type="hidden" id="sortField" name="sortField" value=""> 
           <input type="hidden" id="oldValue" name="oldValue" value="<?php echo $oldValue;?>">
           <input type="hidden" id="count" name="count" value="<?php echo $count;?>">
-          <input type="submit" value="Date" class="btn btn-primary btn-raised" onclick="populateField('date')"></input>
-          <input type="submit" value="Category" class="btn btn-primary btn-raised" onclick="populateField('category')"></input>
-          <input type="submit" value="Likes" class="btn btn-primary btn-raised" onclick="populateField('likes')"></input>
-          <input type="submit" value="Views" class="btn btn-primary btn-raised" onclick="populateField('views')"></input>
+          <input type="submit" value="Date" class="btn btn-primary btn-raised" onclick="populateField('date')" style="background-color:#01466f"></input>
+          <input type="submit" value="Category" class="btn btn-primary btn-raised" onclick="populateField('category')"style="background-color:#01466f"></input>
+          <input type="submit" value="Likes" class="btn btn-primary btn-raised" onclick="populateField('likes')" style="background-color:#01466f"></input>
+          <input type="submit" value="Views" class="btn btn-primary btn-raised" onclick="populateField('views')" style="background-color:#01466f"></input>
       </form>
     </div>
     

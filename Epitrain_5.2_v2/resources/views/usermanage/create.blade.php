@@ -115,7 +115,7 @@
 
                         <div class="form-group">
                             <div class="col-sm-6 col-sm-offset-4">
-                                <button type="submit" class="btn btn-raised btn-success" id="register">
+                                <button type="submit" class="btn btn-raised btn-success" id="register" style="background-color: #01466f;">
                                     <i class="fa fa-btn fa-user"></i> <font color="white">Register</font>
                                 </button>
                             </div>
