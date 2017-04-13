@@ -206,12 +206,16 @@ class PaymentController extends Controller
         if($chargeOutcome == "Payment complete."){
             app('App\Http\Controllers\SubscriptionController')->addSubscription($request); // call add to subscription method in subscription controller
                
-            return view('homeUser.blade');
+            //return view('homeUser.blade');
+			           return redirect('homeUser.blade');
+
 
         }
         else{
 
-            return view('homeUser.blade');
+            //return view('homeUser.blade');
+			           return redirect('homeUser.blade');
+
         }
 
 
