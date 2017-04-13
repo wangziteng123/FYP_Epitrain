@@ -47,7 +47,7 @@
               <legend><strong>Upload New File</strong></legend>
             
                 <div class="form-group is-empty is-fileinput">
-                  <label for="inputFile" class="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Upload</label>   
+                  <label for="inputFile" class="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Upload</label>
                     <div class = "input-group col-md-9">
                       <input type="text" readonly class="form-control" placeholder="Select file to upload" style ="font-size:18px">
                       <input type="file" name="filefield" value="{{ csrf_token() }}" style="color:black" accept="application/pdf" required>
@@ -89,7 +89,7 @@
                 
               <div class="form-group">
                 <div class = "col-md-9 col-md-offset-1">
-                  <button type="submit" class="btn btn-raised" style="background-color: darkblue; color:white">Upload<div class="ripple-container"></div></button>
+                  <button type="submit" class="btn btn-raised" style="background-color: #01466f; color:white">Upload<div class="ripple-container"></div></button>
                 </div>
               </div>
             </form>
@@ -128,7 +128,7 @@
                     </div>
                     <div class="form-group">
                       <div class = "col-sm-10 col-sm-offset-1">
-                        <input type="submit" class="btn btn-raised btn-success" value="Filter"></input>
+                        <input type="submit" class="btn btn-raised btn-success" value="Filter"style="background-color: #01466f; color:white" ></input>
                       </div>
                     </div>
                   </form>
@@ -214,7 +214,7 @@
               <div class="form-group">
                 <label for="selectCatEdit" class ="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Category</label>
                 <div class = "col-md-10">
-                    <select name="category" style="font-size:14px" id = "selectCatEdit" class="form-control" placeholder="Choose ebook category">
+                    <select name="category" style="font-size:14px" id = "selectCat" class="form-control" placeholder="Choose ebook category">
                       @foreach($categories as $category)
                           <option value=<?php echo $category->categoryname;?>><font color="black" size = "3"><?php echo $category->categoryname;?></font></option>
                       @endforeach
@@ -233,6 +233,8 @@
                 <label for="existingDescription" class ="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Description</label>
                 <div class = "col-md-10">
                 <textarea class="form-control" rows="3" id="existingDescription" name="description" placeholder="Enter another description of ebook" value=""></textarea>
+                <!--<textarea class="form-control" rows="3" id="existingDescription" name="description" placeholder="Enter description of ebook" value=""></textarea>-->
+                <textarea class="form-control" rows="3" id="existingDescription" name="description" placeholder="Enter description of ebook" value=""></textarea>
                 </div>
               </div>
 							
@@ -338,7 +340,7 @@ function populateField(fieldToSort){
 }
 function loadModal(filename, category, price, description){
     document.getElementById('existingFile').value = filename;
-    document.getElementById('selectCatEdit').value = category;
+    document.getElementById('selectCatEdit').placeholder = category;
     document.getElementById('existingPrice').value = price;
     document.getElementById('existingDescription').value = description;
 }
