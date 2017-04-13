@@ -141,9 +141,31 @@
 @endif
 
 @endforeach
-<button id="backButton text-center" style = "top: 0px; left: 0px; position:relative" onclick="goBack()" type="button" class="btn btn-primary btn-raised">
-    <i aria-hidden="true"></i><span>Back</span>
-</button>
+<?php
+
+    //Added This
+    
+    $forumpageUrl = URL::route('forumResponsePage');
+    $forumpageUrl = $forumpageUrl."?id=".$discussionId;
+    
+    //To here
+
+?>
+
+<div class="responsiveSize">
+  <form method="post" action=<?php echo URL::route('createResponse');?>>
+    <input type="hidden" name="discussionId" value=<?php echo $discussionId;?>>
+    <input type="hidden" name="user_id" value=<?php echo \Auth::user()->id;?>>
+    <input type="hidden" name="forumpageUrl" value=<?php echo $forumpageUrl;?>>
+
+    <textarea class="materialize-textarea" id="responsiveSize" name="content" rows="5" style="color:black font-size:24px" required></textarea><br/>
+    <button id="backButton text-center" style = "top: 0px; left: 0px; position:relative" onclick="goBack()" type="button" class="btn btn-primary btn-raised">
+        <i aria-hidden="true"></i><span>Back</span>
+    </button>
+    <button type="submit"  class="btn  btn-four initialism slide_open" style="color:black" value="Submit Response">Submit Response</button><br/><br/>
+
+  </form>
+</div>
 
 
 <script>

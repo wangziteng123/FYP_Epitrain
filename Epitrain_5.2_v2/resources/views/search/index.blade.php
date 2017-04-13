@@ -175,6 +175,7 @@ use App\Notifications\SubscriptionExpiring;
             </div>
           </div>
         @else
+          <!-- if subscription expired -->
           <div class="jumbotron" style="background:#E1DFDE">
             <div class = "row">
                 <div id="searchContainer" class="col-sm-1 col-sm-offset-1 hidden-xs"></div>
