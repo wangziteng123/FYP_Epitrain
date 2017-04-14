@@ -14,6 +14,21 @@ class ClassManagementController extends Controller
 {
     public function index() {
 
+        //activates or deactivates users in courses
+        $classData = DB::table('enrolment')
+            ->join('course', 'enrolment.courseID', '=', 'course.courseID')
+            ->selectRaw('enrolment.id as id, enrolment.isActive as enrolment_status, course.isActive as course_status')
+            ->get();
+
+        foreach($classData as $rowData) {
+            if ($rowData->enrolment_status != $rowData->course_status) {
+                DB::table('enrolment')
+                    ->where('id', $rowData->id)
+                    ->update(['isActive' => $rowData->course_status]);   
+            }
+        }
+
+        //retrieve course and categories data for index page
     	$courseList = \DB::table('course')->get();
         $categories = \DB::table('category')->get();
 
