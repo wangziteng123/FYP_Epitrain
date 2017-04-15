@@ -215,7 +215,7 @@
                         </li>
                         <li class="dropdown" style="border-left:solid 1px #85929E;">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                Menu <span class="caret"></span>
+                                {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
@@ -225,7 +225,7 @@
                         </li>
                         <li class="dropdown" style="border-left:solid 1px #85929E;">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                {{ Auth::user()->name }} <span class="caret"></span>
+                                Menu <span class="caret"></span>
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
