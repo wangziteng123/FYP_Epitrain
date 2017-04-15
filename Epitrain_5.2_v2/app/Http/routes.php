@@ -71,6 +71,7 @@ Route::group(['middleware' => ['auth','admin']], function() {
     //Admin Settings routes
     Route::get('/adminSettings', ['as' => 'adminSettings', 'uses' => 'AdminController@index']);
     Route::post('/changeAdminEmail', ['as' => 'changeAdminEmail', 'uses' => 'AdminController@changeEmail']);
+    Route::post('/changeSessionTimeout', ['as' => 'changeSessionTimeout', 'uses' => 'AdminController@changeSessionTimeout']);
     
 	//FAQ routes
 	Route::get('/faq', ['as' => 'faq', 'uses' => 'FaqController@index']);

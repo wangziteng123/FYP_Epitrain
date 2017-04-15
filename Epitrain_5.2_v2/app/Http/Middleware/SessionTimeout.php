@@ -24,11 +24,14 @@ class SessionTimeout {
      */
     public function handle($request, Closure $next)
     {
+        $sessionTime = \DB::table('sessiontime')
+            -> orderBy('session_id', 'DESC')
+            -> first();
         if (Auth::check()) { //check if user is logged in
             $user_record = DB::table('sessions')->where('user_id', auth()->user()->id)->first();
             if ($user_record != null) { 
-            	// if user's last activity was at least 30 minutes ago, logs him/her out
-                if (time() - $user_record->last_activity > 1800) { 
+            	// if user's last activity was at least $sessionTime->session_time minutes ago, logs him/her out
+                if (time() - $user_record->last_activity > $sessionTime->session_time) { 
                     auth()->logout();
                     return redirect('login')->with('message', 'You were inactive for more than 30 minutes. This platform will automatically log you out after 30 minutes.');
                 } else {

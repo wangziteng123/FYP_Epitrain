@@ -17,7 +17,11 @@
             -> orderBy('email_id', 'DESC')
             -> first();
     $adminEmail = $adminEmailAdd->email;
-  $categories = \DB::table('category') ->get();
+    
+    $sessionTime = \DB::table('sessiontime')
+            -> orderBy('session_id', 'DESC')
+            -> first();
+    $sessionTimeout = $sessionTime->session_time;
 ?>
 
  <div class="col-sm-10 col-sm-offset-1">
@@ -38,17 +42,20 @@
     </form></b>
     <br/>
     <br/>
-   <b> <form method="post" id="editCategory" action=<?php echo URL::route('editCategory');?>>
-        <legend>Edit existing category</legend>
-        <select name="category" required>
-          @foreach($categories as $category)
-            <a href="#"><font size="3"><?php echo $category->categoryname;?></font></a><br/>
-              <option value=<?php echo $category->id;?> style=""><?php echo $category->categoryname;?></option>
-          @endforeach
-        </select>
-        <br/><br/>
-          New category Name: <input type="text" name="categoryName" class="form-control" >
-      <input type="submit" value="Edit Category" class="btn btn-raised btn-info" style="background-color: #01466f;"></button>
+    @if (!empty($sessionSuccess))
+        <div class="alert alert-success">
+            {{ $sessionSuccess }}
+        </div>
+    @endif
+    @if (!empty($sessionError))
+        <div class="alert alert-warning">
+            {{ $sessionError }}
+        </div>
+    @endif
+    <b><form method="post" id="changedTiming" action=<?php echo URL::route('changeSessionTimeout');?>>
+      <legend>Set Session Timeout (in minutes)</legend>
+          <input type="text" name="sessionTime" class="form-control style="font-size:16px" value="<?php echo $sessionTimeout/60?>" >
+      <button type="submit" class="btn btn-raised btn-info" style="background-color: #01466f;">Change</button>
     </form></b>
     <br/>
     <br/>
