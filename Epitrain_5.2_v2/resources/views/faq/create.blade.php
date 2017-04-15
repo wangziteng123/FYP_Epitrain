@@ -24,7 +24,7 @@
 </button>
 
 <form action=<?php echo url('faq/createquestion');?> method="post" id="testformid" style="position:absolute;left:1000px;top:390px">
-    <input type="submit" value="save" class="btn btn-info btn-raised"/>
+    <input type="submit" value="save" class="btn btn-info btn-raised" style="background-color:#01466f; color:white"/>
 </form> 
 
 

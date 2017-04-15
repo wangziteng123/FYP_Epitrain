@@ -37,7 +37,7 @@ $faq = \DB::table('faq')
 
 <form action=<?php echo url('faq/editFaq');?> method="post" id="testformid" style="position:absolute;left:1000px;top:390px">
 	<input type="hidden" name="id" value=<?php echo $id?>>
-    <input type="submit" value="save" class="btn btn-info btn-raised"/>
+    <input type="submit" value="save" class="btn btn-info btn-raised" style="background-color:#01466f; color:white"/>
 </form> 
 
 
