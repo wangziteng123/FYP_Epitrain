@@ -108,7 +108,7 @@
                                                     <td>
                                                         <div class="form-group">
                                                           <div class="col-sm-1 col-xs-1">
-                                                            <input type="submit" class="btn btn-sm btn-raised" value="Search" style="background-color: #377BB5; color: #fff"></button>
+                                                            <input type="submit" class="btn btn-sm btn-raised" value="Search" style="background-color:#01466f; color:white" ></button>
                                                           </div>
                                                         </div>
                                                     </td>
@@ -138,7 +138,7 @@
                                                               <input type="hidden" name="id" value=<?php echo $course->courseID;?>>
                                                               <input type="hidden" name="status" value=<?php echo $course->isActive;?>>
                                                               <?php if ($course->isActive == 0) { ?>
-                                                                  <button class="btn btn-raised btn-sm" style="background-color: #01466F; color: #fff">
+                                                                  <button class="btn btn-raised btn-sm" style="background-color: #377BB5; color: #fff">
                                                                     Activate
                                                                   </button>
                                                               <?php } else { ?> 
@@ -244,7 +244,7 @@
                           <input type="checkbox" name="isActive" id="isActiveVal"><font color="black">  Activate course</font>
                       </label>
                     </div>
-                  <input type="submit" class="btn btn-info btn-raised" value="Submit">
+                  <input type="submit" class="btn btn-info btn-raised" value="Submit" style="background-color:#01466f; color:white">
             </form>
           </font>
       </div>

@@ -32,7 +32,7 @@
                                         <table class="table table-bordered table-hover table-striped">
                                             <thead>
                                                 <tr>
-                                                    <th class="text-center">Period length in months</th>
+                                                    <th class="text-center">Period length in days</th>
                                                     <th class="text-center">Price</th>
                                                     <th class="text-center">Delete</th>
                                                 </tr>
@@ -78,7 +78,7 @@
                                 <div class="col-lg-12">
                                     <div class="table-responsive">
                                         <form action=<?php echo url('addSubscriptionPlan');?> method="post" >
-			                                  Period length in months:<br>
+			                                  Period length in days:<br>
 											  <input type="text" name="monthperiod">
 											  <br>
 											  Price:<br>

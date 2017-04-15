@@ -19,6 +19,13 @@
 	<textarea form ="testformid" name="answer" id="taid" cols="65" rows="10" wrap="soft"></textarea>
 </div>
 
+<div style="position:absolute;left:740px;top:405px">
+<select name="category">
+  <option value="basic">basic</option>
+  <option value="advance">advance</option>
+</select>
+</div>
+
 <button  class="btn btn-raised" style="position:absolute;left:900px;top:390px" onclick="goBack()">
     Cancel
 </button>

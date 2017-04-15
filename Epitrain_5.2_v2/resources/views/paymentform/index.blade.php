@@ -10,10 +10,15 @@
     $fidStr = $value["fidStr"]; //retrieve all the id of the books being purchase
 
     $totalPrice = $totalPrice*100;
+    $totalPrice = round($totalPrice, 2);
 
      $fidStrArray = explode(",", $fidStr); // retrieve the fid of the books user want to purchase
      $sizeOfFidStrArray = count($fidStrArray);  //count how many books
- 
+
+
+
+
+
         ?>
 
 
@@ -55,7 +60,7 @@
  
             <tr>
                 <td style='color:black'  > <?php echo $title; ?> </td>
-                <td style='color:black' > S$<?php echo $price; ?>  </td>
+                <td style='color:black' > S$<?php echo  number_format($price, 2, '.', ''); ?>  </td>
 
             </tr>
 

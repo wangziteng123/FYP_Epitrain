@@ -10,6 +10,7 @@ $faq = \DB::table('faq')
 
      $question = $faq->question;
      $answer = $faq->answer;
+     $category = $faq->category;
 
 ?>
 
@@ -30,6 +31,23 @@ $faq = \DB::table('faq')
 <div style="position:absolute; left:640px;top:135px">
 	<textarea form ="testformid" name="answer"  id="taid" cols="65" rows="10" wrap="soft"><?php echo $answer?></textarea>
 </div>
+
+@if($category==="basic")
+	<div style="position:absolute;left:740px;top:405px">
+	<select name="category">
+	  <option value="basic" selected>basic</option>
+	  <option value="advance">advance</option>
+	</select>
+	</div>
+@else
+	<div style="position:absolute;left:740px;top:405px">
+	<select name="category">
+	  <option value="basic">basic</option>
+	  <option value="advance" selected>advance</option>
+	</select>
+	</div>
+@endif
+
 
 <button  class="btn btn-raised" style="position:absolute;left:900px;top:390px" onclick="goBack()">
     Cancel

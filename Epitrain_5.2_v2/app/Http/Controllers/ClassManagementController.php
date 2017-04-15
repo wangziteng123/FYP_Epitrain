@@ -401,6 +401,71 @@ class ClassManagementController extends Controller
         return redirect('enrolment')->with('success','Student enrolment were successfully removed!');
     }
 
+    public function deleteEnrolments(Request $request) {
+        $ids = $request->input('enrolment');
+
+        if(empty($ids)) {
+
+        } else {
+                foreach($ids as $id) {
+                    DB::table('enrolment')
+                    ->where('id', '=', $id)
+                    ->delete();
+                }
+        }
+
+
+        return redirect('viewAllUsers')->with('success','Student enrolment were successfully removed!');
+    }
+
+    public function addEnrolments(Request $request) {        
+        $courseIDs = $request->input('courseID');
+        $userID = $request->input('userId');
+
+        $this->validate($request, [
+            'courseID' => 'required|max:64',
+        ]);
+        
+        if(empty($courseIDs)) {
+
+        } else {
+                foreach($courseIDs as $courseID) {
+                    DB::table('enrolment')
+                   ->insert(
+                        ['courseID' => $courseID, 'userID' => $userID, 'isActive' => '1']
+                    );
+                }
+        }
+
+        
+        return redirect('viewAllUsers')->with('success','Students were successfully added to course!');;
+    }
+
+    public function filterStudentsForViewAllUsers(Request $request) {
+        $filterInput = $request->input('studentInput');
+        $users = User::paginate(15);
+
+        // $courseList = \DB::table('course')->get();
+        // $enrolmentList = \DB::table('enrolment')->get();
+        $students = null;
+
+        //if admin entered something that contains @, assume it's email
+        if (strpos($filterInput,'@') == true) {
+            $students = User::where('subscribe','=','0')
+                ->where('isAdmin','=','0')
+                ->where('email','like','%'.$filterInput.'%')
+                ->get();
+        //else, assume it's name
+        } else {
+            $students = User::where('subscribe','=','0')
+                ->where('isAdmin','=','0')
+                ->where('name','like','%'.$filterInput.'%')
+                ->get();
+        }
+
+        return view('usermanage.viewAllUsers', compact('users','students'));
+    }
+
     public function addMaterial(Request $request) {        
         $courseID = $request->input('courseID');
         $materialList = $request->input('materialList');

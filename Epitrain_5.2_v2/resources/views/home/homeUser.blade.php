@@ -202,7 +202,7 @@
                               </form>
                            @endif
                         @else
-                           <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">S$<?php echo $price2?></font></p>
+                           <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">$<?php echo number_format($price2, 2, '.', '') ?></font></p>
 
                           @if (count($libraryExist))
                               <form style="position:absolute;right:85px;top:91px;border:none">
@@ -262,7 +262,7 @@
                       @endif
                     <!-- if user is a normal user -->     
                     @else
-                         <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">S$<?php echo $price2;?></font></p>
+                         <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">$<?php echo number_format($price2, 2, '.', '') ;?></font></p>
 
                     @if (count($libraryExist))
                         <form style="position:absolute;right:85px;top:91px;border:none">
@@ -331,7 +331,7 @@
     <!--Best Sellers in Financial Market-->
 <br/>
         <div class="row">
-          <div class="col-sm-3">
+          <div class="col-sm-2">
         <font style="font-family:Book Antiqua;font-weight:10" size="6">Financial Market</font>
         <hr style="">
           </div>
@@ -450,7 +450,7 @@
                               </form>
                         @endif
                       @else
-                          <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">S$<?php echo $price4;?></font></p>
+                          <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">$<?php echo number_format($price4, 2, '.', '');?></font></p>
 
                           @if (count($libraryExist))
                               <form style="position:absolute;right:85px;top:91px;border:none">
@@ -510,7 +510,7 @@
                     @endif
                 <!--if user is a normal user -->
                  @else
-                      <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">S$<?php echo $price4;?></font></p>
+                      <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">$<?php echo number_format($price4, 2, '.', '') ;?></font></p>
 
                   @if (count($libraryExist))
                       <form style="position:absolute;right:85px;top:91px;border:none">
@@ -690,7 +690,7 @@
                               </form>
                         @endif
                       @else
-                        <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">S$<?php echo $price4;?></font></p>
+                        <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">$<?php echo number_format($price4, 2, '.', '') ;?></font></p>
 
                         @if (count($libraryExist))
                             <form style="position:absolute;right:85px;top:91px;border:none">
@@ -750,7 +750,7 @@
                     @endif
                   @else
                   <!-- if user is a normal user -->
-                  <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">S$<?php echo $price4;?></font></p>
+                  <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">$<?php echo number_format($price4, 2, '.', '');?></font></p>
 
                     @if (count($libraryExist))
                         <form style="position:absolute;right:85px;top:91px;border:none">
@@ -841,7 +841,7 @@
         <h4><font color='black'>Choose a subscribtion plan:</font></h4>
       <form action=<?php echo url('/subscribe');?>  method="post">
         @foreach($subscriptionPlans as $plan)
-        <p><input type="radio" onclick="pay()" name="period" id=<?php echo $plan->monthperiod?> value=<?php echo $plan->monthperiod?> checked><font color='black'> <?php echo $plan->monthperiod?> months at $<?php echo $plan->price?></font></p>
+        <p><input type="radio" onclick="pay()" name="period" id=<?php echo $plan->monthperiod?> value=<?php echo $plan->monthperiod?> checked><font color='black'> <?php echo $plan->monthperiod?> days at $<?php echo $plan->price?></font></p>
         <!-- <p><input type="radio" name="period" value="1" checked><font color='black'> 1 month</font></p>
         <p><input type="radio" name="period" value="6"><font color='black'> 6 months</font></p>
         <p><input type="radio" name="period" value="12"><font color='black'> 1 year</font></p> -->

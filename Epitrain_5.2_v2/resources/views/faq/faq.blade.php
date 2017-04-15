@@ -23,7 +23,12 @@
 	<br>
 	<br>
 	<?php
-		$faqs = \DB::table('faq')
+		$faqs1 = \DB::table('faq')
+						->where('category', 'basic')
+						->orderBy('created_at', 'desc')
+						->get();
+		$faqs2 = \DB::table('faq')
+						->where('category', 'advance')
 						->orderBy('created_at', 'desc')
 						->get();
 
@@ -31,37 +36,75 @@
 	?>
 	<div class="row">
 	<div class="list-group col-sm-12 col-lg-10">
-	@foreach($faqs as $faq)
-	<div class="row">
-		<div class="list-group-item list-group-item-action flex-column align-items-start">
+	<table>
+		@foreach($faqs1 as $faq)
+		
+			
 
+			<tr height="100">
+				
+					<td ><p align="left"><span class="badge badge-primary" >Q</span>&nbsp&nbsp<?php echo $faq->question?></p></td>
+					<td ><p align="left"><span class="badge badge-default" >A</span>&nbsp&nbsp<?php echo $faq->answer?></p></td>
+				
+				
+				@if (Auth::user()->isAdmin)
+					<td >
+					<div class="col-sm-2">	
+						<form action=<?php echo url('faq/delete');?> method="get" >
+							<input type="hidden" name="id" value=<?php echo $faq->id?>>
+								<button  id="" class="btn btn-default btn-raised" style="background-color:white">
+											<i class="fa fa-times" aria-hidden="true"></i>
+								</button>
+						</form>
+						<form action=<?php echo url('faq/edit');?> method="get" >
+							<input type="hidden" value=<?php echo $faq->id?> name="id">
+								<button  id="" class="btn btn-default btn-raised" style="background-color:white">
+											<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+								</button>
+						</form>
+					</div>
+					<br>
+					<br>
+					</td>
+				@endif
+			</tr>
 			
-			<div class="col-sm-10">
-				<p align="left"><span class="badge badge-primary" >Q</span>&nbsp&nbsp<?php echo $faq->question?></p>
-				<p align="left"><span class="badge badge-default" >A</span>&nbsp&nbsp<?php echo $faq->answer?></p>
-			</div>
+		@endforeach
+
+		@foreach($faqs2 as $faq)
+		
 			
-			@if (Auth::user()->isAdmin)
-			<div class="col-sm-2">	
-				<form action=<?php echo url('faq/delete');?> method="get" >
-					<input type="hidden" name="id" value=<?php echo $faq->id?>>
-						<button  id="" class="btn btn-default btn-raised" style="background-color:white">
-									<i class="fa fa-times" aria-hidden="true"></i>
-						</button>
-				</form>
-				<form action=<?php echo url('faq/edit');?> method="get" >
-					<input type="hidden" value=<?php echo $faq->id?> name="id">
-						<button  id="" class="btn btn-default btn-raised" style="background-color:white">
-									<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-						</button>
-				</form>
-			</div>
-			<br>
-			<br>
-		@endif
-		</div>
-	</div>
-	@endforeach
+
+			<tr height="100">
+				
+					<td ><p align="left"><span class="badge badge-primary" >Q</span>&nbsp&nbsp<?php echo $faq->question?></p></td>
+					<td ><p align="left"><span class="badge badge-default" >A</span>&nbsp&nbsp<?php echo $faq->answer?></p></td>
+				
+				
+				@if (Auth::user()->isAdmin)
+					<td >
+					<div class="col-sm-2">	
+						<form action=<?php echo url('faq/delete');?> method="get" >
+							<input type="hidden" name="id" value=<?php echo $faq->id?>>
+								<button  id="" class="btn btn-default btn-raised" style="background-color:white">
+											<i class="fa fa-times" aria-hidden="true"></i>
+								</button>
+						</form>
+						<form action=<?php echo url('faq/edit');?> method="get" >
+							<input type="hidden" value=<?php echo $faq->id?> name="id">
+								<button  id="" class="btn btn-default btn-raised" style="background-color:white">
+											<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+								</button>
+						</form>
+					</div>
+					<br>
+					<br>
+					</td>
+				@endif
+			</tr>
+			
+		@endforeach
+	</table>
 	</div>
 	</div>
 
