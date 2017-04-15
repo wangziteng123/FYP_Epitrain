@@ -125,7 +125,7 @@ foreach($lastFiveMonthsArr as $monthyear) {
             <div class="row">
                 <!--quick info section -->
                 <div class="col-lg-3">
-                    <div class="alert alert-danger text-center">
+                    <div class="alert alert-danger text-center"  style="background-color:#01466f; color:white">
                         <i class="fa fa-usd fa-3x"></i>&nbsp;&nbsp;<b><?php echo $totalRevenue?>$</b> total revenue made
                         <br/><br/>
                     </div>
@@ -137,7 +137,7 @@ foreach($lastFiveMonthsArr as $monthyear) {
                     </div>
                 </div>
                 <div class="col-lg-3">
-                    <div class="alert alert-info text-center">
+                    <div class="alert alert-info text-center"  style="background-color:#01466f; color:white">
                         <i class="fa fa-book fa-3x"></i>&nbsp;&nbsp;<b><?php echo $numOfEbooks?> </b> ebooks in total
                         <br/><br/><a href="{{ url('/fileentry') }}" class="btn btn-default btn-raised">Manage</a>
                     </div>

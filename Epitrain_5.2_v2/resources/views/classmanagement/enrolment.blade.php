@@ -91,7 +91,7 @@
                                                     <td>
                                                         <div class="form-group">
                                                           <div class="col-sm-1 col-xs-1">
-                                                            <input type="submit" class="btn btn-sm btn-info btn-raised" value="Search"></button>
+                                                            <input type="submit" class="btn btn-sm btn-info btn-raised" value="Search" style="background-color: #014667; color: #fff"></button>
                                                           </div>
                                                         </div>
                                                     </td>
@@ -169,7 +169,7 @@
                                             </div>
                                             <div class="form-group">
                                               <div class="col-sm-2 col-xs-2 col-xs-offset-2">
-                                                    <input type="submit" class="btn btn-raised btn-info" value="Search">
+                                                    <input type="submit" class="btn btn-raised btn-info" value="Search" style="background-color: #014667; color: #fff">
                                                 </div>
                                                 </div>
                                             </div>
@@ -206,7 +206,7 @@
                                             </div>
                                           </div>
 
-                                        <input type="submit" class="btn btn-success btn-raised" value="Submit">
+                                        <input type="submit" class="btn btn-success btn-raised" value="Submit" style="background-color: #377BB5; color: #fff">
                                      </form>
                                     </div>
                                 </div>
