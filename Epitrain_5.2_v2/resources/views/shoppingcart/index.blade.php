@@ -83,10 +83,11 @@ function callApi(url) {
 			  	  </div>
 				  <div class="col-md-6 col-sm-10 col-xs-10 col-xs-offset-1 text-xs-center"><font color="darkblue" style="font-size: 25px;font-weight: bold;"><?php echo $shoppingcart->original_filename;?></font></div>
 			  	  
-			  	  <div class="col-md-1 hidden-xs hidden-sm"><font color="black" style="font-size:28px">S$<?php echo $shoppingcart->price?></font>    </div>
+			  	  <div class="col-md-1 hidden-xs hidden-sm"><font color="black" style="font-size:28px">$<?php echo number_format($shoppingcart->price, 2, '.', '')?></font>    </div>
 			  	  <div class="col-md-1 hidden-xs hidden-sm">
 				  	  	<input type="hidden" name="fid" value=<?php echo $shoppingcart->fileentry_id;?>>
 			  	  		<input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
+
 	                    <button type="submit" class="btn btn-raised btn-warning">
                         <font style="">Remove</font>
                     </button>
