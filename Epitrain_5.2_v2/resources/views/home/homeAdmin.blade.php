@@ -114,7 +114,7 @@ foreach($lastFiveMonthsArr as $monthyear) {
             <div class="row">
                 <!-- Welcome -->
                 <div class="col-lg-12">
-                    <div class="alert alert-info">
+                    <div class="alert alert-info" style="background-color:#01466f; color:white">
                         <i class="fa fa-folder-open"></i><b>&nbsp;Hello ! </b>Welcome Back <b>{{ Auth::user()->name }}</b>
                     </div>
                 </div>
@@ -125,25 +125,25 @@ foreach($lastFiveMonthsArr as $monthyear) {
             <div class="row">
                 <!--quick info section -->
                 <div class="col-lg-3">
-                    <div class="alert alert-danger text-center"  style="background-color:#01466f; color:white">
+                    <div class="alert alert-danger text-center"  style="background-color:#22B14C; color:white">
                         <i class="fa fa-usd fa-3x"></i>&nbsp;&nbsp;<b><?php echo $totalRevenue?>$</b> total revenue made
                         <br/><br/>
                     </div>
                 </div>
                 <div class="col-lg-3">
-                    <div class="alert alert-success text-center">
+                    <div class="alert alert-success text-center"style="background-color:#424AEA; color:white">
                         <i class="fa fa-users fa-3x"></i>&nbsp;&nbsp;<b><?php echo $numOfUsers?> </b>total users
                         <br/><br/><a href="{{ url('/viewAllUsers') }}" class="btn btn-default btn-raised">Manage</a>
                     </div>
                 </div>
                 <div class="col-lg-3">
-                    <div class="alert alert-info text-center"  style="background-color:#01466f; color:white">
+                    <div class="alert alert-info text-center">
                         <i class="fa fa-book fa-3x"></i>&nbsp;&nbsp;<b><?php echo $numOfEbooks?> </b> ebooks in total
                         <br/><br/><a href="{{ url('/fileentry') }}" class="btn btn-default btn-raised">Manage</a>
                     </div>
                 </div>
                 <div class="col-lg-3">
-                    <div class="alert alert-warning text-center">
+                    <div class="alert alert-warning text-center" >
                         <i class="fa fa-comments fa-3x"></i>&nbsp;&nbsp;<b><?php echo $numOfDiscussions?> </b> discussions in forum
                         <br/><br/><a href="{{ url('/forumAdmin') }}" class="btn btn-default btn-raised">Manage</a>
                     </div>
