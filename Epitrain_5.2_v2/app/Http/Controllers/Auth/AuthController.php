@@ -52,8 +52,12 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        if(!($request->get('clause'))){
+            return redirect('/register')->with('status', 'Please check the Terms & Conditions box.');
+        }
+            
         $validator = $this->validator($request->all());
-
+        
         if ($validator->fails()) {
             $this->throwValidationException(
                 $request, $validator

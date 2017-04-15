@@ -44,7 +44,7 @@ class FaqController extends Controller
 
         DB::table('faq')
             ->where('id', '=', $id)
-            ->update(['question' => $question],['answer' => $answer]);
+            ->update(['question' => $question,'answer' => $answer]);
 
         return redirect()->route('faq');  
     }

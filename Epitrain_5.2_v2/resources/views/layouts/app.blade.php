@@ -194,6 +194,7 @@
                                 <li><a href="{{ url('/classmanagement') }}"><i class="material-icons">view_list</i>Class management</a></li>
 								<li><a href="{{ url('/viewAllUsers') }}"><i class="material-icons">group</i>View All Users</a></li>
 								<li><a href="{{ url('/update') }}"><i class="material-icons">perm_identity</i>Update Personal Info</a></li>
+                                <li><a href="{{ url('/adminSettings') }}"><i class="material-icons">perm_data_setting</i>Admin Settings</a></li>
                                 <li><a href="{{ url('/faq') }}"><i class="material-icons">question_answer</i>FAQ</a></li>
 								<li><a href="{{ url('/logout') }}"><i class="material-icons">cancel</i>Logout</a></li>
                             </ul>

@@ -23,7 +23,14 @@
                 <div class="panel-body">
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/register') }}">
                         {{ csrf_field() }}
-
+                        
+                        
+                        @if (session('status'))
+                            <div class="alert alert-warning">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+                        
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-4 control-label"><font color="black" size="3">Name</font></label>
 
@@ -77,6 +84,18 @@
                                         <strong>{{ $errors->first('password_confirmation') }}</strong>
                                     </span>
                                 @endif
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-3 align-items-center">
+                                <div class="checkbox">
+                                    <label for="pdpa">
+                                        <input type="checkbox" id="pdpa" name="clause"> 
+                                        <span style="color:black" >By registering this account, I agree to Epitrain Pte Ltd’s </span>
+                                        <span style="color:black" ><a target="_blank" href="http://www.epitrain.com/termsofuse">Terms of Use and Privacy Policy.</a></span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
 

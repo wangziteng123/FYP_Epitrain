@@ -135,7 +135,9 @@ class UserController extends Controller
      */
 public function update(Request $request, $id)
         {
-
+            if(!($request->get('clause'))){
+                return redirect('/update')->with('status', 'Please check the Terms & Conditions box.');
+            }
           //  return \View::make('usermanage.updateInfo', compact('users'));
            // return redirect()->back();
     //return redirect('home');

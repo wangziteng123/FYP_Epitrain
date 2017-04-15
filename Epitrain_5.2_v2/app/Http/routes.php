@@ -67,7 +67,11 @@ Route::group(['middleware' => ['auth','admin']], function() {
 
     //payment routes
 	Route::post('/payment', ['as' => 'payment', 'uses' => 'PaymentController@index']);
-
+    
+    //Admin Settings routes
+    Route::get('/adminSettings', ['as' => 'adminSettings', 'uses' => 'AdminController@index']);
+    Route::post('/changeAdminEmail', ['as' => 'changeAdminEmail', 'uses' => 'AdminController@changeEmail']);
+    
 	//FAQ routes
 	Route::get('/faq', ['as' => 'faq', 'uses' => 'FaqController@index']);
 	Route::get('/faq/create', function () {

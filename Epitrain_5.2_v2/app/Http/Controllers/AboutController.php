@@ -12,16 +12,26 @@ use Mail;
 class AboutController extends Controller
 {
     //
-		private $email = 'leanhtu188@gmail.com';
+		private $email;
 		
     public function create()
     {
         return view('about.contact');
     }
+    
+    public function getEmail(){
+        $emailAdd = \DB::table('adminemail')
+            -> orderBy('email_id', 'DESC')
+            -> first();
+        
+        $emailAddress = $emailAdd->email;
+        $this->email = $emailAddress; 
+    }
 
     public function store(ContactFormRequest $request)
     {
-			
+			$email = $this->getEmail();
+            
 			$email_content = nl2br(e($request->get('message')));
 			$message_content = $this->nl2br2($request->get('message'));
     	Mail::send('about.email',
