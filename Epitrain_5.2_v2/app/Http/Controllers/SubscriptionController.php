@@ -23,13 +23,16 @@ class SubscriptionController extends Controller
     	$end_date -> toDateTimeString();  
     	$end_date -> addHours(8);
 
-    	if($subscribe_period === '1') {
-    		$end_date->addMonths(1);	
-    	} elseif ($subscribe_period === '6') {
-    		$end_date->addMonths(6);
-    	} else {
-    		$end_date->addMonths(12);
-    	}
+    	// if($subscribe_period === '1') {
+    	// 	$end_date->addDays(1);	
+    	// } elseif ($subscribe_period === '6') {
+    	// 	$end_date->addDays(6);
+    	// } else {
+    	// 	$end_date->addDays(12);
+    	// }
+
+        $subscribe_periodInDays = (int)$subscribe_period;
+        $end_date->addDays($subscribe_periodInDays);
     	
     	DB::table('subscription') ->insert(
                 ['user_id' => $user_id, 'period' => $subscribe_period, 'end_date' => $end_date, 'created_at' => $current]

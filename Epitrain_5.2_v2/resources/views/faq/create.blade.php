@@ -19,12 +19,19 @@
 	<textarea form ="testformid" name="answer" id="taid" cols="65" rows="10" wrap="soft"></textarea>
 </div>
 
+<div style="position:absolute;left:740px;top:405px">
+<select name="category">
+  <option value="basic">basic</option>
+  <option value="advance">advance</option>
+</select>
+</div>
+
 <button  class="btn btn-raised" style="position:absolute;left:900px;top:390px" onclick="goBack()">
     Cancel
 </button>
 
 <form action=<?php echo url('faq/createquestion');?> method="post" id="testformid" style="position:absolute;left:1000px;top:390px">
-    <input type="submit" value="save" class="btn btn-info btn-raised" style="background-color:#01466f; color:white"/>
+    <input type="submit" value="save" class="btn btn-info btn-raised"/>
 </form> 
 
 

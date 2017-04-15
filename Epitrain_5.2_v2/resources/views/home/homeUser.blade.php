@@ -841,7 +841,7 @@
         <h4><font color='black'>Choose a subscribtion plan:</font></h4>
       <form action=<?php echo url('/subscribe');?>  method="post">
         @foreach($subscriptionPlans as $plan)
-        <p><input type="radio" onclick="pay()" name="period" id=<?php echo $plan->monthperiod?> value=<?php echo $plan->monthperiod?> checked><font color='black'> <?php echo $plan->monthperiod?> months at $<?php echo $plan->price?></font></p>
+        <p><input type="radio" onclick="pay()" name="period" id=<?php echo $plan->monthperiod?> value=<?php echo $plan->monthperiod?> checked><font color='black'> <?php echo $plan->monthperiod?> days at $<?php echo $plan->price?></font></p>
         <!-- <p><input type="radio" name="period" value="1" checked><font color='black'> 1 month</font></p>
         <p><input type="radio" name="period" value="6"><font color='black'> 6 months</font></p>
         <p><input type="radio" name="period" value="12"><font color='black'> 1 year</font></p> -->

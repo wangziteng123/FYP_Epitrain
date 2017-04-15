@@ -36,6 +36,13 @@ $forumdiscussions = \DB::table('forumdiscussion')
 
 $numOfDiscussions = count($forumdiscussions);
 
+$numOfUnreadThreads = 0;
+foreach($forumdiscussions as $discussion) {
+    if($discussion->views === 0) {
+        $numOfUnreadThreads++;
+    }
+}
+
 //top purchased books
 $trendingEbooks = \DB::table('libraries')
           ->join('fileentries', 'libraries.fileentry_id', '=', 'fileentries.id')
@@ -143,11 +150,13 @@ foreach($lastFiveMonthsArr as $monthyear) {
                     </div>
                 </div>
                 <div class="col-lg-3">
-                    <div class="alert alert-warning text-center" >
+                    <div class="alert alert-warning text-center">
                         <i class="fa fa-comments fa-3x"></i>&nbsp;&nbsp;<b><?php echo $numOfDiscussions?> </b> discussions in forum
-                        <br/><br/><a href="{{ url('/forumAdmin') }}" class="btn btn-default btn-raised">Manage</a>
+                        <br/>
+                        <b>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $numOfUnreadThreads?> </b> unread discussions
+                        <br/><a href="{{ url('/forumAdmin') }}" class="btn btn-default btn-raised">Manage</a>
                     </div>
-                </div>
+                </div>                
                 <!--end quick info section -->
             </div>
 

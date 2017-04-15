@@ -168,6 +168,118 @@
     </script>
     @if ($users->count())
     <div class="container">
+    <div class="row">
+        <h1>Search For User to remove or add to couses</h1>
+        <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                 Search
+            </div>
+
+             <div class="panel-body">
+            
+                <div class="table-responsive">
+                    
+                            <form action=<?php echo URL::route('filterStudentsForViewAllUsers');?> method="post" class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="studentInput" class="col-md-2 control-label">Name/<br>Email</label>
+
+                                <div class="col-sm-10 col-xs-10">
+                                    <input type="text" class="form-control" id="studentInput" name="studentInput" placeholder="Student name or email">
+                                </div>
+                                <div class="form-group">
+                                     <div class="col-sm-2 col-xs-2 col-xs-offset-2">
+                                        <input type="submit" class="btn btn-raised btn-info" value="Search">
+                                      </div>
+                                </div>
+                                </div>
+                            </form>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                     Students list with courses
+                </div>
+
+                <div class="panel-body">
+                    @if($students !== null) 
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Student Email</th>
+                                        <th class="text-center">Courses</th>
+                                        <th class="text-center">CoursesToAdd</th>
+                                    </tr>
+                                </thead>   
+                                <tbody>
+                                    @foreach($students as $student)
+                                    <?php
+                                        $enrolments = \DB::table('enrolment')
+                                                    ->where('userID', $student->id)
+                                                    ->get();
+
+                                        $courses = \DB::table('course')
+                                                    ->get();
+                                        $courses2 = array();
+
+                                        foreach($courses as $course) {
+                                            $inOrNot = false;
+                                            foreach($enrolments as $enrol) {
+                                                if($course->courseID === $enrol->courseID) {
+                                                    $inOrNot = true;
+                                                }
+                                            }
+                                            if(!$inOrNot) {
+                                                array_push($courses2, $course);
+                                            }
+                                        }
+
+                                    ?>
+                                    <tr>
+                                     <td>
+                                        <?php echo $student->email?>
+                                     </td>
+
+                                     <td>
+                                        <form action=<?php echo URL::route('deleteEnrolments');?> method="post">
+                                            @foreach($enrolments as $enrolment)
+                                                <input type="checkbox" name="enrolment[]" value=<?php echo $enrolment->id?> style=""> <?php echo $enrolment->courseID?><br>
+                                            @endforeach
+
+                                            <input type="submit" value="delete">
+                                        </form>
+                                     </td>
+
+                                     <td>
+                                         <form action=<?php echo URL::route('addEnrolments');?> method="post">
+                                                <input type="hidden" name="userId" value=<?php echo $student->id?> style="">
+                                            @foreach($courses2 as $course)
+                                                <input type="checkbox" name="courseID[]" value=<?php echo $course->courseID?> style=""> <?php echo $course->courseID?><br>
+                                            @endforeach
+
+                                            <input type="submit" value="add">
+                                        </form>
+
+
+                                      </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                           
+                        </table>
+                    </div>
+                     @endif
+                </div>
+            </div>
+        </div>
+    </div>
+    
         <h1>All Users</h1>
         <table class="table table-bordered" style="background-color:white; font-size: 18px">
             <thead>

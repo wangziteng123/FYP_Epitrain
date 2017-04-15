@@ -10,6 +10,7 @@ $faq = \DB::table('faq')
 
      $question = $faq->question;
      $answer = $faq->answer;
+     $category = $faq->category;
 
 ?>
 
@@ -31,13 +32,30 @@ $faq = \DB::table('faq')
 	<textarea form ="testformid" name="answer"  id="taid" cols="65" rows="10" wrap="soft"><?php echo $answer?></textarea>
 </div>
 
+@if($category==="basic")
+	<div style="position:absolute;left:740px;top:405px">
+	<select name="category">
+	  <option value="basic" selected>basic</option>
+	  <option value="advance">advance</option>
+	</select>
+	</div>
+@else
+	<div style="position:absolute;left:740px;top:405px">
+	<select name="category">
+	  <option value="basic">basic</option>
+	  <option value="advance" selected>advance</option>
+	</select>
+	</div>
+@endif
+
+
 <button  class="btn btn-raised" style="position:absolute;left:900px;top:390px" onclick="goBack()">
     Cancel
 </button>
 
 <form action=<?php echo url('faq/editFaq');?> method="post" id="testformid" style="position:absolute;left:1000px;top:390px">
 	<input type="hidden" name="id" value=<?php echo $id?>>
-    <input type="submit" value="save" class="btn btn-info btn-raised" style="background-color:#01466f; color:white"/>
+    <input type="submit" value="save" class="btn btn-info btn-raised"/>
 </form> 
 
 

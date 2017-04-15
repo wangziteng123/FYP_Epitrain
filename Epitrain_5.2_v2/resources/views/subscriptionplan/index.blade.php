@@ -21,8 +21,8 @@
         <h1>Subscription Payment</h1></br>
  </div>
  <div class="container">
-        <p>You have selected a subscription plan of <b><?php echo $period; ?> months</b> for <b>$<?php echo $totalPrice ?>.</b> </br>
-        This will allow you free access to all materials for the next <?php echo $period; ?> months
+        <p>You have selected a subscription plan of <b><?php echo $period; ?> days</b> for <b>$<?php echo $totalPrice ?>.</b> </br>
+        This will allow you free access to all materials for the next <?php echo $period; ?> days
         after which your plan will expires. </p></br>
 
 

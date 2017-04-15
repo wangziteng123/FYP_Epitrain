@@ -113,6 +113,10 @@ Route::group(['middleware' => ['auth','admin']], function() {
 	Route::post('classmanagement/activateCourse', ['as' => 'activateCourse', 'uses' => 'ClassManagementController@activateCourse']);
 	Route::post('classmanagement/activateEnrolment', ['as' => 'activateEnrolment', 'uses' => 'ClassManagementController@activateEnrolment']);
 	Route::post('classmanagement/editCourse', ['as' => 'editCourse', 'uses' => 'ClassManagementController@editCourse']);
+
+	Route::post('classmanagement/filterStudentsForViewAllUsers', ['as' => 'filterStudentsForViewAllUsers', 'uses' => 'ClassManagementController@filterStudentsForViewAllUsers']);
+	Route::post('classmanagement/addEnrolments', ['as' => 'addEnrolments', 'uses' => 'ClassManagementController@addEnrolments']);
+	Route::post('classmanagement/deleteEnrolments', ['as' => 'deleteEnrolments', 'uses' => 'ClassManagementController@deleteEnrolments']);
 });
 
 
