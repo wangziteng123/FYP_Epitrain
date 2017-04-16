@@ -184,7 +184,7 @@ class FileEntryController extends Controller
         
         //version 3.6
         $entry = Fileentry::where('filename', '=', $filename)->firstOrFail();
-        //$url = "s3-".env('S3_REGION')."amazonaws.com/".env('S3_BUCKET')."/ebooks/".$entry->filename;
+        $url = "s3-".env('S3_REGION')."amazonaws.com/".env('S3_BUCKET')."/ebooks/".$entry->filename;
 		//$file = Storage::disk('s3')->get("http://sample-env-1.2uqmcfeudi.us-west-2.elasticbeanstalk.com/ebook/".$entry->filename.".pdf");
  		$file = Storage::disk('s3')->get('/ebooks/'.$entry->filename);
 		//uncomment to try on local environment
