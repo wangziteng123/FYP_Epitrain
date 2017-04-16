@@ -2,12 +2,36 @@
 
 namespace App\Http\Controllers;
 use App\User;
+use Illuminate\Support\Facades\Input;
+use Excel;
+use Exception;
 
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Mail;
 
+use PHPExcel_Cell;
+use PHPExcel_Cell_DataType;
+use PHPExcel_Cell_IValueBinder;
+use PHPExcel_Cell_DefaultValueBinder;
+
+
+class MyValueBinder extends PHPExcel_Cell_DefaultValueBinder implements PHPExcel_Cell_IValueBinder
+    {
+        public function bindValue(PHPExcel_Cell $cell, $value = null)
+        {
+            if (is_numeric($value))
+            {
+                $cell->setValueExplicit($value, PHPExcel_Cell_DataType::TYPE_STRING);
+
+                return true;
+            }
+
+            // else return default behavior
+            return parent::bindValue($cell, $value);
+        }
+    }
 
 class UserController extends Controller
 {
@@ -67,7 +91,7 @@ class UserController extends Controller
         
         $user->name = $request->name;
         $user->email = $request->email;
-				$random_password = $this->rand_string(16);
+        $random_password = $this->rand_string(16);
         $user->password = bcrypt($random_password);
 				
 				$isAdmin = $request->input('make-admin');
@@ -91,6 +115,110 @@ class UserController extends Controller
         } else {
             return redirect('createUser')->with('failure', "Please fill in all the details!");
         }
+    }
+    
+    
+    
+    public function csvStore(Request $request){
+        $mimes = array('application/vnd.ms-excel','text/plain','text/csv','text/tsv');
+        if(in_array($_FILES['filefield']['type'],$mimes)){
+            $csvFile = $request->get('filefield');
+        
+            $missingEmailField = "";
+            $success = "Users successfully created!";
+            $atLeastOneSuccess = false;
+            $errorDuplicateEmail = array();
+            $errorInvalidEmail = array();
+            $myValueBinder = new MyValueBinder;
+            //Excel::load($csvFile, function($reader) {});
+            if(Input::hasFile('filefield')){
+                $path = Input::file('filefield')->getRealPath();
+                $reader = Excel::setValueBinder($myValueBinder)->load(Input::file('filefield'));
+                //dd($reader->load($path)->first()->toArray());
+                $data = Excel::load($path, function($reader) {
+                })->get();
+                if(!empty($data) && $data->count()){
+                    /* foreach ($data as $key => $value) {
+                        $this->validate($data, [
+                            'name' => 'required|max:255',
+                            'email' => 'required|email|max:255|unique:users',
+                        ]);
+                    } */
+                    foreach ($data as $key => $value) {
+                    
+                        $emailExists = \DB::table('users') 
+                            -> where ('email', '=', $value->email)
+                            -> get();
+                        if($emailExists != null){
+                            array_push($errorDuplicateEmail, $value->email);
+                        } else{
+                            if(empty($value->email) || empty($value->name)){
+                                $missingEmailField = "Missing name/email field(s) or Wrong format. Please ensure your CSV follows the proper format with no empty fields.";
+                            }else if(!(filter_var($value->email, FILTER_VALIDATE_EMAIL))) {
+                                array_push($errorInvalidEmail, $value->email);
+                                //dd($errorInvalidEmail);
+                            } else{
+                                
+                                $user = new User;
+                                $user->name = $value->name;
+                                $user->email = $value->email;
+                                $random_password = $this->rand_string(16);
+                                $user->password = bcrypt($random_password);
+                                if($value->isadmin == 1){
+                                    $user->isadmin = 1;
+                                } else{
+                                    $user->isadmin = 0;
+                                }
+                                if($user->save()) {
+                                    Mail::send('emails.UserCreated',
+                                        array(
+                                                'name' => $user->name,
+                                                'username' => $user->email,
+                                                'password' => $random_password
+                                        ), function($message) use ($user)
+                                    {
+                                        $message->from('cavetzii@gmail.com','Epitrain Elearning Platform Robot');
+                                        $message->to($user->email, $user->name)->subject('Welcome to Epitrain');
+                                    });
+                                    $atLeastOneSuccess = true;
+                                } 
+                            }
+                        }
+                        
+                    }
+                    if($atLeastOneSuccess){
+                        if(!empty($missingEmailField)){
+                            return \View::make('usermanage.create')->with(compact('success','errorInvalidEmail','errorDuplicateEmail', 'missingEmailField'));
+                        } else{
+                            return \View::make('usermanage.create')->with(compact('success','errorInvalidEmail','errorDuplicateEmail'));
+                        }
+                        //return redirect('createUser')->with(compact('success','errorInvalidEmail','errorDuplicateEmail'));
+                    } else{
+                        if(!empty($missingEmailField)){
+                            return \View::make('usermanage.create')->with(compact('errorInvalidEmail','errorDuplicateEmail', 'missingEmailField'));
+                        } else{
+                            return \View::make('usermanage.create')->with(compact('errorInvalidEmail','errorDuplicateEmail'));
+                        }
+                        //return \View::make('usermanage.create')->with(compact('errorInvalidEmail','errorDuplicateEmail', 'missingEmailField'));
+                        //return redirect('createUser')->with(compact('errorInvalidEmail', 'errorDuplicateEmail'));
+                    }
+                    /* if(!empty($insert)){
+                        \DB::table('items')->insert($insert);
+                        dd('Insert Record successfully.');
+                    } */
+                } else{
+                    //return redirect('createUser')->with('emptyFile', "Provided an empty/invalid format file");
+                }
+            }
+        } else {
+            
+        }
+        
+        
+		return \View::make('usermanage.create')-> with('wrongFileFormat', "Please provide only a CSV file.");
+            // reader methods
+
+        
     }
 		
 		function rand_string( $length ) {

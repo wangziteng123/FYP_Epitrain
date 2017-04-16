@@ -2,6 +2,7 @@
 
 @section('content')
 
+
 @if(Session::has('failure'))
     <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -23,6 +24,44 @@
         </ul>
     </div>
 @endif
+
+@if (!empty($errorInvalidEmail))
+    <div class="alert alert-danger">
+        The following emails are invalid: 
+        @foreach ($errorInvalidEmail as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </div>
+@endif
+
+@if (!empty($errorDuplicateEmail))
+    <div class="alert alert-danger">
+        The following emails already exists: 
+        @foreach ($errorDuplicateEmail as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </div>
+@endif
+
+@if (!empty($missingEmailField))
+    <div class="alert alert-danger">
+        {{ $missingEmailField }}
+    </div>
+@endif
+
+@if (!empty($wrongFileFormat))
+    <div class="alert alert-danger">
+        {{ $wrongFileFormat }}
+    </div>
+@endif
+
+@if (!empty($emptyFile))
+    <div class="alert alert-danger">
+        {{ $emptyFile }}
+    </div>
+@endif
+
+
 <div class="row">
     <div class="col-sm-6">
         <ul class="breadcrumb pull-left" style="margin-bottom: 5px;font-size:20px">
@@ -129,7 +168,34 @@
                         }else{
                             $error ="";
                         }
+                        
                     ?></p>
+                    
+                    
+                    <form action=<?php echo URL::route('csvStore');?> id="uploadform" method="post" enctype="multipart/form-data" style="max-width: 100%; min-height: 480px;margin:0 auto; border: 0px solid white;" onsubmit="" class="form-horizontal">
+                      <legend><strong>Upload Student List in CSV</strong></legend>
+                    
+                        <div class="form-group is-empty is-fileinput">
+                          <label for="inputFile" class="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Upload</label>
+                            <div class = "input-group col-md-9">
+                              <input type="text" readonly class="form-control" placeholder="Select file to upload" style ="font-size:18px">
+                              <input type="file" name="filefield" value="{{ csrf_token() }}" style="color:black" accept=".csv" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6 col-sm-offset-4">
+                                <button type="submit" class="btn btn-raised btn-success" id="Submit" style="background-color: #01466f;">
+                                    <i class="fa fa-btn fa-user"></i> <font color="white">Submit</font>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6 col-sm-offset-4">
+                                <a target="_blank" href="{{ asset('create_user_example.png') }}">Click here for sample</a>
+                            </div>
+                        </div>
+                    </form>
+                    
                 </div>
             </div>      
         </div>

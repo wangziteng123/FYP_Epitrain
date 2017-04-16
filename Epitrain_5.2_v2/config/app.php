@@ -160,6 +160,7 @@ return [
         Laracasts\Flash\FlashServiceProvider::class,
         Askedio\Laravel5ProfanityFilter\Providers\ProfanityFilterServiceProvider::class,
         Illuminate\Notifications\NotificationServiceProvider::class,
+        'Maatwebsite\Excel\ExcelServiceProvider',
 
     ],
 
@@ -208,7 +209,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
-        'Datatables' => Yajra\Datatables\Datatables::class
+        'Datatables' => Yajra\Datatables\Datatables::class,
+        'Excel' => 'Maatwebsite\Excel\Facades\Excel'
     ],
 
 ];

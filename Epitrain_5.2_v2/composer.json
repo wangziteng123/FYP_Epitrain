@@ -13,7 +13,8 @@
         "nicolaslopezj/searchable": "^1.9",
         "askedio/laravel5-profanity-filter": "^1.0",
         "stripe/stripe-php": "^4.4",
-        "laravel-notification-channels/backport": "^1.0"
+        "laravel-notification-channels/backport": "^1.0",
+        "maatwebsite/excel": "~2.1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
