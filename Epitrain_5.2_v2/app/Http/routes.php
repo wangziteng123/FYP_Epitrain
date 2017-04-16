@@ -149,6 +149,7 @@ Route::group(['middleware' => 'auth'], function() {
 
 	Route::get('find', 'SearchController@find');
 	Route::get('searchresult', 'SearchController@index');
+	Route::get('findForumtag', 'SearchController@findForumtag');
 
 	Route::get('shoppingcart',  [
 		'as'=>'shoppingcart', 'uses'=>'ShoppingController@index']);

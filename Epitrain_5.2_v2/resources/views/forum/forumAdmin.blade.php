@@ -64,6 +64,16 @@
     <button type="button" class="btn btn-raised btn-info" data-toggle="modal" data-target="#myEditModal" style = "font-size:14px">
          Edit Category
     </button>
+
+    <div class="row" style="position:static; left:15px; " >
+
+    <form class="typeahead navbar-form navbar-left" role="search">
+        <div class="form-group">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="search" name="q1" class="search-input2 form-control" placeholder="Search for tags" autocomplete="off" style="width:235px;color:black;">
+        </div>
+    </form>
+  </div>
     
     <div style="position:static; left:15px; " >
     Top Five Tags </br>
@@ -419,6 +429,57 @@ function loadModal(discussion_id){
 
 
 </script>
+
+
+ <?php 
+
+      $url = URL::route('forumShowTagPosts');
+    ?>
+    <script>
+        jQuery(document).ready(function($) {
+            // Set the Options for "Bloodhound" suggestion engine
+            var mainUrl = window.location.hostname;
+            var passUrl = <?php echo $url."?id="?>;
+
+            var engine2 = new Bloodhound({
+                remote: {
+                    url: '/findForumtag?q1=%QUERY%',
+                    wildcard: '%QUERY%',
+                },
+                datumTokenizer: Bloodhound.tokenizers.whitespace('q1'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace
+            });
+
+            engine2.initialize();
+
+            $(".search-input2").typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1
+            }, {
+                source: engine2.ttAdapter(),
+                // This will be appended to "tt-dataset-" to form the class name of the suggestion menu.
+                name: 'forumtag_list',
+                displayKey: 'forum_tag',
+                // the key from the array we want to display (name,id,email,etc...)
+                templates: {
+                    empty: [
+                        '<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'
+                    ],
+                    header: [
+                        '<div class="list-group search-results-dropdown">'
+                    ],
+                    suggestion: function (data) {                                       
+                        return '<div class="user-search-result" style="color:black"><font color="black"><a style="text-decoration: none" href='+passUrl.concat(data.forum_tag.substring(1))+'>'
+                            +'<button type="button" class="btn btn-secondary btn-sm">'+data.forum_tag+'</button>
+                            </a>
+                        </font></div>';
+              }
+                }
+            });
+
+            });
+    </script>
 
 
 @endsection
