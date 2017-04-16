@@ -17,7 +17,7 @@
                 <div class="panel-heading" style="font-size:18px"><strong>Register</strong></div>
 
                 <div class="panel-body" style="">
-                        {{ Html::image('img/Epitrain_logo.jpg', 'Epitrain Logo', array('class'=>'epitrainLogo')) }}
+                        {{ Html::image('img/Epitrain_logo.png', 'Epitrain Logo', array('class'=>'epitrainLogo')) }}
                     </div>
 
                 <div class="panel-body">
@@ -88,7 +88,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-3 align-items-center">
+                            <div class="col-md-8 col-md-offset-2 align-items-center">
                                 <div class="checkbox">
                                     <label for="pdpa">
                                         <input type="checkbox" id="pdpa" name="clause"> 

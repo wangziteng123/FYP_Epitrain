@@ -149,7 +149,7 @@
 						@elseif(Auth::user()->isAdmin)
 						@else
 							<li class="dropdown">
-								<a class="dropdown-toggle" data-toggle="dropdown">Categories<b class="caret"></b></a>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Categories<b class="caret"></b></a>
 								<ul class="dropdown-menu">
                                     @for ($i = 0; $i < sizeof($categories); $i++)
                                         <?php $category = $categories[$i]; ?>

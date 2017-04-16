@@ -104,9 +104,10 @@
                                     <i class="fa fa-btn fa-sign-in img-responsive" style="color:white"></i> <font color="white" class = "small">Login</font>
                                 </button>
                             </div>
-													<!-- forgot password function-->
-                            <div class="col-sm-offset-3 col-xs-7 col-sm-6 col-md-offset-3 col-lg-offset-3">
-                                <a class="btn btn-link text-center" href="{{ url('/password/reset') }}" style="font-size:18px"><font color="black" class = "small">Forgot Your Password?</font></a>
+								
+                            <br/>					<!-- forgot password function-->
+                            <div class="col-sm-offset-3 col-xs-6 col-xs-offset-3 col-sm-6">
+                                <a class="text-center" href="{{ url('/password/reset') }}" style="width:100%"><font color="black">Forgot Your Password?</font></a>
                             </div>
                         </div>
 												
