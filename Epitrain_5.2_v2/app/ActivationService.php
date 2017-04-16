@@ -31,10 +31,10 @@ class ActivationService
         $token = $this->activationRepo->createActivation($user);
 
         $link = route('user.activate', $token);
-        $message = sprintf('Activate account %s', $link, $link);
+        $message = sprintf("Hello %s, "."\n"."Welcome to Epitrain Elearning Platform! Please activate account by clicking this link: %s". "\n"."We hope you will have an enjoyable experience! "."\n"."\n"."Regards,"."\n"."Epitrain Admin", $user->name, $link);
 
         $this->mailer->raw($message, function (Message $m) use ($user) {
-            $m->to($user->email)->subject('Activation mail');
+            $m->to($user->email)->subject('Epitrain Account Activation Email');
         });
 
 
