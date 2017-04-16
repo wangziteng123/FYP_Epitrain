@@ -32,12 +32,12 @@ class SessionTimeout {
             if ($user_record != null) { 
             	// if user's last activity was at least $sessionTime->session_time minutes ago, logs him/her out
                 if (time() - $user_record->last_activity > $sessionTime->session_time) { 
-                    auth()->logout();
-                    $sTime = $sessionTime->session_time/60;
                     DB::table('sessions')->where('user_id', auth()->user()->id)
                     ->update(
                         ['loggedIn' => 0]
                     );
+                    auth()->logout();
+                    $sTime = $sessionTime->session_time/60;
                     return redirect('login')->with('message', 'You were inactive for more than '.$sTime.' minutes. This platform will automatically log you out after '.$sTime.' minutes.');
                 } else {
                 // if not, update user's latest activity
