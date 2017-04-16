@@ -135,7 +135,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-3 align-items-center">
+                            <div class="col-md-8 col-md-offset-2">
                                 <div class="checkbox">
                                     <label for="pdpa">
                                         <input type="checkbox" id="pdpa" name="clause"> 

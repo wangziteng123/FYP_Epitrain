@@ -180,23 +180,30 @@
                         <li><a href="{{ url('/register') }}">Register</a></li>
                         <li><a href="{{ url('/contact') }}">Contact Admin</a></li>
                     @elseif (Auth::user()->isAdmin)
-                         <li class="dropdown">
+                        <li class="dropdown" style="border-left:solid 1px #85929E;">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 {{ Auth::user()->name }} <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ url('/update') }}"><i class="material-icons">perm_identity</i>Update Personal Info</a></li>
+                                <li><a href="{{ url('/logout') }}"><i class="material-icons">cancel</i>Logout</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown" style="border-left:solid 1px #85929E;">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                Menu <span class="caret"></span>
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/fileentry') }}"><i class="material-icons">library_add</i>Manage Library</a></li>
-								<li><a href="{{ url('/createUser') }}"><i class="material-icons">person_add</i>Create User</a></li>
-								<li><a href="{{ url('/forumAdmin') }}"><i class="material-icons">speaker_notes</i>Discussion Forum</a></li>
+                                <li><a href="{{ url('/createUser') }}"><i class="material-icons">person_add</i>Create User</a></li>
+                                <li><a href="{{ url('/forumAdmin') }}"><i class="material-icons">speaker_notes</i>Discussion Forum</a></li>
                                 <li><a href="{{ url('/category') }}"><i class="material-icons">settings</i>Customize categories</a></li>
                                 <li><a href="{{ url('/subscriptionplan') }}"><i class="material-icons">subscriptions</i>Customize subscription</a></li>
                                 <li><a href="{{ url('/classmanagement') }}"><i class="material-icons">view_list</i>Class management</a></li>
-								<li><a href="{{ url('/viewAllUsers') }}"><i class="material-icons">group</i>View All Users</a></li>
-								<li><a href="{{ url('/update') }}"><i class="material-icons">perm_identity</i>Update Personal Info</a></li>
+                                <li><a href="{{ url('/viewAllUsers') }}"><i class="material-icons">group</i>View All Users</a></li>
                                 <li><a href="{{ url('/adminSettings') }}"><i class="material-icons">perm_data_setting</i>Admin Settings</a></li>
-                                <li><a href="{{ url('/faq') }}"><i class="material-icons">question_answer</i>FAQ</a></li>
-								<li><a href="{{ url('/logout') }}"><i class="material-icons">cancel</i>Logout</a></li>
+                                <li><a href="{{ url('/faq') }}"><i class="material-icons">question_answer</i>Manage FAQ</a></li>
                             </ul>
                         </li>
                     @else
@@ -209,7 +216,7 @@
                         <li style="border-left:solid 1px #85929E;">
                             <a href="{{ url('/shoppingcart') }}">
                                 <!--<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>-->
-																<i class="material-icons">shopping_cart</i>
+								<i class="material-icons">shopping_cart</i>
                                 <span class="badge" style="font-size:8px;"><?php echo $count;?> items</span>
                             </a>
                         </li>
@@ -221,6 +228,7 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{ url('/update') }}"><i class="material-icons">group</i>Update Personal Info</a></li>
                                 <li><a href="{{ url('/faq') }}"><i class="material-icons">question_answer</i>FAQ</a></li>
+                                <li><a href="{{ url('/logout') }}"><i class="material-icons">cancel</i>Logout</a></li>
                             </ul>
                         </li>
                         <li class="dropdown" style="border-left:solid 1px #85929E;">
@@ -233,7 +241,6 @@
                                 <li><a href="{{ url('/forum') }}"><i class="material-icons">recent_actors</i>Discussion Forum</a></li>
                                 <li><a href="{{ url('/transactionHistory') }}"><i class="material-icons">monetization_on</i>Transaction History</a></li>
                                 <li><a href="{{ url('/contact') }}"><i class="material-icons">record_voice_over</i>Contact Admin</a></li>
-                                <li><a href="{{ url('/logout') }}"><i class="material-icons">cancel</i>Logout</a></li>
                             </ul>
                         </li>
                         

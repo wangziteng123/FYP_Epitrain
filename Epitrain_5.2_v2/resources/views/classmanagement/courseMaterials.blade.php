@@ -36,12 +36,41 @@
  	
 	 <div id="page-wrapper" style="margin:10px">
         <div class ="row">
-            <div class="col-md-6">
+            <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                     <i class="fa fa-bar-chart-o fa-fw"></i>Manage Course Materials 
                         </div>
                         <div class="panel-body">
+                            <div class="row">
+                              <table class="table">
+                                <legend>Filter materials</legend>
+                                 <div class="row">Enter materials' name/course ID to filter them</div>
+                                <form action=<?php echo URL::route('filterCourseMaterials');?> method="post" class="form-horizontal">
+                                    <td>
+                                        <div class="form-group">
+                                          <div class="col-sm-12 col-xs-12">
+                                            <input type="text" class="form-control" id="courseIDInput" name="courseIDInput" placeholder="Course ID">
+                                          </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                          <div class="col-sm-12 col-xs-12">
+                                            <input type="text" class="form-control" id="materialsInput" name="materialsInput" placeholder="Ebook name">
+                                          </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                          <div class="col-sm-1 col-xs-1">
+                                            <input type="submit" class="btn btn-info btn-raised" value="Search" style="background-color: #014667; color: #fff"></button>
+                                          </div>
+                                        </div>
+                                    </td>
+                                </form>
+                              </table>
+                            </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="table-responsive">
@@ -54,29 +83,6 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <form action=<?php echo URL::route('filterCourseMaterials');?> method="post" class="form-horizontal">
-                                                        <td>
-                                                            <div class="form-group">
-                                                              <div class="col-sm-12 col-xs-12">
-                                                                <input type="text" class="form-control" id="courseIDInput" name="courseIDInput" placeholder="Course ID">
-                                                              </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-group">
-                                                              <div class="col-sm-12 col-xs-12">
-                                                                <input type="text" class="form-control" id="materialsInput" name="materialsInput" placeholder="Ebook name">
-                                                              </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-group">
-                                                              <div class="col-sm-1 col-xs-1">
-                                                                <input type="submit" class="btn btn-info btn-raised" value="Search" style="background-color: #014667; color: #fff"></button>
-                                                              </div>
-                                                            </div>
-                                                        </td>
-                                                    </form>
                                                 @foreach($materialList as $material)
                                                     <?php
                                                         $fileName = \DB::table('fileentries')
@@ -110,17 +116,17 @@
                     </div>
                     <!--End simple table example -->
             </div>
-
-            <div class="col-md-6">
+         <div>
+            <div class="col-md-6 col-md-offset-3">
                 <div class="panel panel-primary">
-                       <div class="panel-heading">
-                        Add materials to a course
+                       <div class="panel-heading" data-toggle="collapse" data-target="#demo" id="tblStatus">
+                        Add materials to a course <span class="glyphicon glyphicon-plus pull-right" style="font-size: 25px;"></span>
                         </div>
 
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="table-responsive">
+                                    <div class="collapse" id="demo">
 
                                         <form action=<?php echo URL::route('filterEbooks');?> method="post" class="form-horizontal">
                                             <div class="form-group">
@@ -172,7 +178,13 @@
                     <!--End simple table example -->
                 </div>
             </div>
+         </div>
        </div>
   </div>
-
+  
+<script>
+  $(document).on("hide.bs.collapse show.bs.collapse", ".collapse", function () {
+        $('#tblStatus').find(".glyphicon").toggleClass("glyphicon-plus glyphicon-minus");
+    });
+</script>
 @endsection

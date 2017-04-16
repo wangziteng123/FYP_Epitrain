@@ -169,44 +169,42 @@
     @if ($users->count())
     <div class="container">
     <div class="row">
-        <h1>Search For User to remove or add to couses</h1>
-        <div class="col-md-6">
+        <h1>Search for users to remove or add to couses</h1>
+        <div class="col-md-4">
         <div class="panel panel-primary">
             <div class="panel-heading">
                  Search
             </div>
 
              <div class="panel-body">
-            
-                <div class="table-responsive">
-                    
-                            <form action=<?php echo URL::route('filterStudentsForViewAllUsers');?> method="post" class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="studentInput" class="col-md-2 control-label">Name/<br>Email</label>
+                <div>       
+                    <form action=<?php echo URL::route('filterStudentsForViewAllUsers');?> method="get" class="form-horizontal">
+                        <div class="form-group">
+                            <label for="studentInput" class="col-md-2 control-label">Name/<br><br>Email</label>
 
-                                <div class="col-sm-10 col-xs-10">
-                                    <input type="text" class="form-control" id="studentInput" name="studentInput" placeholder="Student name or email">
-                                </div>
-                                <div class="form-group">
-                                     <div class="col-sm-2 col-xs-2 col-xs-offset-2">
-                                        <input type="submit" class="btn btn-raised btn-info" value="Search">
-                                      </div>
-                                </div>
-                                </div>
-                            </form>
+                        <div class="col-sm-10 col-xs-10">
+                            <input type="text" class="form-control" id="studentInput" name="studentInput" placeholder="Student name or email">
+                        </div>
+                        <div class="form-group">
+                             <div class="col-sm-2 col-xs-2 col-xs-offset-2">
+                                <input type="submit" class="btn btn-raised" class="btn btn-raised btn-sm" style="background-color: #377BB5; color: #fff" value="Search">
+                              </div>
+                        </div>
+                        </div>
+                    </form>
                 </div>
             </div>
             </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-8">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                      Students list with courses
                 </div>
 
                 <div class="panel-body">
-                    @if($students !== null) 
+                    @if(isset($students))
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped">
                             
@@ -243,27 +241,31 @@
                                     ?>
                                     <tr>
                                      <td>
-                                        <?php echo $student->email?>
+                                        <?php echo $student->email;?>
                                      </td>
 
                                      <td>
                                         <form action=<?php echo URL::route('deleteEnrolments');?> method="post">
                                             @foreach($enrolments as $enrolment)
-                                                <input type="checkbox" name="enrolment[]" value=<?php echo $enrolment->id?> style=""> <?php echo $enrolment->courseID?><br>
+                                                <input type="checkbox" name="enrolment[]" value=<?php echo $enrolment->id;?> style=""> <?php echo $enrolment->courseID;?><br>
                                             @endforeach
-
-                                            <input type="submit" value="delete">
+                                            @if (sizeof($enrolments) > 0) 
+                                                <input type="submit" class="btn btn-danger btn-raised btn-sm" value="delete">
+                                            @else
+                                                <p>User not enrolled in any course</p>
+                                            @endif
+                                            
                                         </form>
                                      </td>
 
                                      <td>
                                          <form action=<?php echo URL::route('addEnrolments');?> method="post">
-                                                <input type="hidden" name="userId" value=<?php echo $student->id?> style="">
+                                                <input type="hidden" name="userId" value=<?php echo $student->id;?> style="">
                                             @foreach($courses2 as $course)
-                                                <input type="checkbox" name="courseID[]" value=<?php echo $course->courseID?> style=""> <?php echo $course->courseID?><br>
+                                                <input type="checkbox" name="courseID[]" value=<?php echo $course->courseID;?> style=""> <?php echo $course->courseID;?><br>
                                             @endforeach
 
-                                            <input type="submit" value="add">
+                                            <input type="submit" class="btn btn-primary btn-raised btn-sm" value="add">
                                         </form>
 
 

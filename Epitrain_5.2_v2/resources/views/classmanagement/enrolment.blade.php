@@ -34,18 +34,63 @@
 @endif
 <!-- Manage students -->
 <div class="container" style="positon:relative;top:300px">
-     <div id="page-wrapper" style="margin:10px">
+    <div id="page-wrapper" style="margin:10px">
        <div class ="row">
-            <div class="col-md-7">
+            <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-primary">
-                    <div class="panel-heading">
+                  <div class="panel-heading">
                     <i class="fa fa-bar-chart-o fa-fw"></i>Manage Student Enrolment
                         </div>
                         <div class="panel-body">
                             <div class="row">
+                              <table class="table">
+                                <legend>Filter students</legend>
+                                 <div class="row">Enter student details to filter them</div>
+                                <form action=<?php echo URL::route('filterEnrolment');?> method="post" class="form-horizontal">
+                                    <td>
+                                        <div class="form-group">
+                                          <div class="col-sm-12 col-xs-12">
+                                            <input type="text" class="form-control" id="courseIDInput" name="courseIDInput" placeholder="Student ID">
+                                          </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                          <div class="col-sm-12 col-xs-12">
+                                            <input type="text" class="form-control" id="studEmailInput" name="studEmailInput" placeholder="Student email">
+                                          </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                          <div class="col-sm-12 col-xs-12">
+                                            <input type="text" class="form-control" id="studNameInput" name="studNameInput" placeholder="Student Name">
+                                          </div>
+                                        </div>
+                                    </td>
+                                    <td class="col-md-2">
+                                        <div class="form-group">
+                                          <div class="col-md-10">
+                                            <select id="statusInput" name="statusInput" class="form-control">
+                                              <option value="0">Inactive</option>
+                                              <option value="1">Active</option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                          <div class="col-sm-1 col-xs-1">
+                                            <input type="submit" class="btn btn-sm btn-info btn-raised" value="Search" style="background-color: #014667; color: #fff"></button>
+                                          </div>
+                                        </div>
+                                    </td>
+                                </form>
+                              </table>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-12">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered table-striped">
+                                    <table class="table table-bordered table-striped">
                                             <thead>
                                                 <tr>
                                                     <th class="text-center">Course ID</th>
@@ -56,47 +101,6 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <form action=<?php echo URL::route('filterEnrolment');?> method="post" class="form-horizontal">
-                                                    <td>
-                                                        <div class="form-group">
-                                                          <div class="col-sm-12 col-xs-12">
-                                                            <input type="text" class="form-control" id="courseIDInput" name="courseIDInput" placeholder="ID">
-                                                          </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-group">
-                                                          <div class="col-sm-12 col-xs-12">
-                                                            <input type="text" class="form-control" id="studEmailInput" name="studEmailInput" placeholder="Student email">
-                                                          </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-group">
-                                                          <div class="col-sm-12 col-xs-12">
-                                                            <input type="text" class="form-control" id="studNameInput" name="studNameInput" placeholder="Name">
-                                                          </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="col-md-2">
-                                                        <div class="form-group">
-                                                          <div class="col-md-10">
-                                                            <select id="statusInput" name="statusInput" class="form-control">
-                                                              <option value="0">Inactive</option>
-                                                              <option value="1">Active</option>
-                                                            </select>
-                                                          </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-group">
-                                                          <div class="col-sm-1 col-xs-1">
-                                                            <input type="submit" class="btn btn-sm btn-info btn-raised" value="Search" style="background-color: #014667; color: #fff"></button>
-                                                          </div>
-                                                        </div>
-                                                    </td>
-                                                </form>
-
                                                 @foreach($enrolmentList as $enrolment)
                                                 <?php
                                                     $enrolledStud = User::where('id','=',$enrolment->userID)->first();
@@ -136,9 +140,7 @@
                                                 <?php } ?>
                                                 @endforeach
                                             </tbody>
-                                        </table>
-                                    </div>
-
+                                    </table>
                                 </div>
 
                             </div>
@@ -148,76 +150,83 @@
                         <!--<button class="btn btn-success btn-raised">Add a plan</button>-->
                     </div>
                     <!--End simple table example -->
-            </div>
-
-            <div class="col-md-5">
-                <div class="panel panel-primary">
-                       <div class="panel-heading">
-                        Enroll students in courses
-                        </div>
-
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="table-responsive">
-                                        <form action=<?php echo URL::route('filterStudents');?> method="post" class="form-horizontal">
-                                            <div class="form-group">
-                                              <label for="studentInput" class="col-md-2 control-label">Name/<br>Email</label>
-
-                                              <div class="col-sm-10 col-xs-10">
-                                                <input type="text" class="form-control" id="studentInput" name="studentInput" placeholder="Student name or email">
-                                            </div>
-                                            <div class="form-group">
-                                              <div class="col-sm-2 col-xs-2 col-xs-offset-2">
-                                                    <input type="submit" class="btn btn-raised btn-info" value="Search" style="background-color: #014667; color: #fff">
-                                                </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                        <form action=<?php echo URL::route('addEnrolment');?> method="post" class="form-horizontal">
-                                      
-                                          <div class="form-group">
-                                            <label for="selectStudents" class="col-md-2 control-label"> Student <br/><br/> List</label>
-                                            <div class="col-md-10" style="height:200px">
-                                              <select id="selectStudents" multiple="" class="form-control" name="studentList[]" required style="height:190px">
-                                                @foreach($students as $student)
-                                                    <option value=<?php echo $student->id;?>><font color="black" size = "3"><?php echo $student->name.'('.$student->email.')';?></font></option>
-                                                @endforeach
-                                              </select>
-                                            </div>
-                                          </div>
-
-                                          <div class="form-group">
-                                            <label for="courseID" class="col-md-2 control-label">Course <br/><br/> ID</label>
-                                            <div class="col-md-10">
-                                              <select name="courseID" id="courseID" style="font-size:14px" class="form-control" placeholder="Choose course ID">
-                                                  @foreach($courseList as $course)
-                                                      <option value=<?php echo $course->courseID;?>><font color="black" size = "3"><?php echo $course->courseID;?></font></option>
-                                                  @endforeach
-                                              </select>
-                                            </div>
-                                          </div>
-
-                                          <div class="form-group">
-                                            <div class="checkbox">
-                                              <label>
-                                                  <input type="checkbox" name="isActive"><font color="black">  Activate enrolment</font>
-                                              </label>
-                                            </div>
-                                          </div>
-
-                                        <input type="submit" class="btn btn-success btn-raised" value="Submit" style="background-color: #377BB5; color: #fff">
-                                     </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /.row -->
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!--End simple table example -->
-                </div>
-            </div>
+           </div>
         </div>
+       <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-primary">
+                     <div class="panel-heading" data-toggle="collapse" data-target="#demo" id="tblStatus">
+                      Enroll students in courses <span class="glyphicon glyphicon-plus pull-right" style="font-size: 25px;"></span>
+                      </div>
+
+                      <div class="panel-body">
+                          <div class="row">
+                              <div class="col-md-12">
+                                <div class="collapse" id="demo">
+                                   <form action=<?php echo URL::route('filterStudents');?> method="post" class="form-horizontal">
+                                          <div class="form-group">
+                                            <label for="studentInput" class="col-md-2 control-label">Name/<br>Email</label>
+
+                                            <div class="col-sm-10 col-xs-10">
+                                              <input type="text" class="form-control" id="studentInput" name="studentInput" placeholder="Student name or email">
+                                          </div>
+                                          <div class="form-group">
+                                            <div class="col-sm-2 col-xs-2 col-xs-offset-2">
+                                                  <input type="submit" class="btn btn-raised btn-info" value="Search" style="background-color: #014667; color: #fff">
+                                              </div>
+                                              </div>
+                                          </div>
+                                      </form>
+                                      <form action=<?php echo URL::route('addEnrolment');?> method="post" class="form-horizontal">
+                                    
+                                        <div class="form-group">
+                                          <label for="selectStudents" class="col-md-2 control-label"> Student <br/><br/> List</label>
+                                          <div class="col-md-10" style="height:200px">
+                                            <select id="selectStudents" multiple="" class="form-control" name="studentList[]" required style="height:190px">
+                                              @foreach($students as $student)
+                                                  <option value=<?php echo $student->id;?>><font color="black" size = "3"><?php echo $student->name.'  ('.$student->email.')';?></font></option>
+                                              @endforeach
+                                            </select>
+                                          </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                          <label for="courseID" class="col-md-2 control-label">Course <br/><br/> ID</label>
+                                          <div class="col-md-10">
+                                            <select name="courseID" id="courseID" style="font-size:14px" class="form-control" placeholder="Choose course ID">
+                                                @foreach($courseList as $course)
+                                                    <option value=<?php echo $course->courseID;?>><font color="black" size = "3"><?php echo $course->courseID;?></font></option>
+                                                @endforeach
+                                            </select>
+                                          </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                          <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="isActive"><font color="black">  Activate enrolment</font>
+                                            </label>
+                                          </div>
+                                        </div>
+
+                                      <input type="submit" class="btn btn-success btn-raised" value="Submit" style="background-color: #377BB5; color: #fff">
+                                   </form>
+                                </div>
+                              </div>
+                          </div>
+                          <!-- /.row -->
+                      </div>
+                      <!-- /.panel-body -->
+                  </div>
+                  <!--End simple table example -->
+              </div>
+          </div>
     </div>
+</div>
+
+<script>
+  $(document).on("hide.bs.collapse show.bs.collapse", ".collapse", function () {
+        $('#tblStatus').find(".glyphicon").toggleClass("glyphicon-plus glyphicon-minus");
+    });
+</script>
 @endsection

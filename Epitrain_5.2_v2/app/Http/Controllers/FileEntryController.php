@@ -67,7 +67,14 @@ class FileEntryController extends Controller
 		return view('fileentries.index', compact('entries','mode'));
 	}
 	public function add(Request $request) {
- 
+ 		
+ 		$this->validate($request, [
+		    'price' => 'required|numeric|min:0.51',
+		    'category' => 'required',
+		    'description' => 'required',
+		    //'filefield' => 'required',
+		]);
+
 		//get category, price and description
 		$category = $request->input('category');
 		$price = $request->input('price');
@@ -116,7 +123,13 @@ class FileEntryController extends Controller
 	}
 
 	public function edit(Request $request) {
- 
+ 		
+ 		$this->validate($request, [
+		    'price' => 'required|min:0.51',
+		    'category' => 'required',
+		    'description' => 'required',
+		]);
+
 		//get category, price and description
 		$category = $request->input('category');
 		$price = $request->input('price');

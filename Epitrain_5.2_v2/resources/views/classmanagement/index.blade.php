@@ -36,13 +36,77 @@
  <div class="container" style="positon:relative;top:300px">
 	 <div id="page-wrapper" style="margin:20px">
 	 	<div class="row">
-		    <div class="col-md-8">
+		    <div class="col-md-10 col-md-offset-1">
 				<div class="panel panel-primary">
-                    <div class="panel-heading">
+              <div class="panel-heading">
                     <i class="fa fa-bar-chart-o fa-fw"></i>Manage Courses 
                         </div>
                         <div class="panel-body">
-                            <div class="row">Search engine will return records between start date and end date inputs<br></div>
+                           
+                            <div class="row">
+                              <table class="table">
+                                <legend>Filter courses</legend>
+                                 <div class="row">Filtering will return records with start date between start date and end date inputs</div>
+                                <form action=<?php echo URL::route('filterCourses');?> method="post" class="form-horizontal">
+                                  <tbody>
+                                    
+                                      <td>
+                                          <div class="form-group">
+                                            <div class="col-sm-12 col-xs-12">
+                                              <input type="text" class="form-control" id="courseIDInput" name="courseIDInput" placeholder="ID">
+                                            </div>
+                                          </div>
+                                      </td>
+                                      <td>
+                                          <div class="form-group">
+                                            <div class="col-sm-12 col-xs-12">
+                                              <input type="text" class="form-control" id="courseNameInput" name="courseNameInput" placeholder="Name">
+                                            </div>
+                                          </div>
+                                      </td>
+                                      <td>
+                                          <div class="form-group">
+                                            <div class="col-sm-12 col-xs-12">
+                                              <input type="text" class="form-control" id="courseAreaInput" name="courseAreaInput" placeholder="Area">
+                                            </div>
+                                          </div>
+                                      </td>
+                                      <td>
+                                          <div class="form-group">
+                                            <div class="col-sm-12 col-xs-12">
+                                              <input type="date" class="form-control" id="startDateInput" name="startDateInput">
+                                            </div>
+                                          </div>
+                                      </td>
+                                      <td>
+                                          <div class="form-group">
+                                            <div class="col-sm-12 col-xs-12">
+                                              <input type="date" class="form-control" id="endDateInput" name="endDateInput">
+                                            </div>
+                                          </div>
+                                      </td>
+                                      <td class="col-md-2">
+                                          <div class="form-group">
+                                            <div class="col-md-10">
+                                              <select id="statusInput" name="statusInput" class="form-control">
+                                                <option value="0">Inactive</option>
+                                                <option value="1">Active</option>
+                                              </select>
+                                            </div>
+                                          </div>
+                                      </td>
+                                      <td>
+                                          <div class="form-group">
+                                            <div class="col-sm-1 col-xs-1">
+                                              <input type="submit" class="btn btn-sm btn-raised" value="Filter" style="background-color:#01466f; color:white" ></button>
+                                            </div>
+                                          </div>
+                                      </td>
+                                    
+                                  </tbody>
+                                </form>
+                              </table>
+                            </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="table-responsive">
@@ -59,60 +123,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <form action=<?php echo URL::route('filterCourses');?> method="post" class="form-horizontal">
-                                                    <td>
-                                                        <div class="form-group">
-                                                          <div class="col-sm-12 col-xs-12">
-                                                            <input type="text" class="form-control" id="courseIDInput" name="courseIDInput" placeholder="ID">
-                                                          </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-group">
-                                                          <div class="col-sm-12 col-xs-12">
-                                                            <input type="text" class="form-control" id="courseNameInput" name="courseNameInput" placeholder="Course name">
-                                                          </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-group">
-                                                          <div class="col-sm-12 col-xs-12">
-                                                            <input type="text" class="form-control" id="courseAreaInput" name="courseAreaInput" placeholder="Course Area">
-                                                          </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-group">
-                                                          <div class="col-sm-12 col-xs-12">
-                                                            <input type="date" class="form-control" id="startDateInput" name="startDateInput">
-                                                          </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-group">
-                                                          <div class="col-sm-12 col-xs-12">
-                                                            <input type="date" class="form-control" id="endDateInput" name="endDateInput">
-                                                          </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="col-md-2">
-                                                        <div class="form-group">
-                                                          <div class="col-md-10">
-                                                            <select id="statusInput" name="statusInput" class="form-control">
-                                                              <option value="0">Inactive</option>
-                                                              <option value="1">Active</option>
-                                                            </select>
-                                                          </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-group">
-                                                          <div class="col-sm-1 col-xs-1">
-                                                            <input type="submit" class="btn btn-sm btn-raised" value="Search" style="background-color:#01466f; color:white" ></button>
-                                                          </div>
-                                                        </div>
-                                                    </td>
-                                                </form>
+                                                
                                             	@foreach($courseList as $course)
                                             		<tr>
                                             			<td><?php echo $course->courseID;?></td>
@@ -163,53 +174,53 @@
                         <!--<button class="btn btn-info btn-raised">Add a plan</button>-->
                     </div>
                     <!--End simple table example -->
-         	</div>
-
-         	<div class="col-md-4">
-			   <div class="panel panel-primary">
-                 <div class="panel-heading">
-                    Add a Course
-                    </div>
-
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="table-responsive">
-                                    <form action=<?php echo URL::route('addCourse');?> method="post" >
-                                        Course ID:
-            							  <input type="text" class="form-control" name="courseID" required>
-            						    Course Name:
-            							  <input type="text" class="form-control" name="courseName" required>
-                                        Course Area:
-                                            <select name="courseArea" style="font-size:14px" class="form-control" placeholder="Choose ebook category">
-                                                @foreach($categories as $category)
-                                                    <option value=<?php echo $category->categoryname;?>><font color="black" size = "3"><?php echo $category->categoryname;?></font></option>
-                                                @endforeach
-                                            </select>
-                                        Start Date:
-                                            <input type="date" class="form-control" id ="startDate" name="startDate" required>
-                                        End Date:
-                                            <input type="date" class="form-control" id ="endDate" name="endDate" required>
-                                            <div class="checkbox">
-                                              <label>
-                                                  <input type="checkbox" name="isActive"><font color="black">  Activate course</font>
-                                              </label>
-                                            </div>
-        							      <input type="submit" class="btn btn-info btn-raised" value="Submit">
-                                    </form>
-                                  </div>
-                                </div>
-                              </div>
-                                    <!-- /.row -->
+         	        </div>
+              </div>
+          </div>
+      <div class ="row">
+       <div class="col-md-6 col-md-offset-3">
+          <div class="panel panel-primary">
+           <div class="panel-heading" data-toggle="collapse" data-target="#demo" id="tblStatus">
+              Add a Course   <span class="glyphicon glyphicon-plus pull-right" style="font-size: 25px;"></span>
+              </div>
+              <div class="panel-body">
+                  <div class="row">
+                      <div class="col-lg-12">
+                          <div class="table-responsive collapse" id="demo">
+                              <form action=<?php echo URL::route('addCourse');?> method="post" >
+                                  Course ID:
+                      <input type="text" class="form-control" name="courseID" required>
+                      Course Name:
+                      <input type="text" class="form-control" name="courseName" required>
+                                  Course Area:
+                                      <select name="courseArea" style="font-size:14px" class="form-control" placeholder="Choose ebook category">
+                                          @foreach($categories as $category)
+                                              <option value=<?php echo $category->categoryname;?>><font color="black" size = "3"><?php echo $category->categoryname;?></font></option>
+                                          @endforeach
+                                      </select>
+                                  Start Date:
+                                      <input type="date" class="form-control" id ="startDate" name="startDate" required>
+                                  End Date:
+                                      <input type="date" class="form-control" id ="endDate" name="endDate" required>
+                                      <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="isActive"><font color="black">  Activate course</font>
+                                        </label>
+                                      </div>
+                      <input type="submit" class="btn btn-info btn-raised" value="Submit">
+                              </form>
                             </div>
-                                <!-- /.panel-body -->
                         </div>
-                            <!--End simple table example -->
-                 	    </div>
                     </div>
-               </div>
-       </div>
+                              <!-- /.row -->
+                </div>
+                          <!-- /.panel-body -->
+            </div>
+                      <!--End simple table example -->
+          </div>
+    </div>
   </div>
+</div>
 
 
 <!-- Modal for editing course -->
@@ -298,6 +309,19 @@
         document.getElementById('endDateVal').value = endDate;
         document.getElementById('isActiveVal').value = isActive;
     }
+    
+    $(document).on("hide.bs.collapse show.bs.collapse", ".collapse", function () {
+        $('#tblStatus').find(".glyphicon").toggleClass("glyphicon-plus glyphicon-minus");
+
+        /*if($('#tblStatus').text() == "Expand") {
+          $('#tblStatus').text("Collapse");
+
+        } else if($('#tblStatus').text() == "Collapse") {
+          $('#tblStatus').text("Expand");
+        }*/
+        //$(this).prev().find("span.pull-right.text-muted").toggleClass("expandir fechar");
+        //event.stopPropagation();
+    });
 </script>
 
 @endsection
