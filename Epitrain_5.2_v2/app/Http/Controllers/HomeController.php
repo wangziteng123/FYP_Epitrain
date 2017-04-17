@@ -55,8 +55,10 @@ class HomeController extends Controller
         $today = date("Y-m-d H:i:s");
 
         foreach($libraryData as $libData) {
+            //exit(var_dump($libData->expired_at < $today).'  '.var_dump($libraryData));
             if ($libData->expired_at != null) {
                 if ($libData->expired_at < $today) {
+
                     DB::table('libraries')
                         ->where('id', $libData->id)
                         ->delete();   
