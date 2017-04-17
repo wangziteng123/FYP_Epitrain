@@ -2789,7 +2789,7 @@ fieldset[disabled] .navbar .btn-link:focus {
   color: rgba(255,255,255, 0.84);
 }
 .alert.alert-danger {
-  background-color: #22B14C;
+  background-color: #ff0000;
   color: rgba(255,255,255, 0.84);
 }
 .alert.alert-danger a,

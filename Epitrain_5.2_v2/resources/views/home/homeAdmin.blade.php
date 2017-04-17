@@ -132,7 +132,7 @@ foreach($lastFiveMonthsArr as $monthyear) {
             <div class="row">
                 <!--quick info section -->
                 <div class="col-lg-3">
-                    <div class="alert alert-danger text-center"  style="color:white">
+                    <div class="alert alert-danger text-center"  style="background-color: green;color:white">
                         <i class="fa fa-usd fa-3x"></i>&nbsp;&nbsp;<b><?php echo $totalRevenue?>$</b> total revenue made
                         <br/><br/>
                     </div>
