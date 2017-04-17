@@ -58,9 +58,9 @@
     <div style="position:static;left:15px;">
     	<button class="btn btn-raised btn-primary initialism slide_open" style = "font-size:14px"><i class="fa fa-plus-circle" aria-hidden="true"></i> NEW DISCUSSION</button>
       @if (Auth::user()->isAdmin)
-        <button type="button" class="btn btn-raised btn-success" data-toggle="modal" data-target="#myModal" style = "font-size:14px">
+        <!--<button type="button" class="btn btn-raised btn-success" data-toggle="modal" data-target="#myModal" style = "font-size:14px">
              Add Category
-        </button>
+        </button>-->
         <a href="/forumAdmin"><button type="button" class="btn btn-info btn-raised">View all discussions</button></a>
       @else
         <a href="/forum"><button type="button" class="btn btn-info btn-raised">View all discussions</button></a>
