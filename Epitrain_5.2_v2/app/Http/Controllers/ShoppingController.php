@@ -81,15 +81,15 @@ class ShoppingController extends Controller
                  $isStudent = true;
                  $courseEndTime = \DB::table('course')
                       ->where('courseID', $course)
-                      ->pluck('endDate');
+                      ->value('endDate');
 
                  if ($studentCourseID == "") {
                     $studentCourseID = $course;
-                    $lastCourseEndTime = $courseEndTime;
+                    $lastCourseEndTime = $courseEndTime." 23:59:59";
 
                  } else if ($lastCourseEndTime < $courseEndTime) {
                     $studentCourseID = $course;
-                    $lastCourseEndTime = $courseEndTime;
+                    $lastCourseEndTime = $courseEndTime." 23:59:59";
                  }
                  
               }
@@ -120,7 +120,7 @@ class ShoppingController extends Controller
                     ->where('user_id', '=',$user_id )
                     ->delete();
             }
-            $lastCourseEndTime = date("Y-m-d H:i:s",$lastCourseEndTime);
+            //$lastCourseEndTime = date("Y-m-d H:i:s",$lastCourseEndTime);
 
             DB::table('libraries') ->insert(
                 ['fileentry_id' => $fileentry_id, 'user_id' => $user_id, 'expired_at' => $lastCourseEndTime]
