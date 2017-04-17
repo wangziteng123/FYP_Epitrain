@@ -25,7 +25,7 @@ http://sourceforge.net/adobe/cmap/wiki/License/
     <title>PDF.js viewer</title>
 
 
-    <link rel="stylesheet" href="pdf/pdfviewer.css"/>
+    <link rel="stylesheet" href="pdf/viewer.css"/>
     
     <script src="pdf/compatibility.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
@@ -100,7 +100,7 @@ http://sourceforge.net/adobe/cmap/wiki/License/
     </div>
   </div>
 	
-    <div id="outerContainer">
+    <div id="outerContainer" style="width:1325px">
 
       <div id="sidebarContainer">
         <div id="toolbarSidebar">

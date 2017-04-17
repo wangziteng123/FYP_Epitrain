@@ -10,6 +10,9 @@
     </div>
 </div>
 <?php
+        $categories = \DB::table('category')
+            ->where('shownInEbookCat','=','1')
+            ->get();
         $entries2 = \DB::table('libraries')
             ->where('user_id', Auth::user()->id)
             ->join('fileentries', 'libraries.fileentry_id', '=', 'fileentries.id')
@@ -23,27 +26,77 @@
 
                 <!-- Blog Post -->
 
-                <!-- Title -->
-								<div class="row">
-									<h1>My Library</h1>
-								</div>
-                <br/><br/><br/>
-                <hr>
+               <!-- Title -->
+					<div class="row">
+						<h1>My Library</h1>
+					</div>
+          <div class="row">
+
+            <span style="color:black" class= "col-sm-5">
+              <form method="get" id="sortForm" action=<?php echo URL::route('libSort');?>>
+                  <input type="hidden" id="mode" name="mode" value="<?php echo $mode;?>">
+                  <input type="hidden" id="sortField" name="sortField" value="">
+                  Sort ebooks by: 
+                  <input type="submit" value="Name" class="btn btn-primary btn-raised" onclick="populateField('original_filename')"></input>
+                  <input type="submit" value="category" class="btn btn-primary btn-raised" onclick="populateField('category')"></input>
+              </form>
+            </span>
+            <span style="color:black" class= "col-sm-7">
+                <form action=<?php echo URL::route('filterLibrary');?> method="get" class="form-inline">
+                  <input type="hidden" id="mode" name="mode" value="<?php echo $mode;?>">
+                  <?php
+                    $modeArr = explode("-", $mode);
+                    $sortField = $modeArr[0];
+                  ?>
+                  <input type="hidden" name="sortField" value="<?php echo $sortField;?>">
+                  
+                  <div class="col-sm-2 col-xs-2 form-group">
+                      Category:
+                  </div>
+                  <div class="form-group col-sm-3">                      
+                      <select name="category" id="ebookCat" style="font-size:14px" class="form-control" placeholder="Choose ebook category">
+                        @foreach($categories as $category)
+                            <?php
+                              $splitCat = explode(' ',$category->categoryname);
+                              $tempCat = "";
+                              foreach($splitCat as $word) {
+                                  $tempCat .= $word . "_";
+                              }
+                            ?>
+                            <option value=<?php echo $tempCat;?>><font color="black" size = "3"><?php echo $category->categoryname;?></font></option>
+                        @endforeach
+                      </select>
+                  </div>
+                  <div class="col-sm-2 col-xs-2 form-group">
+                      Ebook name:
+                  </div>
+                  <div class="form-group col-sm-4">                      
+                      <input type="text" class="form-control" id="materialsInput" name="ebookName" placeholder="Ebook to search">
+                  </div>
+
+                  <div class="form-group col-sm-1">
+                      <input type="submit" class="btn btn-info btn-raised" value="Search">
+                  </div>
+
+                </form>
+            </span>
+          </div>
+          <hr>
             <?php
                 $countNum = 0;
                 $filenameArr = array();
             ?>
 
-            @foreach($entries2 as $entry)
+            @foreach($entries as $entry)
                    <?php
                         $countNum ++;
                         array_push($filenameArr,$entry->filename);
                         $container = "container".$countNum;
                     ?>
-                <div class="col-sm-5 col-xs-12 col-md-3 hero-feature" style="height:450px">
+                <div class="col-md-4 col-sm-6 col-xs-12 hero-feature" style="height:500px">
 
                 <div class="thumbnail" style="height:95%">
-                    <div id=<?php echo $container;?> style="height:42%"></div>
+                <div id=<?php echo $container;?> style="height:42%"></div>
 
                     <div class="caption">
                        <!--  <h3>{{$entry->original_filename}}</h3> -->
@@ -67,7 +120,7 @@
                       <p>No description is available for this ebook.</p>
                     @endif
                     <p>
-                        <a href="{{route('getviewer', $entry->filename)}}" class="btn-raised btn-info btn" style="z-index:999">View</a> 
+                        <a href="{{route('getviewer', $entry->filename)}}" class="btn-raised btn-info btn">View</a>  
                     </p>
                     </div>
                 </div>
@@ -81,6 +134,8 @@
  </div>
 </div>
 
+<?php $thisSortField = explode("-", $mode)[0]; ?>
+{{ $entries->appends(['sort' => $mode, 'sortField' => $thisSortField])->links() }}
 
 
 <script>
@@ -147,7 +202,7 @@
         $js_array = json_encode($filenameArr);
         echo "var filename_array = ". $js_array . ";\n";
     ?>
-    var countEntries = <?php echo count($entries2)?>;        
+    var countEntries = <?php echo count($entries)?>;        
     // URL of PDF document
     var mainUrl = window.location.hostname;
            
@@ -158,6 +213,11 @@
     }             
                
 </script> 
+<script>
+function populateField(fieldToSort){
+    document.getElementById('sortField').value=fieldToSort;
+}
+</script>
 
 
 @endsection
