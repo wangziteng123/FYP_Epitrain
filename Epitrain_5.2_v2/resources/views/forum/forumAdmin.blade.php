@@ -58,12 +58,12 @@
   	<button class="btn btn-raised btn-primary initialism slide_open" style = "font-size:14px"><i class="fa fa-plus-circle" aria-hidden="true"></i>  NEW DISCUSSION</button>
   	<br/><br/>
   <!-- Button trigger modal for adding category -->
-    <button type="button" class="btn btn-raised btn-success" data-toggle="modal" data-target="#myModal" style = "font-size:14px">
+    <!--<button type="button" class="btn btn-raised btn-success" data-toggle="modal" data-target="#myModal" style = "font-size:14px">
          Add Category
     </button>
     <button type="button" class="btn btn-raised btn-info" data-toggle="modal" data-target="#myEditModal" style = "font-size:14px">
          Edit Category
-    </button>
+    </button>-->
 
     <div class="row" style="position:static; left:15px; " >
 
