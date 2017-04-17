@@ -34,7 +34,10 @@ use App\Notifications\SubscriptionExpiring;
      $description = $fileentry -> description; 
      $category = $fileentry -> category; 
      $filename = $fileentry -> filename;
-
+     $hasSample = false;
+        if($fileentry->sample_id != null){
+        $hasSample = true;
+    }
      //whether the book is in shoppingcart or not / library
      $shoppingcartExist = \DB::table('shoppingcarts')
         ->where('user_id', $user->id)
@@ -427,6 +430,11 @@ use App\Notifications\SubscriptionExpiring;
           </div>
           <div class = "row">
               <a href="{{route('getentry', $filename)}}" class="btn btn-raised btn-info">View Document</a>
+            @if($hasSample)
+                <a href="{{route('getsampleviewer', $fileentry->sample_id)}}" class="btn-raised btn-info btn">Sample</a> 
+																		
+            @endif
+              
               <!-- Button trigger modal for adding category -->
             
               <?php echo '<button type="button" class="btn btn-raised btn-warning" data-toggle="modal" data-target="#editModal" onclick="loadModal(\'' . $filename . '\',\'' . $category . '\',\'' . $price . '\',\'' . $description . '\')" >Edit Details</button>'; ?>

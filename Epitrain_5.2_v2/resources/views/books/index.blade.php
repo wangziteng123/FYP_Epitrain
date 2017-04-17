@@ -130,7 +130,7 @@ body{
                             }
                         }
 												$hasSample = false;
-												if($book->samplename != null){
+												if($book->sample_id != null){
 													$hasSample = true;
 												}
 
@@ -216,7 +216,7 @@ body{
 																
 																@if($hasSample)
 																	<div class="col-sm-2 col-xs-3 hidden-xs">
-																			<a href="{{route('getviewer', $book->samplename)}}" class="btn-raised btn-info btn">View Sample</a> 
+																			<a href="{{route('getsampleviewer', $book->sample_id)}}" class="btn-raised btn-info btn">View Sample</a> 
 																		
 																	</div>
 																@endif
@@ -322,7 +322,7 @@ body{
                             </div>
 														@if($hasSample)
 																	<div class="col-sm-2 col-xs-3">
-																			<a href="{{route('getviewer', $book->samplename)}}" class="btn-raised btn-info btn">View Sample</a> 
+																			<a href="{{route('getsampleviewer', $book->sample_id)}}" class="btn-raised btn-info btn">View Sample</a> 
 																		
 																	</div>
 																@endif

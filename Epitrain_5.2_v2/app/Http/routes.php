@@ -133,8 +133,11 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('fileentry/downloadSpreadsheet/{filename}', [
   'as'=>'downloadspreadsheet', 'uses'=>'FileEntryController@getDownload']);
 
-	Route::get('fileentry/getViewer/{filename}', [
+	Route::get('fileentry/getViewer/{sampleID}', [
 		'as'=>'getviewer', 'uses'=>'FileEntryController@getPdfViewer']);
+    
+    Route::get('fileentry/getsampleviewer/{sampleID}', [
+		'as'=>'getsampleviewer', 'uses'=>'FileEntryController@getSample']);
 
 	Route::get('mylibrary', 'MyLibraryController@index');
 	Route::get('mylibrary/sort', ['as' => 'libSort', 'uses' => 'MyLibraryController@sort']);

@@ -157,7 +157,7 @@
 
           $isStudent = false;
           $hasSample = false;
-          if($ebook->samplename != null){
+          if($ebook->sample_id != null){
             $hasSample = true;
           }
           foreach ($coursesOfThisBook as $course) {
@@ -307,13 +307,15 @@
 
                     @endif
 										@if($hasSample)
-										<div>
-                        <a href="{{route('getviewer', $ebook->samplename)}}" class="btn-raised btn-info btn">View Sample</a> 
+										<div style="position:absolute;right:-3px;top:108px">
+                                   <button type="submit" style="border:none;background-color: Transparent">
+                        <a href="{{route('getsampleviewer', $ebook->sample_id)}}" class="btn-raised btn-xs btn-info btn">Sample</a> 
+                        </button>
                     </div>
                     @endif
                       
-                    <p style="position:absolute;right:12px;top:89px">
-                        <button class="btn btn-info btn-raised btn-sm slide_open"  onclick="passtoSlide(<?php echo $fid2;?>,'<?php echo $oriFilename2;?>',<?php echo $price2;?>,'<?php echo $description2;?>')">
+                    <p style="position:absolute;right:12px;top:76px">
+                        <button class="btn btn-info btn-raised btn-xs slide_open"  onclick="passtoSlide(<?php echo $fid2;?>,'<?php echo $oriFilename2;?>',<?php echo $price2;?>,'<?php echo $description2;?>')">
                         Info
                         </button>
                     </p>
@@ -331,7 +333,7 @@
     <!--Best Sellers in Financial Market-->
 <br/>
         <div class="row">
-          <div class="col-sm-3">
+          <div class="col-sm-4">
         <font style="font-family:Book Antiqua;font-weight:10" size="6">Financial Market</font>
         <hr style="">
           </div>

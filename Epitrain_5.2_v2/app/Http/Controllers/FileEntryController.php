@@ -90,15 +90,15 @@ class FileEntryController extends Controller
 		      	Storage::disk('s3')->put('spreadsheets/'.$file->getFilename().'.'.$extension,  $encrypted);
 		    } else {
 					//uncomment to try on local environment
-		    	//Storage::disk('local')->put($file->getFilename().'.'.$extension,  $n_file); //taken out 'ebooks'. for testing
-					Storage::disk('s3')->put('/ebooks/'.$file->getFilename().'.'.$extension,  $n_file);
+		    	Storage::disk('local')->put($file->getFilename().'.'.$extension,  $n_file); //taken out 'ebooks'. for testing
+					//Storage::disk('s3')->put('/ebooks/'.$file->getFilename().'.'.$extension,  $n_file);
 		  }
 			if($sample != null){
 				
 				$sample_content = File::get($sample);
 				//uncomment to try on local environment
-				//Storage::disk('local')->put($sample->getFilename().'.'.$sample->getClientOriginalExtension(), $sample_content);
-				Storage::disk('s3')->put('/ebooks/'.$sample->getFilename().'.'.$sample->getClientOriginalExtension(), $sample_content);
+				Storage::disk('local')->put($sample->getFilename().'.'.$sample->getClientOriginalExtension(), $sample_content);
+				//Storage::disk('s3')->put('/ebooks/'.$sample->getFilename().'.'.$sample->getClientOriginalExtension(), $sample_content);
 			}
 			
 			$entry = new Fileentry();
@@ -111,7 +111,14 @@ class FileEntryController extends Controller
 			$entry->description = $description;
 			
 			if($sample != null){
-				$entry->samplename = $sample->getFilename();
+                DB::table('fileentries_sample')
+                    -> insert(['filename' => $file->getFilename(), 'sample_filename' => $sample->getFilename()]);
+				$sampleID = DB::table('fileentries_sample')
+                    -> where('sample_filename', '=', $sample->getFilename())
+                    -> orderby('sample_id','DESC')
+                    -> first();
+                
+                $entry->sample_id= $sampleID->sample_id;
 			}
 	 
 			$entry->save();
@@ -184,6 +191,7 @@ class FileEntryController extends Controller
         
         //version 3.6
         $entry = Fileentry::where('filename', '=', $filename)->firstOrFail();
+        //dd($entry);
         $url = "s3-".env('S3_REGION')."amazonaws.com/".env('S3_BUCKET')."/ebooks/".$entry->filename;
 		//$file = Storage::disk('s3')->get("http://sample-env-1.2uqmcfeudi.us-west-2.elasticbeanstalk.com/ebook/".$entry->filename.".pdf");
  		$file = Storage::disk('s3')->get('/ebooks/'.$entry->filename);
@@ -249,9 +257,36 @@ class FileEntryController extends Controller
 		//$pdfUrl = "http://localhost:8000/fileentry/get/php8D98.tmp.pdf";
 		return redirect()->route('pdfreader', array('file' => $baseUrl));
 	}
+    
+    public function getSample($sampleID){
+		//$entry = Fileentry::where('filename', '=', $filename)->firstOrFail();
+		//$file = Storage::disk('s3')->get($filename);
+		// $url = "s3".env('S3_REGION')."amazonaws.com/".env('S3_BUCKET')."/ebooks/".$filename;
+ 	// 	echo $url;
+		/*return (new Response($file, 200))
+              ->header('Content-Type', $file->getClientMimeType());*/
+        //return redirect($url);
 
+        
+        //version 3.6
+        $entry = DB::table('fileentries_sample')
+            -> where('sample_id', '=', $sampleID)
+            -> first();
+        //dd($entry);
+        //$entry = Fileentry::where('filename', '=', $filename)->firstOrFail();
+        //$url = "s3-".env('S3_REGION')."amazonaws.com/".env('S3_BUCKET')."/ebooks/".$entry->filename;
+		//$file = Storage::disk('s3')->get("http://sample-env-1.2uqmcfeudi.us-west-2.elasticbeanstalk.com/ebook/".$entry->filename.".pdf");
+ 		$file = Storage::disk('s3')->get('/ebooks/'.$entry->sample_filename.".pdf");
+		//uncomment to try on local environment
+		//$file = Storage::disk('local')->get('/ebooks/'.$entry->filename);
+		
+        //$file = Storage::disk('local')->get($entry->sample_filename.".pdf");
+        return (new Response($file, 200))
+               ->header('Content-Type', "application/pdf");
 
-	public function getPreview($filename){
+	}
+    
+    public function getPreview($filename){
 		// $im = new \Imagick( "" );
 		// $entry = Fileentry::where('filename', '=', $filename)->firstOrFail();
 		// $file = Storage::disk('local')->get($entry->filename);

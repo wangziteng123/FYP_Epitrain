@@ -164,6 +164,10 @@
                       $fileCategory = $entry->category;
                       $filePrice = $entry->price;
                       $realFileName = $entry->filename;
+                      $hasSample = false;
+                        if($entry->sample_id != null){
+                            $hasSample = true;
+                        }
                     ?>
                     @if(strlen($fileName) > 30)
                     <p style="font-size:14px"><strong>{{substr($fileName,0,30)."..." }}</strong></p>
@@ -176,6 +180,12 @@
                     <a href="{{route('downloadspreadsheet', $entry->filename)}}" class="btn btn-raised btn-success">Download</a><br/>
                     @else
                     <a href="{{route('getentry', $entry->filename)}}" class="btn btn-raised btn-info">View</a>
+                    @endif
+                    @if($hasSample)
+                        
+                                <a href="{{route('getsampleviewer', $entry->sample_id)}}" class="btn-raised btn-info btn">Sample</a> 
+                            
+                        
                     @endif
 
                     @if (Auth::user()->isAdmin)
