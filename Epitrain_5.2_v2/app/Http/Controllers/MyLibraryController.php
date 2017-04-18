@@ -10,8 +10,16 @@ use Auth;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+/**
+ * MyLibraryController Class used for my library function
+ */
 class MyLibraryController extends Controller
 {
+	/**
+	* index function generate the page of my library 
+	*
+	* @return view of files with details within my library
+	*/
     public function index()
     {
         //activates or deactivates users in courses
@@ -40,11 +48,26 @@ class MyLibraryController extends Controller
 
         return view('mylibrary.index', compact('entries','mode'));
     }
+	
+	/**
+	* getViewer function generate ebook browsing page
+	*
+	* @return view of the content of the book
+	*/
     public function getViewer() 
     {
     	$pdfUrl = "";
     	return view('mylibrary.pdfreader', compact('pdfUrl'));
     }
+	
+	/**
+	* sort function sort the books in my library by name or category
+	*
+	* @param Request $request takes in the user id, sortField to sort books by name or category
+	* 	sort by ascending or descending, and names of the books
+	*
+	* @return view of books in my library in sorted order
+	*/
     public function sort(Request $request)
     {
         $user_id = Auth::user()->id;
@@ -86,6 +109,15 @@ class MyLibraryController extends Controller
  
         return view('mylibrary.index', compact('entries','mode'));
     }
+	
+	/**
+	* filterLibrary function filter the books in my library by category or book name
+	*
+	* @param Request $request takes in the category choosed, sortField to sort books by name or category, 
+	* 	name of the ebook and ascending or descending order of the search results
+	*
+	* @return view of the books which meet search criteria
+	*/
     public function filterLibrary(Request $request) {
         $user_id = Auth::user()->id;
         $category = $request->input('category');
