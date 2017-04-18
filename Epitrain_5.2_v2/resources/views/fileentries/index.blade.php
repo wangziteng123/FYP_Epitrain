@@ -192,7 +192,7 @@
                       <!-- Button trigger modal for adding category -->
                       
 
-                      <?php echo '<button type="button" class="btn btn-raised btn-warning" data-toggle="modal" data-target="#editModal" onclick="loadModal(\'' . $realFileName . '\',\'' . $fileCategory . '\',\'' . $filePrice . '\',\'' . $entry->description . '\')" >Edit</button>'; ?>
+                      <?php echo '<button type="button" class="btn btn-raised btn-warning" data-toggle="modal" data-target="#editModal"  onclick="loadModal(\'' . $realFileName . '\',\'' . $fileCategory . '\',\'' . $filePrice . '\',\'' . $entry->description . '\'); passtoSlide(<?php echo $realFileName;?>)" >Edit</button>'; ?>
 
                       {{ Form::open(array('method'
                       => 'DELETE', 'route' => array('deleteentry', $entry->filename))) }}
@@ -224,7 +224,8 @@
             <form action=<?php echo URL::route('editentry');?> id="editform" method="post" style="max-width: 100%; min-height: 480px;margin:0 auto; border: 0px solid white;" onsubmit="" class="form-horizontal">
               <legend><strong>Edit book details</strong></legend>
               <div class="form-group">
-                <input type="hidden" name="oldFileName" id= "existingFile" class="form-control" value="">
+                
+                <input type="hidden" name="oldFileName" id= "existingFile" class="form-control" value="<?php ?>">
               </div>
 
               <div class="form-group">
@@ -327,6 +328,13 @@
                         });
                     
                       });
+
+    }
+    
+    function passtoSlide(realFileName) {
+      var realFileName = realFileName;
+      
+      document.getElementById("realFileName").innerHTML = realFileName;
 
     }
 

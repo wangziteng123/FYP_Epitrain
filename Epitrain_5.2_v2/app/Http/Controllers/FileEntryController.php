@@ -90,15 +90,15 @@ class FileEntryController extends Controller
 		      	Storage::disk('s3')->put('spreadsheets/'.$file->getFilename().'.'.$extension,  $encrypted);
 		    } else {
 					//uncomment to try on local environment
-		    	Storage::disk('local')->put($file->getFilename().'.'.$extension,  $n_file); //taken out 'ebooks'. for testing
-					//Storage::disk('s3')->put('/ebooks/'.$file->getFilename().'.'.$extension,  $n_file);
+		    	//Storage::disk('local')->put($file->getFilename().'.'.$extension,  $n_file); //taken out 'ebooks'. for testing
+                Storage::disk('s3')->put('/ebooks/'.$file->getFilename().'.'.$extension,  $n_file);
 		  }
 			if($sample != null){
 				
 				$sample_content = File::get($sample);
 				//uncomment to try on local environment
-				Storage::disk('local')->put($sample->getFilename().'.'.$sample->getClientOriginalExtension(), $sample_content);
-				//Storage::disk('s3')->put('/ebooks/'.$sample->getFilename().'.'.$sample->getClientOriginalExtension(), $sample_content);
+				//Storage::disk('local')->put($sample->getFilename().'.'.$sample->getClientOriginalExtension(), $sample_content);
+				Storage::disk('s3')->put('/ebooks/'.$sample->getFilename().'.'.$sample->getClientOriginalExtension(), $sample_content);
 			}
 			
 			$entry = new Fileentry();
@@ -149,24 +149,43 @@ class FileEntryController extends Controller
 		$entry = Fileentry::where('filename', '=', $oldFileName)->firstOrFail();
 	
 			if($sample != null){
-				if($entry->samplename != null){
+				if($entry->sample_id != null){
 					// delete the old sample first
 					//Storage::disk('local')->delete($entry->samplename.'.'.$sample->getClientOriginalExtension());
-					//uncomment to try on local environment
-					Storage::disk('s3')->delete('/ebooks/'.$entry->samplename.'.'.$sample->getClientOriginalExtension());
+					$sampleEntry = DB::table('fileentries_sample')
+                    -> where('sample_id', '=', $entry->sample_id)
+                    -> first();
+                    //uncomment to try on local environment
+                    
+                    //Storage::disk('local')->delete($sampleEntry->sample_filename.".pdf");
+                    //Storage::disk('s3')->delete('/ebooks/'.$entry->samplename.'.'.$sample->getClientOriginalExtension());
+                    Storage::disk('s3')->delete('/ebooks/'.$sampleEntry->sample_filename.'.'."pdf");
+                    
+                    DB::table('fileentries_sample')
+                    -> where('sample_id', '=', $entry->sample_id)
+                    -> delete();
+                    
 				}
 				$newSamplename = $sample->getFilename();
 				$entry->samplename = $newSamplename;
 				$samplecontent = File::get($sample);
+                
 				//Storage::disk('local')->put($sample->getFilename().'.'.$sample->getClientOriginalExtension(), $samplecontent);
 				//uncomment to try on local environment
 				Storage::disk('s3')->put('/ebooks/'.$sample->getFilename().'.'.$sample->getClientOriginalExtension(), $samplecontent);
-				DB::table('fileentries')
-            ->where('filename', $oldFileName)
-            ->update(['category' => $category,
+				
+                DB::table('fileentries_sample')
+                    -> insert(['filename' => $file->getFilename(), 'sample_filename' => $sample->getFilename()]);
+				$sampleID = DB::table('fileentries_sample')
+                    -> where('sample_filename', '=', $sample->getFilename())
+                    -> orderby('sample_id','DESC')
+                    -> first();
+                DB::table('fileentries')
+                ->where('filename', $oldFileName)
+                ->update(['category' => $category,
 											'price' => $price,
 											'description' => $description,
-											'samplename' => $newSamplename]);
+											'sample_id' => $sampleID->sampled_id]);
 			} else{
 				DB::table('fileentries')
 							->where('filename', $oldFileName)
@@ -194,7 +213,9 @@ class FileEntryController extends Controller
         //dd($entry);
         $url = "s3-".env('S3_REGION')."amazonaws.com/".env('S3_BUCKET')."/ebooks/".$entry->filename;
 		//$file = Storage::disk('s3')->get("http://sample-env-1.2uqmcfeudi.us-west-2.elasticbeanstalk.com/ebook/".$entry->filename.".pdf");
- 		$file = Storage::disk('s3')->get('/ebooks/'.$entry->filename);
+ 		//$entryName = substr($entry->filename, 0, -4);
+        
+        $file = Storage::disk('s3')->get('/ebooks/'.$entry->filename);
 		//uncomment to try on local environment
 		//$file = Storage::disk('local')->get($entry->filename);
 		return (new Response($file, 200))
@@ -273,13 +294,16 @@ class FileEntryController extends Controller
             -> where('sample_id', '=', $sampleID)
             -> first();
         //dd($entry);
+        //dd($entry);
         //$entry = Fileentry::where('filename', '=', $filename)->firstOrFail();
         //$url = "s3-".env('S3_REGION')."amazonaws.com/".env('S3_BUCKET')."/ebooks/".$entry->filename;
 		//$file = Storage::disk('s3')->get("http://sample-env-1.2uqmcfeudi.us-west-2.elasticbeanstalk.com/ebook/".$entry->filename.".pdf");
- 		$file = Storage::disk('s3')->get('/ebooks/'.$entry->sample_filename.".pdf");
-		//uncomment to try on local environment
-		//$file = Storage::disk('local')->get('/ebooks/'.$entry->filename);
+ 		
+        $file = Storage::disk('s3')->get('/ebooks/'.$entry->sample_filename.".pdf");
 		
+        //uncomment to try on local environment
+		//$file = Storage::disk('local')->get('/ebooks/'.$entry->filename);
+        
         //$file = Storage::disk('local')->get($entry->sample_filename.".pdf");
         return (new Response($file, 200))
                ->header('Content-Type', "application/pdf");
@@ -305,7 +329,23 @@ class FileEntryController extends Controller
 			$entry->delete();
 			$url = "s3-".env('S3_REGION')."amazonaws.com/".env('S3_BUCKET')."/ebooks/".$entry->filename;
 			echo $url;
-			Storage::disk('s3')->delete('/ebooks/'.$entry->filename);
+            
+            $sampleEntry = DB::table('fileentries_sample')
+            -> where('sample_id', '=', $entry->sample_id)
+            -> first();
+            
+            //uncomment for localhost
+            
+            //Storage::disk('local')->delete($sampleEntry->sample_filename.".pdf");
+			//Storage::disk('local')->delete('/ebooks/'.$entry->filename);
+            
+            Storage::disk('s3')->delete('/ebooks/'.$sampleEntry->sample_filename.".pdf");
+            Storage::disk('s3')->delete('/ebooks/'.$entry->filename);
+            
+            DB::table('fileentries_sample')
+            -> where('sample_id', '=', $entry->sample_id)
+            -> delete();
+            
 	 		return redirect('fileentry');
 			// return (new Response("Delete Successfully", 200))
 	  //             ->header('Content-Type', "text/html");
