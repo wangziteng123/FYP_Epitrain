@@ -73,7 +73,7 @@ class PaymentController extends Controller
           $token = $request->get('stripeToken');
 
 
-        \Stripe\Stripe::setApiKey("sk_test_wZZaGd7Ztp3yQaOUuScbg6op");
+        \Stripe\Stripe::setApiKey("sk_live_9j8bL2pmeoexO7Ex5yjtchVm ");
          $tokenJSON = \Stripe\Token::retrieve($token);
          $userPaymentEmail = $tokenJSON ->email;
 

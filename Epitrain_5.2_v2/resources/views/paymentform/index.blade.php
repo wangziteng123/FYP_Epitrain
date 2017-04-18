@@ -82,7 +82,7 @@
 <form action=<?php echo URL::route('paymentForm');?> method="POST">
   <script id="stripe-data"
     src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-    data-key="pk_test_yCdx9f05Iu5CIqwZLE8q4NCu"
+    data-key="pk_live_plU6bdzTa7sApqCkvwVDmliH"
     data-amount=<?php echo $totalPrice ?>
     data-name="Stripe.com"
     data-description="Widget"
