@@ -17,6 +17,9 @@ use Imagick;
 use Crypt;
 use DB;
 
+/**
+ * FileEntryController Class used for ebooks such as adding and deleting
+ */
 class FileEntryController extends Controller
 {
 	/**

@@ -5,7 +5,9 @@ namespace App;
 
 use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Message;
-
+/**
+ * ActivationService Class used for activation of user account
+ */
 class ActivationService
 {
 

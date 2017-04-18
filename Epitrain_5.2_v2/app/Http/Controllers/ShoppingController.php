@@ -12,7 +12,9 @@ use App\Http\Controllers\Controller;
 use App\Shoppingcart;
 use App\Fileentry;
 use App\Payment;
-
+/**
+ * ShoppingController Class used for shopping cart. Manages books in shopping cart.
+ */
 class ShoppingController extends Controller
 {
     /**

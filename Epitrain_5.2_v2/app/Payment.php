@@ -6,7 +6,9 @@ use Omnipay\Common\CreditCard;
 use Stripe\Stripe;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+/**
+ * Payment Class used for making payment on stripe.
+ */
 class Payment extends Authenticatable
 {
 

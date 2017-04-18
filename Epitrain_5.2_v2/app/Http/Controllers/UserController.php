@@ -32,7 +32,9 @@ class MyValueBinder extends PHPExcel_Cell_DefaultValueBinder implements PHPExcel
             return parent::bindValue($cell, $value);
         }
     }
-
+/**
+ * UserController Class used for users management such as creation of users, viewing of users
+ */
 class UserController extends Controller
 {
     /**

@@ -15,7 +15,9 @@ use App\Forumtag;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+/**
+ * ForumController Class used for discussion forum. Allow display discussion threads, creating, filtering, commenting in discussion threads
+ */
 class ForumController extends Controller
 {
     use Notifiable;

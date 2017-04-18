@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -19,7 +20,9 @@ use Omnipay\Omnipay;
 use Omnipay\Common\CreditCard;
 //use Omnipay\Stripe;
 
-
+/**
+ * PaymentController Class used for payment using stripe
+ */
 class PaymentController extends Controller
 {
     /**
