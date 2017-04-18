@@ -17,9 +17,10 @@ class ActivationService
 
     protected $resendAfter = 24;
     /**
-    *construct user email for activation
+    * Construct a ActivationService object for use in sending emails to users for confirmation.
     *
-    *@param array $user
+    *@param array $mailer a Mailer object used to send email
+    *             $activationRepo a repository containing generation and verification methods for generated activation links
     *
     * @return void
     */
@@ -91,7 +92,7 @@ class ActivationService
         return $activation === null || strtotime($activation->created_at) + 60 * 60 * $this->resendAfter < time();
     }
     /**
-    *
+    *  Deprecated
     *
     * @return
     */

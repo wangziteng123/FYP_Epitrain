@@ -255,6 +255,18 @@ class FileEntryController extends Controller
 
 	}
 
+
+     /**
+            * Deprecated
+            * Generate a HTTP response to allow users to download ebooks.
+            * No longer used due to change in requirement.
+            *
+            *@param $filename
+            *       name of the file in the database
+            *
+            *@return HTTPResponse with the specified file if found
+            *        HTTPRedirect to previous page if the specified file is not found
+            */
 	public function getDownload($filename)
 	{
 	    //PDF file is stored under project/public/download/info.pdf

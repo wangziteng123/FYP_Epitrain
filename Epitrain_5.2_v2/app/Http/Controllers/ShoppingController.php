@@ -277,9 +277,10 @@ class ShoppingController extends Controller
         return redirect('mylibrary');
     }
     /**
-    *test
+    * Deprecated.
+    * For debugging purpose. Redirect users to their own library.
     *
-    *@param Request $request
+    *@param none
     *
     * @return void
     */
