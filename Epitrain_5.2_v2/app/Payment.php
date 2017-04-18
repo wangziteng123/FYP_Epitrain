@@ -15,8 +15,6 @@ class Payment extends Authenticatable
 
 
 
-
-
     /**
      * The attributes that are mass assignable.
      *
@@ -34,17 +32,25 @@ class Payment extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
+	/**
+    * function isAdmin
+    *
+    *checks if a user is an Admin
+    *
+    * @return (TINYINT)(isAdmin)
+    */
     public function isAdmin() {
         return $this->isAdmin;
     }
 
-
-
-
-
+    /**
+    *set the card for payment
+    *
+    *@param array $value
+    *
+    * @return true
+    */
      function setcard($value){
-        echo "enter set card";
             try{
                 $card = [
                     'number' => $value['card'],
@@ -62,7 +68,13 @@ class Payment extends Authenticatable
             }
 
      }
-
+    /**
+    *making payment for a subscription
+    *
+    *@param array $value
+    *
+    * @return array $chargeData
+    */
     function makepayment($value){
                 try{
 
@@ -102,14 +114,19 @@ class Payment extends Authenticatable
                  }
 
 
-
                 }
                 catch(\Exception $ex){
                     return $ex->getMessage();
                 }
     }
 
-
+    /**
+    *making payment for a subscription
+    *
+    *@param array $value
+    *
+    * @return array $chargeData
+    */
 
 	function makepaymentSubscription($value){
         try{
@@ -150,22 +167,13 @@ class Payment extends Authenticatable
             }
 
 
-
         }
             catch(\Exception $ex){
                 return $ex->getMessage();
             }
 			
     }
-
-
-
-
-
-
-
-
-
+ 
 
 
 

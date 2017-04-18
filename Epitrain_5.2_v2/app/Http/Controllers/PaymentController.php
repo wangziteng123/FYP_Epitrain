@@ -22,6 +22,11 @@ use Omnipay\Common\CreditCard;
 
 class PaymentController extends Controller
 {
+    /**
+    *check to ensure that user has select at least one book to purchase.
+    *
+    * @return array $value
+    */
     public function index(Request $request) {
             $totalPrice = $request->get('totalPrice');
             $fidStr = $request->get('fidStr');
@@ -36,7 +41,6 @@ class PaymentController extends Controller
 
 			// only allow payment for price larger than 50 cents
 			if($totalPrice >0.5){
-				 //return view('paymentform.index');
 				return \View::make('paymentform.index')->with('value',$value);
 			}
 			else if($totalPrice = null || strlen($fidStr) >1 ){
@@ -52,30 +56,27 @@ class PaymentController extends Controller
 
 
     }
-
-// receive the payment details, such as books and user id, from the purchase list
-  public function paymentForm(Request $request){
-         // $category_id = $request->get('category');
+    /**
+    *receive the payment details, such as books and user id, from the purchase list.
+    *Invoke makePayment() method in the payment class for payment and invoke addToLibrary() to add books into library after successful payment
+    *
+    *@param Request $request
+    *
+    * @return void
+    */
+    public function paymentForm(Request $request){
 
           $pay = new Payment();
-
           $token = $request->get('stripeToken');
-
 
 
         \Stripe\Stripe::setApiKey("sk_test_wZZaGd7Ztp3yQaOUuScbg6op");
          $tokenJSON = \Stripe\Token::retrieve($token);
          $userPaymentEmail = $tokenJSON ->email;
 
-
-          //$userPaymentEmail = $token['email'];
-        //  echo "hello ";
-         // echo $userPaymentEmail;
           $totalPrice = $request->get('amount');
           $uid = $request->get('uid');
-
           $fidStr = $request->get('fidStr');
-
 
            $valueForPayment = [
 
@@ -106,9 +107,13 @@ class PaymentController extends Controller
 
 
 
-      }
-
-      public function viewTransaction(){
+    }
+    /**
+    *retrieve all the transactions made by a user from stripe
+    *
+    * @return array $allChargeDetails
+    */
+    public function viewTransaction(){
             $user_id = Auth::user()->id;
             $userCharges = DB::table('transactionhistory')
             ->where('user_id', '=', $user_id)
@@ -135,40 +140,43 @@ class PaymentController extends Controller
 
                 $allChargeDetails[$start] = $oneChargeDetails;
 
-
-
-
              }
 
 
-
-
             return \View::make('transactionhistory.index')->with('allChargeDetails',$allChargeDetails);
-      }
+    }
 	  
-	  
-	  
+
+    /**
+    *allow payment For Subscription
+    *
+    *@param Request $request
+    * @return array $value
+    */
 	public function paymentForSubscription(Request $request){
 
-          $totalPrice = $request->get('amount');
-                     $uid =  $request->get('uid');
-                     $period = $request->get('period');
+        $totalPrice = $request->get('amount');
+        $uid =  $request->get('uid');
+        $period = $request->get('period');
 
-                    $value = [
-                    "totalPrice"=>$totalPrice,
-                    "uid"=>$uid ,
-                    "period"=>$period
-                    ];
-
-        			// only allow payment for price larger than 50 cents
-
-        				 //return view('paymentform.index');
-        				return \View::make('subscriptionplan.index')->with('value',$value);
+        $value = [
+            "totalPrice"=>$totalPrice,
+            "uid"=>$uid ,
+            "period"=>$period
+        ];
 
 
+        return \View::make('subscriptionplan.index')->with('value',$value);
 
 
     }
+    /**
+    *receive the payment details for subscriptipn, such as the amount and period of subscription
+    *
+    *@param Request $request
+    *
+    * @return void
+    */
     public function subscriptionPaymentForm(Request $request){
 
         $pay = new Payment();
@@ -205,26 +213,17 @@ class PaymentController extends Controller
 
         if($chargeOutcome == "Payment complete."){
             app('App\Http\Controllers\SubscriptionController')->addSubscription($request); // call add to subscription method in subscription controller
-               
-            //return view('homeUser.blade');
-			           return redirect('home');
+
+			return redirect('home');
 
 
         }
         else{
-
-            //return view('homeUser.blade');
-			           return redirect('home');
-
+		    return redirect('home');
         }
 
 
-
     }
-
-
-
-
 
 
 }

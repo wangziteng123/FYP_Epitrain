@@ -14,13 +14,25 @@ class ActivationService
     protected $activationRepo;
 
     protected $resendAfter = 24;
-
+    /**
+    *construct user email for activation
+    *
+    *@param array $user
+    *
+    * @return void
+    */
     public function __construct(Mailer $mailer, ActivationRepository $activationRepo)
     {
         $this->mailer = $mailer;
         $this->activationRepo = $activationRepo;
     }
-
+    /**
+    *send email to user to activate account
+    *
+    *@param array $user
+    *
+    * @return void
+    */
     public function sendActivationMail($user)
     {
 
@@ -37,12 +49,16 @@ class ActivationService
             $m->to($user->email)->subject('Epitrain Account Activation Email');
         });
 
-
     }
-
+    /**
+    *activate user account
+    *
+    *@param String $token
+    *
+    * @return array $user
+    */
     public function activateUser($token)
     {
-        //echo 'jlkdjfldkjgldfkgjdfkl';
         $activation = $this->activationRepo->getActivationByToken($token);
 
         if ($activation === null) {
@@ -60,13 +76,23 @@ class ActivationService
         return $user;
 
     }
-
+    /**
+    *resend activation email  after a day of account creation if user did not activate their account
+    *
+    *@param array $user
+    *
+    * @return String
+    */
     private function shouldSend($user)
     {
         $activation = $this->activationRepo->getActivation($user);
         return $activation === null || strtotime($activation->created_at) + 60 * 60 * $this->resendAfter < time();
     }
-
+    /**
+    *
+    *
+    * @return
+    */
     public function get() {
         return ['dsf','sdfsd'];
     }
