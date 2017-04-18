@@ -9,16 +9,33 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ContactFormRequest;
 use Mail;
 
+/**
+ * AboutController Class used for Contact Admin function
+ */
 class AboutController extends Controller
 {
     //
 		private $email;
 		
+	/**
+	* create
+	*
+	* generate the page of Contact Admin
+	*
+	* @return view of the page
+	*/
     public function create()
     {
         return view('about.contact');
     }
     
+	/**
+	 * getEmail
+	 *
+	 * get the email adress of the admin user, to send userfeedback to admin as an email
+	 *
+	 * @return void
+	 */
     public function getEmail(){
         $emailAdd = \DB::table('adminemail')
             -> orderBy('email_id', 'DESC')
@@ -28,6 +45,13 @@ class AboutController extends Controller
         $this->email = $emailAddress; 
     }
 
+	/**
+	 * store function receives emails sent from users using Contact Admin function and stores it as ‘User Feedback’. 
+	 * It will return a message which displays on user screen which is ‘Thanks for contacting us! The admin has been informed and will get back to you soon.’
+	 *
+	 * @param ContactFormRequest $request which is the request to contact admin
+	 * @return view of the success or error message
+	 */
     public function store(ContactFormRequest $request)
     {
 			$email = $this->getEmail();

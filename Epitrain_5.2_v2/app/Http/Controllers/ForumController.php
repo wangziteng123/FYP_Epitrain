@@ -24,13 +24,24 @@ class ForumController extends Controller
 
     	return view('forum.forum');
     }
-
+    /**
+    *direct admin user to the admin forum page
+    *
+    * @return void
+    */
     public function indexAdmin(){
         $tagsForSearch = null;
         return view('forum.forumAdmin', compact('tagsForSearch'));
     }
 
     //Added Here
+    /**
+    *sorting of forum threads for date, category, likes, views
+    *
+    *@param Request $request
+    *
+    * @return void
+    */
     public function dsort(Request $request){
         $sortField = $request->input('sortField');
         $oldValue = $request->input('oldValue');
@@ -136,7 +147,13 @@ class ForumController extends Controller
         }
     }
     //To Here 
-
+    /**
+    *create forum discussion
+    *
+    *@param Request $request
+    *
+    * @return void
+    */
     public function createDiscussion(Request $request) {
     	$user_id = \Auth::user()->id;
     	$category_id = $request->get('category');
@@ -148,9 +165,7 @@ class ForumController extends Controller
     	DB::table('forumdiscussion') ->insert(
                 ['user_id' => $user_id, 'category_id' => $category_id, 'title' => $title, 'description' => $description, 'created_at' => $mytime->toDateTimeString()]
         );
-        
-        //exit($description);
-        
+
         $discussionId = DB::table('forumdiscussion')
                 -> where ('created_at', '=', $mytime)
                 -> where ('user_id', '=', $user_id)
@@ -205,7 +220,13 @@ class ForumController extends Controller
             return redirect()->route('forum');
         }
     }
-    
+    /**
+    *allow users to like to unlike discussion threads.
+    *
+    *@param Request $request
+    *
+    * @return void
+    */
     public function liked($discussionId, $userId){
         if($discussionId!=null){
                 $discussionUserId = DB::table('discussionUserLike')
@@ -225,9 +246,7 @@ class ForumController extends Controller
                         ->value('name');
                     
                     $user = User::find($userWhoCreatedDisc);
-                    
-                    //$forumpageUrl = current($url);
-                    
+
                     $user->notify(new LikedDiscussion($userWhoLiked));
                     
                     DB::table('discussionUserLike') ->insert(
@@ -274,6 +293,13 @@ class ForumController extends Controller
     	}
 
     }
+    /**
+    *show all the response for a discussion thread
+    *
+    *@param Request $request
+    *
+    * @return String $discussionId
+    */
     public function showAllResponse(Request $request) {
         	if($request->get('id')==null) {
         		$discussionId = 23;
@@ -288,7 +314,13 @@ class ForumController extends Controller
         	}
 
     }
-
+    /**
+    *create response for a discussion thread
+    *
+    *@param Request $request
+    *
+    * @return string $discussionId
+    */
     public function createResponse(Request $request) {
     	$user_id = $request->get('user_id');
     	$discussion_id = $request->get('discussionId');
@@ -374,19 +406,27 @@ class ForumController extends Controller
     }
     
     //Added this
-    
+    /**
+    *receive all discussion thread related to the chosen tag, and return them
+    *
+    *@param Request $request
+    *
+    * @return String $forumTag
+    */
     public function showTagPosts(Request $request){
-        //return view('forum.forum');
-            $forumTag = $request->get('id');
-        //$forumTag = $this->route('id');
-        //echo $forumTag;
+        $forumTag = $request->get('id');
+
         return view('forum.forumShowTagPosts', compact('forumTag'));
-        //return \View::make('forum.forumShowTagPosts', compact('forumTag'));
-        //return \View::make('forum.forumShowTagPosts')->with('forumTag',$forumTag);
+
     }
     
-    //To here
-
+   /**
+    *allow user to delete a discussion thread
+    *
+    *@param Request $request
+    *
+    * @return void
+    */
     public function deleteDiscussion(Request $request){
         $discussion_id = $request->get('discussionId');
 
@@ -422,7 +462,13 @@ class ForumController extends Controller
         
         return redirect('forumAdmin');
     }
-
+    /**
+    *allow admin user to delete a discussion comment
+    *
+    *@param Request $request
+    *
+    * @return void
+    */
     public function deleteComment(Request $request){
         $comment_id = $request->get('commentID');
         $discussion_id = $request->get('discussionID');
@@ -461,7 +507,13 @@ class ForumController extends Controller
         
         return redirect('/forumResponsePage?id='.$discussion_id);
     }
-
+    /**
+    *allow admin user to close a discussion thread
+    *
+    *@param Request $request
+    *
+    * @return void
+    */
     public function closeDiscussion(Request $request){
 
          $discussion_id = $request->get('discussionId');
@@ -487,7 +539,13 @@ class ForumController extends Controller
         DB::table('forumdiscussion')->where('id','=', $discussion_id)->update(['isOpen' => "1"]);
         return redirect('forumAdmin');
     }
-	
+    /**
+    *allow admin user to addCategory
+    *
+    *@param Request $request
+    *
+    * @return void
+    */
 	public function addCategory(Request $request){
 	    $error="";
 	    try{
@@ -523,7 +581,13 @@ class ForumController extends Controller
             return redirect('forumAdmin');
 	    }
     }
-
+    /**
+    *allow user to filter the tags
+    *
+    *@param Request $request
+    *
+    * @return array $tagsForSearch
+    */
     public function filterTags(Request $request) {
         $filterInput = $request->input('studentInput');
         $tagsForSearch = null;

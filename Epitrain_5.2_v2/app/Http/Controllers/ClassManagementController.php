@@ -10,10 +10,17 @@ use App\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+/**
+ * ClassManagementController Class used for manage the classes and change their activation status
+ */
 class ClassManagementController extends Controller
 {
+	/**
+	 * index function get the id and category of a class
+	 *
+	 * @return view of existing course with the categories
+	 */
     public function index() {
-
         //activates or deactivates users in courses
         $classData = DB::table('enrolment')
             ->join('course', 'enrolment.courseID', '=', 'course.courseID')
@@ -35,6 +42,11 @@ class ClassManagementController extends Controller
         return view('classmanagement.index', compact('courseList','categories'));
     }
 
+	/**
+	 * enrolment function get list of enrolled students for classes
+	 *
+	 * @return view of existing course with the enrolled students
+	 */
     public function enrolment() {
 
         $courseList = \DB::table('course')->get();
@@ -44,6 +56,11 @@ class ClassManagementController extends Controller
         return view('classmanagement.enrolment', compact('courseList','students','enrolmentList'));
     }
 
+	/**
+	 * courseMaterials function get list of materials for classes
+	 *
+	 * @return view of existing course with the materials of the class
+	 */
     public function courseMaterials() {
 
         $courseList = \DB::table('course')->get();
@@ -53,6 +70,12 @@ class ClassManagementController extends Controller
         return view('classmanagement.courseMaterials', compact('courseList','materialList','fileentries'));
     }
 
+	/**
+	 * filterStudents function check the subscription and enrolment status of a single student
+	 *
+	 * @param Request $request which takes in the name or email of a single student
+	 * @return view of all the courses the student is currently enrolled
+	 */
     public function filterStudents(Request $request) {
         $filterInput = $request->input('studentInput');
 
@@ -77,6 +100,12 @@ class ClassManagementController extends Controller
         return view('classmanagement.enrolment', compact('courseList','students','enrolmentList'));
     }
 
+	/**
+	 * filterEbooks function check the ebooks of one single course
+	 *
+	 * @param Request $request which takes in the course id of a single course
+	 * @return view of all the materials of a single book
+	 */
     public function filterEbooks(Request $request) {
         $filterInput = $request->input('courseIDInput');
 
@@ -89,6 +118,12 @@ class ClassManagementController extends Controller
         return view('classmanagement.courseMaterials', compact('courseList','materialList','fileentries'));
     }
 
+	/**
+	 * filterCourse function search for courses by details and check for their details and status
+	 *
+	 * @param Request $request which takes in the details admin entered for filtering
+	 * @return view of the list of courses which match the criteria admin entered
+	 */
     public function filterCourses(Request $request) {
         $courseIDInput = $request->input('courseIDInput');
         $courseNameInput = $request->input('courseNameInput');
@@ -155,6 +190,12 @@ class ClassManagementController extends Controller
         return view('classmanagement.index', compact('courseList','categories'));
     }
 
+	/**
+	 * filterEnrolment function search for details and status for all the enrolment of students and courses
+	 *
+	 * @param Request $request which takes in the details admin entered for filtering
+	 * @return view of the list of students and courses which match the filtering criteria admin entered
+	 */
     public function filterEnrolment(Request $request) {
         $courseIDInput = $request->input('courseIDInput');
         $studEmailInput = $request->input('studEmailInput');
@@ -189,6 +230,12 @@ class ClassManagementController extends Controller
         return view('classmanagement.enrolment', compact('courseList','students','enrolmentList'));
     }
 
+	/**
+	 * filterCourseMaterials function search for the materials of a course
+	 *
+	 * @param Request $request which takes in the details of a course id and materials enrolled
+	 * @return view of the list of courses and materials of the courses which match the filtering criteria admin entered
+	 */
     public function filterCourseMaterials(Request $request) {
         $courseIDInput = $request->input('courseIDInput');
         $materialsInput = $request->input('materialsInput');
@@ -214,6 +261,12 @@ class ClassManagementController extends Controller
         return view('classmanagement.courseMaterials', compact('courseList','materialList','fileentries'));
     }
 
+	/**
+	 * addCourse function add a new course into the database with details of the course
+	 *
+	 * @param Request $request which takes in the details of a new course to add
+	 * @return view of success or error message of the adding of new course
+	 */
     public function addCourse(Request $request) {
         $courseList = \DB::table('course')->get();
         $categories = \DB::table('category')->get();
@@ -264,6 +317,12 @@ class ClassManagementController extends Controller
         return redirect('classmanagement')->with('success','Course was added successfully!');
     }
 
+	/**
+	 * editCourse function edit the details of a course
+	 *
+	 * @param Request $request which takes in the new details of a course to modify
+	 * @return view of success or error message of the adding of new course
+	 */
     public function editCourse(Request $request) {
         $courseList = \DB::table('course')->get();
         $categories = \DB::table('category')->get();
@@ -316,6 +375,12 @@ class ClassManagementController extends Controller
         return redirect('classmanagement')->with('success','Course was updated successfully!');;
     }
 
+	/**
+	 * deleteCourse function add a new course into the database with id of the course
+	 *
+	 * @param Request $request which takes in the id of a course to delete
+	 * @return view of success or error message of the deleting of course
+	 */
     public function deleteCourse(Request $request) {
         $id = $request->input('id');
 
@@ -326,6 +391,12 @@ class ClassManagementController extends Controller
         return redirect('classmanagement')->with('success','Course was deleted successfully!');;
     }
 
+	/**
+	 * activateCourse function add activate course which was not activated
+	 *
+	 * @param Request $request which takes in the id of a course to delete
+	 * @return view of success or error message for activating the course
+	 */
     public function activateCourse(Request $request) {
         $id = $request->input('id');
         $status = $request->input('status');
@@ -343,6 +414,12 @@ class ClassManagementController extends Controller
         return redirect('classmanagement')->with('success','Course was activated successfully!');;
     }
 
+	/**
+	 * addEnrolment function add one student to enroll in a course
+	 *
+	 * @param Request $request which takes in the id of a course or the list of students to enroll in the course
+	 * @return view of success or error message for new enrolment of the course
+	 */
     public function addEnrolment(Request $request) {        
         $courseID = $request->input('courseID');
         $studentList = $request->input('studentList');
@@ -374,6 +451,12 @@ class ClassManagementController extends Controller
         return redirect('enrolment')->with('success','Students were successfully added to course!');;
     }
 
+	/**
+	 * activateEnrolment function activate one or a list of students enrolled in a course
+	 *
+	 * @param Request $request which takes in the id of a course or the list of students enrolled in the course
+	 * @return view of success or error message for activated enrolment of the course
+	 */
     public function activateEnrolment(Request $request) {
         $id = $request->input('id');
         $status = $request->input('status');
@@ -391,6 +474,12 @@ class ClassManagementController extends Controller
         return redirect('enrolment')->with('success','Student enrolment were successfully activated!');;
     }
 
+	/**
+	 * deleteEnrolment function delete one student enrolled in a course
+	 *
+	 * @param Request $request which takes in the id of a course or the list of students to enroll in the course
+	 * @return view of success or error message for deleting enrolment of the course
+	 */
     public function deleteEnrolment(Request $request) {
         $id = $request->input('id');
 
@@ -401,6 +490,12 @@ class ClassManagementController extends Controller
         return redirect('enrolment')->with('success','Student enrolment were successfully removed!');
     }
 
+	/**
+	 * deleteEnrolments function delete a list of students enrolled in a course
+	 *
+	 * @param Request $request which takes in the id of a course or the list of students to enroll in the course
+	 * @return view of success or error message for deleting enrolment of the course
+	 */
     public function deleteEnrolments(Request $request) {
         $ids = $request->input('enrolment');
 
@@ -418,6 +513,12 @@ class ClassManagementController extends Controller
         return redirect('viewAllUsers')->with('success','Student enrolment were successfully removed!');
     }
 
+	/**
+	 * addEnrolment function add a list of students to enroll in a course
+	 *
+	 * @param Request $request which takes in the id of a course or the list of students to enroll in the course
+	 * @return view of success or error message for new enrolment of the course
+	 */
     public function addEnrolments(Request $request) {        
         $courseIDs = $request->input('courseID');
         $userID = $request->input('userId');
@@ -441,6 +542,12 @@ class ClassManagementController extends Controller
         return redirect('viewAllUsers')->with('success','Students were successfully added to course!');;
     }
 
+	/**
+	 * filterStudentsForViewAllUsers function filter one students by name and check for the student's enrolment status
+	 *
+	 * @param Request $request which takes in the name of the students
+	 * @return view of all the enrolment of the student
+	 */
     public function filterStudentsForViewAllUsers(Request $request) {
         $filterInput = $request->input('studentInput');
         $users = User::paginate(15);
@@ -466,6 +573,12 @@ class ClassManagementController extends Controller
         return view('usermanage.viewAllUsers', compact('users','students'));
     }
 
+	/**
+	 * addMaterial function add an existing material into an existing course
+	 *
+	 * @param Request $request which takes in the material list and a course id to add in materials
+	 * @return view of success or error message of adding of books to a course
+	 */
     public function addMaterial(Request $request) {        
         $courseID = $request->input('courseID');
         $materialList = $request->input('materialList');
@@ -497,6 +610,12 @@ class ClassManagementController extends Controller
         return redirect('courseMaterials')->with('success','Course materials were successfully added!');
     }
 
+	/**
+	 * deleteMaterial function delete an existing material from an existing course
+	 *
+	 * @param Request $request which takes in the material list and a course id to delete materials
+	 * @return view of success or error message of deleting of books from a course
+	 */
     public function deleteMaterial(Request $request) {
         $id = $request->input('id');
 

@@ -9,9 +9,17 @@ use DB;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+/**
+ * CategoryController Class used for Customize Categories function
+ */
 class CategoryController extends Controller
 {
-    //
+    /**
+	 * index function generate a new category with name limited to 20 digits
+	 *
+	 * @param Request $request which is the request to add a new category with a name
+	 * @return view of the function page
+	 */
     public function index(Request $request) {
     	$category = $request->input('categoryName');
 
@@ -26,6 +34,12 @@ class CategoryController extends Controller
     	return view('category.category', compact('entries'),compact('category'));
     }
     
+	/**
+	 * indexEdit function change the name of a category with the length of the function limited to 20 digits
+	 *
+	 * @param Request $request which is the request to modify the name of a category
+	 * @return view of success or error message
+	 */
     public function indexEdit(Request $request) {
     	$category = $request->input('categoryName');
 
@@ -39,6 +53,13 @@ class CategoryController extends Controller
     	
     	return redirect()->back();
     }
+	
+	/**
+	 * setForumCategory function change the categories activated for forum
+	 *
+	 * @param Request $request which takes in an array of all the cateogries admin selected for the forum
+	 * @return view of success or error message
+	 */
     public function setForumCategory(Request $request) {
         $input = $request->toArray();
         $enabledCat = array();
@@ -69,7 +90,12 @@ class CategoryController extends Controller
         return view('category.category');
     }
 
-
+	/**
+	 * setEbookCategory function change the categories activated for ebooks
+	 *
+	 * @param Request $request which takes in an array of all the cateogries admin selected for the forum
+	 * @return view of success or error message
+	 */
     public function setEbookCategory(Request $request) {
         $input = $request->toArray();
         $enabledCat = array();
@@ -101,6 +127,12 @@ class CategoryController extends Controller
     }
 
 
+	/**
+	 * setEbookShortcut function change the categories in user account ebook category dropdown list
+	 *
+	 * @param Request $request which takes in an array of all the cateogries admin selected for the category dropdown list
+	 * @return view of new categories
+	 */
     public function setEbookShortcut(Request $request) {
         $input = $request->toArray();
         $enabledCat = array();
@@ -131,7 +163,12 @@ class CategoryController extends Controller
         return view('category.category');
     }
 
-    
+    /**
+	 * addCategory function add in a new category
+	 *
+	 * @param Request $request which takes in a new category name
+	 * @return view of success or error message
+	 */
     public function addCategory(Request $request){
         $status="";
         $categoryName = $request->get('categoryName');
@@ -166,6 +203,12 @@ class CategoryController extends Controller
         }
     }
     
+	/**
+	 * editCategory function edit the name of an existing category
+	 *
+	 * @param Request $request which takes in a new name for an existing category and the exiting cateogry name
+	 * @return view of success or error message
+	 */
     public function editCategory(Request $request){
         $status="";
         $newCategoryName = $request->get('categoryName');
