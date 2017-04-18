@@ -118,6 +118,8 @@ Route::group(['middleware' => ['auth','admin']], function() {
 	Route::get('classmanagement/filterStudentsForViewAllUsers', ['as' => 'filterStudentsForViewAllUsers', 'uses' => 'ClassManagementController@filterStudentsForViewAllUsers']);
 	Route::post('classmanagement/addEnrolments', ['as' => 'addEnrolments', 'uses' => 'ClassManagementController@addEnrolments']);
 	Route::post('classmanagement/deleteEnrolments', ['as' => 'deleteEnrolments', 'uses' => 'ClassManagementController@deleteEnrolments']);
+
+	Route::post('forumAdmin/filterTags', ['as' => 'filterTags', 'uses' => 'ForumController@filterTags']);
 });
 
 

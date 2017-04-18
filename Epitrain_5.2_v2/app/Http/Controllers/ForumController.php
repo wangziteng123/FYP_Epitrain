@@ -25,7 +25,8 @@ class ForumController extends Controller
     }
 
     public function indexAdmin(){
-        return view('forum.forumAdmin');
+        $tagsForSearch = null;
+        return view('forum.forumAdmin', compact('tagsForSearch'));
     }
 
     //Added Here
@@ -520,5 +521,16 @@ class ForumController extends Controller
             }
             return redirect('forumAdmin');
 	    }
+    }
+
+    public function filterTags(Request $request) {
+        $filterInput = $request->input('studentInput');
+        $tagsForSearch = null;
+
+
+        $tagsForSearch = Forumtag::where('forum_tag','like','%'.$filterInput.'%')
+                ->get();
+
+        return view('forum.forumAdmin', compact('tagsForSearch'));
     }
 }

@@ -65,16 +65,55 @@
          Edit Category
     </button>-->
 
-    <div class="row" style="position:static; left:15px; " >
+  <div class="row" style="position:static; left:15px; " >
+<div class="panel panel-primary col-md-12">
+            <div class="panel-heading">
+                 Search tags
+            </div>
 
-    <form class="typeahead navbar-form navbar-left" role="search">
-        <div class="form-group">
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <input type="search" name="q1" class="search-input2 form-control" placeholder="Search for tags" autocomplete="off" style="width:235px;color:black;">
-        </div>
-    </form>
-  </div>
+             <div class="panel-body">
+            
+                <div class="table-responsive">
+                    
+                            <form action=<?php echo URL::route('filterTags');?> method="post" class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="studentInput" class="col-md-2 control-label">tag name</label>
+
+                                <div class="col-sm-10 col-xs-10">
+                                    <input type="text" class="form-control" id="studentInput" name="studentInput" placeholder="tag name">
+                                </div>
+                                <div class="form-group">
+                                     <div class="col-sm-2 col-xs-2 col-xs-offset-2">
+                                        <input type="submit" class="btn btn-raised btn-info" value="Search">
+                                      </div>
+                                </div>
+                                </div>
+                            </form>
+                            @if($tagsForSearch!==null)
+                                      <?php $counter1 = 1; ?>
+                                    @foreach($tagsForSearch as $tag)
+                                        <?php 
+                                            $tagsToPass = substr($tag->forum_tag,1);
+                                            $forumShowTagPosts = URL::route('forumShowTagPosts');
+                                            $forumShowTagPosts = $forumShowTagPosts."?id=".$tagsToPass;
+                                            if($counter1 <6){ 
+                                        ?>            
+                                            <font color='black'><a style="text-decoration: none" href=<?php echo $forumShowTagPosts; ?>>
+                                                <button type="button" class="btn btn-secondary btn-sm"><?php echo $tag->forum_tag;?></button>
+                                                </a>
+                                            </font>
+                                        <?php } ?>
+                                        <?php $counter1 = $counter1 + 1; ?>
+                                        
+                                        </br>
+                                    @endforeach
+                            @endif
+                </div>
+            </div>
+            </div>
     
+  </div>
+    <br/>
     <div style="position:static; left:15px; " >
     Top Five Tags </br>
         <?php $counter = 1; ?>
