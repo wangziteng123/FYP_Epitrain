@@ -11,6 +11,7 @@ use DB;
 use DateTime;
 use Carbon\Carbon;
 use App\User;
+use App\Forumtag;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
