@@ -60,7 +60,7 @@ class PaymentController extends Controller
     *receive the payment details, such as books and user id, from the purchase list.
     *Invoke makePayment() method in the payment class for payment and invoke addToLibrary() to add books into library after successful payment
     *
-    *@param Request $request
+    *@param Request $request takes in amount, user id, fidStr
     *
     * @return void
     */
@@ -150,7 +150,7 @@ class PaymentController extends Controller
     /**
     *allow payment For Subscription
     *
-    *@param Request $request
+    *@param Request $request takes in amount, user id, period
     * @return array $value
     */
 	public function paymentForSubscription(Request $request){
@@ -173,7 +173,7 @@ class PaymentController extends Controller
     /**
     *receive the payment details for subscriptipn, such as the amount and period of subscription
     *
-    *@param Request $request
+    *@param Request $request takes in user id, amount and period
     *
     * @return void
     */
