@@ -180,9 +180,9 @@ class FileEntryController extends Controller
 		$oldFileName = $request->input('oldFileName');
 		
 		$sample = $request->file('samplefile');
-		$entry = Fileentry::where('filename', '=', $oldFileName)->firstOrFail();
+		$entry = Fileentry::where('filename', '=', $oldFileName)->first();
 	
-			if($sample != null){
+			if($sample != null && $entry != null){
 				if($entry->sample_id != null){
 					// delete the old sample first
 					//Storage::disk('local')->delete($entry->samplename.'.'.$sample->getClientOriginalExtension());

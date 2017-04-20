@@ -40,6 +40,37 @@ use Illuminate\Notifications\Notifiable;
         -> get();
 
 ?>
+<?php
+    $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    $parts = parse_url($url);
+    if (isset($parts['query'])) {
+        parse_str($parts['query'], $query);
+    } else {
+        $thisSortField = "";
+        $thisCount = 0;
+    }
+    //exit(var_dump($tagsForSearch) . var_dump($query));
+    if(isset($query['studentInput']) && !isset($studentInput)) {
+      $studentInput = $query['studentInput'];
+    } else if (!isset($studentInput)) {
+      $studentInput = "";
+    }
+
+    if(isset($query['sortField']) && !isset($thisSortField)) {
+      $thisSortField = $query['sortField'];
+    } else if (!isset($thisSortField)) {
+      $thisSortField = "";
+    }
+
+    if(isset($query['count']) && !isset($thisCount)) {
+      $thisCount = $query['count'];
+    } else if (!isset($thisCount)) {
+      $thisCount = "";
+    }
+    if(!isset($tagsForSearch)) {
+      $tagsForSearch = [];
+    }
+?>
 
 <div class="col-md-3 col-s-12 center-block">
   <h1 style="position: static;left: 14px;">Discussion Forum</h1>
@@ -47,7 +78,52 @@ use Illuminate\Notifications\Notifiable;
   <div style="position:static;left:15px;">
   	<button class="btn btn-raised btn-primary initialism slide_open" style = "font-size:14px"><i class="fa fa-plus-circle" aria-hidden="true"></i> NEW DISCUSSION</button>
   </div>
-    
+  <div class="row" style="position:static; left:15px; " >
+    <div class="panel panel-primary col-md-11 col-md-offset-1">
+        <div class="panel-heading">
+                 Search tags
+            </div>
+
+             <div class="panel-body">
+                    
+                <form action=<?php echo URL::route('filterTags');?> method="get" class="form-horizontal">
+                    <div class="form-group">
+                        <label for="studentInput" class="col-md-2 control-label">Tag</label>
+
+                    <div class="col-sm-10 col-xs-10">
+                        <input type="text" class="form-control" id="studentInput" name="studentInput" placeholder="Tag to search">
+                    </div>
+                    <div class="form-group">
+                         <div class="col-sm-2 col-xs-2 col-xs-offset-2 col-sm-offset-3">
+                            <input type="submit" class="btn btn-raised btn-info" value="Search">
+                          </div>
+                    </div>
+                    </div>
+                </form>
+                @if($tagsForSearch!==null && $tagsForSearch !== "")
+
+                          <?php $counter1 = 1; ?>
+                        @foreach($tagsForSearch as $tag)
+                            <?php 
+                                $tagsToPass = substr($tag->forum_tag,1);
+                                $forumShowTagPosts = URL::route('forumShowTagPosts');
+                                $forumShowTagPosts = $forumShowTagPosts."?id=".$tagsToPass;
+                                if($counter1 <6){ 
+                            ?>            
+                                <font color='black'><a style="text-decoration: none" href=<?php echo $forumShowTagPosts; ?>>
+                                    <button type="button" class="btn btn-secondary btn-sm"><?php echo $tag->forum_tag;?></button>
+                                    </a>
+                                </font>
+                            <?php } ?>
+                            <?php $counter1 = $counter1 + 1; ?>
+                            
+                            </br>
+                        @endforeach
+                @endif
+              </div>
+          </div>
+      </div>
+    <br/>
   <div style="position:static; left:px; " >
     Top Five Tags </br>
         <?php $counter = 1; ?>
@@ -77,6 +153,9 @@ use Illuminate\Notifications\Notifiable;
           <input type="hidden" id="sortField" name="sortField" value=""> 
           <input type="hidden" id="oldValue" name="oldValue" value="<?php echo $oldValue;?>">
           <input type="hidden" id="count" name="count" value="<?php echo $count;?>">
+          @if ($studentInput != null)
+            <input type="hidden" name="studentInput" value="<?php echo $studentInput;?>">
+          @endif
           <input type="submit" value="Date" class="btn btn-primary btn-raised" onclick="populateField('date')"></input>
           <input type="submit" value="Category" class="btn btn-primary btn-raised" onclick="populateField('category')"></input>
           <input type="submit" value="Likes" class="btn btn-primary btn-raised" onclick="populateField('likes')"></input>
@@ -217,20 +296,7 @@ use Illuminate\Notifications\Notifiable;
   	  </div>
     </div>
     @endforeach
-    <?php
-          $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-          $parts = parse_url($url);
-          if (isset($parts['query'])) {
-              parse_str($parts['query'], $query);
-              $thisSortField = $query['sortField'];
-              $thisCount = $query['count'];
-          } else {
-              $thisSortField = "";
-              $thisCount = 0;
-          }
-
-      ?>
-      {{ $discussions->appends(['oldValue' => $oldValue, 'count' => $thisCount, 'sortField' => $thisSortField])->links() }}
+    {{ $discussions->appends(['oldValue' => $oldValue, 'count' => $thisCount, 'sortField' => $thisSortField, 'studentInput' => $studentInput])->links() }}
 </div>
 
 

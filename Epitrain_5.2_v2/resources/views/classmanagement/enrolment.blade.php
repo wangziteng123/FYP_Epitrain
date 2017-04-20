@@ -12,6 +12,15 @@
         </ul>
     </div>
 </div>
+
+<?php
+    $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    $isFilter = true;
+    if(strpos($url, "filter") == false) {
+        $isFilter = false;
+    }
+?>
+
 <ul class="nav nav-pills">
   <li><a href='/classmanagement'>Manage Courses</a></li>
   <li class="active"><a href="javascript:void(0)">Manage Enrolment</a></li>
@@ -162,7 +171,11 @@
                       <div class="panel-body">
                           <div class="row">
                               <div class="col-md-12">
+                              @if ($isFilter == false)
                                 <div class="collapse" id="demo">
+                              @else
+                                <div class="collapse in" id="demo">
+                              @endif
                                    <form action=<?php echo URL::route('filterStudents');?> method="post" class="form-horizontal">
                                           <div class="form-group">
                                             <label for="studentInput" class="col-md-2 control-label">Name/<br>Email</label>

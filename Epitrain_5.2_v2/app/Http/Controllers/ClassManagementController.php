@@ -50,7 +50,10 @@ class ClassManagementController extends Controller
     public function enrolment() {
 
         $courseList = \DB::table('course')->get();
-        $students = User::where('subscribe','=','0')->where('isAdmin','=','0')->get();
+        $students = User::where('subscribe','=','0')
+            ->where('isAdmin','=','0')
+            ->orderBy('name', 'asc')
+            ->get();
         $enrolmentList = \DB::table('enrolment')->get();
 
         return view('classmanagement.enrolment', compact('courseList','students','enrolmentList'));
@@ -65,7 +68,9 @@ class ClassManagementController extends Controller
 
         $courseList = \DB::table('course')->get();
         $materialList = \DB::table('courseMaterial')->get();
-        $fileentries = \DB::table('fileentries')->get();
+        $fileentries = \DB::table('fileentries')
+            ->orderBy('original_filename', 'asc')
+            ->get();
 
         return view('classmanagement.courseMaterials', compact('courseList','materialList','fileentries'));
     }
@@ -88,12 +93,14 @@ class ClassManagementController extends Controller
             $students = User::where('subscribe','=','0')
                 ->where('isAdmin','=','0')
                 ->where('email','like','%'.$filterInput.'%')
+                ->orderBy('name', 'asc')
                 ->get();
         //else, assume it's name
         } else {
             $students = User::where('subscribe','=','0')
                 ->where('isAdmin','=','0')
                 ->where('name','like','%'.$filterInput.'%')
+                ->orderBy('name', 'asc')
                 ->get();
         }
 
@@ -113,6 +120,7 @@ class ClassManagementController extends Controller
         $materialList = \DB::table('courseMaterial')->get();
         $fileentries = \DB::table('fileentries')
             ->where('original_filename','like','%'.$filterInput.'%')
+            ->orderBy('original_filename', 'asc')
             ->get();
 
         return view('classmanagement.courseMaterials', compact('courseList','materialList','fileentries'));
@@ -216,7 +224,10 @@ class ClassManagementController extends Controller
            $statusInput = '';
         }
         $courseList = \DB::table('course')->get();
-        $students = User::where('subscribe','=','0')->where('isAdmin','=','0')->get();
+        $students = User::where('subscribe','=','0')
+            ->where('isAdmin','=','0')
+            ->orderBy('name', 'asc')
+            ->get();
         $enrolmentList = \DB::table('enrolment')
             ->join('users', function ($join) use ($studEmailInput, $studNameInput, $courseIDInput, $statusInput) {
                 $join->on('users.id', '=', 'enrolment.userID')
@@ -248,7 +259,9 @@ class ClassManagementController extends Controller
         }
         $courseList = \DB::table('course')->get();
         $materialList = \DB::table('courseMaterial')->get();
-        $fileentries = \DB::table('fileentries')->get();
+        $fileentries = \DB::table('fileentries')
+            ->orderBy('original_filename', 'asc')
+            ->get();
 
         $materialList = \DB::table('courseMaterial')
             ->join('fileentries', function ($join) use ($materialsInput, $courseIDInput) {

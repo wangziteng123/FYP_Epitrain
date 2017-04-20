@@ -48,6 +48,10 @@ class ForumController extends Controller
         $sortField = $request->input('sortField');
         $oldValue = $request->input('oldValue');
         $count = $request->input('count');
+        $studentInput = $request->input('studentInput');
+        if($studentInput == null) {
+            $studentInput = "";
+        }
         if($count == null){
             $count = 0;
         }
@@ -142,8 +146,9 @@ class ForumController extends Controller
         }*/
         //$entries = Fileentry::orderBy('original_filename', 'asc')->get();
         //$mode = $request->input('mode');
+        //exit(var_dump($tagsForSearch));
         if (\Auth::user()->isAdmin) {
-            return view('forum.forumAdmin', compact('discussions', 'oldValue', 'count'));
+            return view('forum.forumAdmin', compact('discussions', 'oldValue', 'count','studentInput'));
         } else {
             return view('forum.forum', compact('discussions', 'oldValue', 'count'));
         }
@@ -161,8 +166,12 @@ class ForumController extends Controller
     	$category_id = $request->get('category');
     	$title= $request->get('title');
     	$description = $request->get('description');
-
     	$mytime = Carbon::now() ->timezone(\Config::get('app.timezone'));
+        $studentInput = $request->input('studentInput');
+        if($studentInput == null) {
+            $studentInput = "";
+        }
+
 
     	DB::table('forumdiscussion') ->insert(
                 ['user_id' => $user_id, 'category_id' => $category_id, 'title' => $title, 'description' => $description, 'created_at' => $mytime->toDateTimeString()]
@@ -230,6 +239,11 @@ class ForumController extends Controller
     * @return void
     */
     public function liked($discussionId, $userId){
+        $studentInput = $request->input('studentInput');
+        if($studentInput == null) {
+            $studentInput = "";
+        }
+
         if($discussionId!=null){
                 $discussionUserId = DB::table('discussionUserLike')
                 -> where ('discussion_id', '=', $discussionId)
@@ -272,7 +286,7 @@ class ForumController extends Controller
                         ->update(['likes' => $numberOfLikes-1]);
                 }
             if (\Auth::user()->isAdmin){
-                return view('forum.forumAdmin');
+                return view('forum.forumAdmin',compact('studentInput'));
 
             } else{
                 return redirect()->route('forum');
@@ -282,6 +296,7 @@ class ForumController extends Controller
     }
 
     public function toPage(Request $request) {
+
     	if($request->get('id')==null) {
     		$discussionId = 23;
     		return \View::make('forum.forumpage')->with('discussionId',$discussionId);
@@ -303,6 +318,7 @@ class ForumController extends Controller
     * @return String $discussionId
     */
     public function showAllResponse(Request $request) {
+
         	if($request->get('id')==null) {
         		$discussionId = 23;
         		return \View::make('forum.forumResponsePage')->with('discussionId',$discussionId);
@@ -431,7 +447,11 @@ class ForumController extends Controller
     */
     public function deleteDiscussion(Request $request){
         $discussion_id = $request->get('discussionId');
-
+        $studentInput = $request->input('studentInput');
+        if($studentInput == null) {
+            $studentInput = "";
+        }
+        
         $tagsInThisDiscussion = DB::table('forumtags_discussion')
                     -> where ('discussion_id', '=', $discussion_id)
                     -> get();
@@ -519,7 +539,6 @@ class ForumController extends Controller
     public function closeDiscussion(Request $request){
 
          $discussion_id = $request->get('discussionId');
-         
          //Added Here
          
          //Get the Discussion Creator's ID
@@ -594,10 +613,12 @@ class ForumController extends Controller
         $filterInput = $request->input('studentInput');
         $tagsForSearch = null;
 
-
         $tagsForSearch = Forumtag::where('forum_tag','like','%'.$filterInput.'%')
                 ->get();
-
-        return view('forum.forumAdmin', compact('tagsForSearch'));
+        if (\Auth::user()->isAdmin) {
+            return view('forum.forumAdmin', compact('tagsForSearch'));
+        } else {
+            return view('forum.forum', compact('tagsForSearch'));
+        }
     }
 }

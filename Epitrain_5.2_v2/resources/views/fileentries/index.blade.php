@@ -190,9 +190,8 @@
 
                     @if (Auth::user()->isAdmin)
                       <!-- Button trigger modal for adding category -->
-                      
 
-                      <?php echo '<button type="button" class="btn btn-raised btn-warning" data-toggle="modal" data-target="#editModal"  onclick="loadModal(\'' . $realFileName . '\',\'' . $fileCategory . '\',\'' . $filePrice . '\',\'' . $entry->description . '\'); passtoSlide(<?php echo $realFileName;?>)" >Edit</button>'; ?>
+                      <?php echo '<button type="button" class="btn btn-raised btn-warning" data-toggle="modal" data-target="#editModal"  onclick="loadModal(\'' . $realFileName . '\',\'' . $fileCategory . '\',\'' . $filePrice . '\',\'' . $entry->description . '\'); " >Edit</button>'; ?>
 
                       {{ Form::open(array('method'
                       => 'DELETE', 'route' => array('deleteentry', $entry->filename))) }}
@@ -219,6 +218,7 @@
         <font color='black'> <h4 class="modal-title" id="myModalLabel">Edit book details</h4></font>
       </div>
       <div class="modal-body">
+
         <!-- Add a form inside the edit category modal-->
           <font color='black'> 
             <form action=<?php echo URL::route('editentry');?> id="editform" method="post" style="max-width: 100%; min-height: 480px;margin:0 auto; border: 0px solid white;" onsubmit="" class="form-horizontal">
@@ -230,8 +230,10 @@
 
               <div class="form-group">
                 <label for="selectCatEdit" class ="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Category</label>
+                
                 <div class = "col-md-10">
-                    <select name="category" style="font-size:14px" id = "selectCat" class="form-control" placeholder="Choose ebook category">
+                    <select name="category" style="font-size:14px" id = "selectCatEdit" class="form-control" placeholder="" required>
+                        <option hidden disabled id="existingCat" selected></option>
                       @foreach($categories as $category)
                           <option value=<?php echo $category->categoryname;?>><font color="black" size = "3"><?php echo $category->categoryname;?></font></option>
                       @endforeach
@@ -364,7 +366,7 @@ function populateField(fieldToSort){
 }
 function loadModal(filename, category, price, description){
     document.getElementById('existingFile').value = filename;
-    document.getElementById('selectCatEdit').placeholder = category;
+    document.getElementById('existingCat').innerHTML = category;
     document.getElementById('existingPrice').value = price;
     document.getElementById('existingDescription').value = description;
 }

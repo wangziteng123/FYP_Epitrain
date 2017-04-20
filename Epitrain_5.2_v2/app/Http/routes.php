@@ -118,8 +118,6 @@ Route::group(['middleware' => ['auth','admin']], function() {
 	Route::get('classmanagement/filterStudentsForViewAllUsers', ['as' => 'filterStudentsForViewAllUsers', 'uses' => 'ClassManagementController@filterStudentsForViewAllUsers']);
 	Route::post('classmanagement/addEnrolments', ['as' => 'addEnrolments', 'uses' => 'ClassManagementController@addEnrolments']);
 	Route::post('classmanagement/deleteEnrolments', ['as' => 'deleteEnrolments', 'uses' => 'ClassManagementController@deleteEnrolments']);
-
-	Route::post('forumAdmin/filterTags', ['as' => 'filterTags', 'uses' => 'ForumController@filterTags']);
 });
 
 
@@ -183,7 +181,7 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('/forumResponsePage', ['as'=>'forumResponsePage', 'uses'=>'ForumController@showAllResponse']);
 	Route::post('/createDiscussion', ['as' => 'createDiscussion', 'uses' => 'ForumController@createDiscussion']);
 	Route::post('/createResponse', ['as' => 'createResponse', 'uses' => 'ForumController@createResponse']);
-
+	Route::get('forumAdmin/filterTags', ['as' => 'filterTags', 'uses' => 'ForumController@filterTags']);
 	//payment routes
 	Route::post('/payment', ['as' => 'payment', 'uses' => 'PaymentController@index']);
 	Route::post('/paymentForm', ['as' => 'paymentForm', 'uses' => 'PaymentController@paymentForm']);

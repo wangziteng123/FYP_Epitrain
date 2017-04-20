@@ -157,7 +157,7 @@
 
           $isStudent = false;
           $hasSample = false;
-          if($ebook->sample_id != null){
+          if(isset($ebook->sample_id)) {
             $hasSample = true;
           }
           foreach ($coursesOfThisBook as $course) {
