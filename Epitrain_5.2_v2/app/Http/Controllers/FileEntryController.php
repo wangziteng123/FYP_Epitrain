@@ -338,13 +338,14 @@ class FileEntryController extends Controller
             
             //Storage::disk('local')->delete($sampleEntry->sample_filename.".pdf");
 			//Storage::disk('local')->delete('/ebooks/'.$entry->filename);
+            if($sampleEntry != null){
+                Storage::disk('s3')->delete('/ebooks/'.$sampleEntry->sample_filename.".pdf");
+                DB::table('fileentries_sample')
+                -> where('sample_id', '=', $entry->sample_id)
+                -> delete();
+            }
             
-            Storage::disk('s3')->delete('/ebooks/'.$sampleEntry->sample_filename.".pdf");
             Storage::disk('s3')->delete('/ebooks/'.$entry->filename);
-            
-            DB::table('fileentries_sample')
-            -> where('sample_id', '=', $entry->sample_id)
-            -> delete();
             
 	 		return redirect('fileentry');
 			// return (new Response("Delete Successfully", 200))

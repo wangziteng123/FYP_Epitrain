@@ -312,13 +312,22 @@
                         <a href="{{route('getsampleviewer', $ebook->sample_id)}}" class="btn-raised btn-xs btn-info btn">Sample</a> 
                         </button>
                     </div>
-                    @endif
-                      
                     <p style="position:absolute;right:12px;top:76px">
                         <button class="btn btn-info btn-raised btn-xs slide_open"  onclick="passtoSlide(<?php echo $fid2;?>,'<?php echo $oriFilename2;?>',<?php echo $price2;?>,'<?php echo $description2;?>')">
                         Info
                         </button>
                     </p>
+                    @endif
+                    
+                    @if(!$hasSample)
+                        <p style="position:absolute;right:12px;top:89px">
+                            <button class="btn btn-info btn-raised btn-sm slide_open"  onclick="passtoSlide(<?php echo $fid2;?>,'<?php echo $oriFilename2;?>',<?php echo $price2;?>,'<?php echo $description2;?>')">
+                                Info
+                            </button>
+                        </p>
+                    @endif
+                      
+                    
                   
                 </div>
             </div>
@@ -555,19 +564,28 @@
                   @endif
 
                  @endif
+
+                    
                     @if($hasSample)
 										<div style="position:absolute;right:-3px;top:108px">
                                    <button type="submit" style="border:none;background-color: Transparent">
                         <a href="{{route('getsampleviewer', $ebook->sample_id)}}" class="btn-raised btn-xs btn-info btn">Sample</a> 
                         </button>
                     </div>
-                    @endif
-                      
                     <p style="position:absolute;right:12px;top:76px">
                         <button class="btn btn-info btn-raised btn-xs slide_open"  onclick="passtoSlide(<?php echo $fid2;?>,'<?php echo $oriFilename2;?>',<?php echo $price2;?>,'<?php echo $description2;?>')">
                         Info
                         </button>
                     </p>
+                    @endif
+                    
+                    @if(!$hasSample)
+                        <p style="position:absolute;right:12px;top:89px">
+                            <button class="btn btn-info btn-raised btn-sm slide_open"  onclick="passtoSlide(<?php echo $fid2;?>,'<?php echo $oriFilename2;?>',<?php echo $price2;?>,'<?php echo $description2;?>')">
+                                Info
+                            </button>
+                        </p>
+                    @endif
                 
               </div>
             </div>
@@ -807,13 +825,20 @@
                         <a href="{{route('getsampleviewer', $ebook->sample_id)}}" class="btn-raised btn-xs btn-info btn">Sample</a> 
                         </button>
                     </div>
-                    @endif
-                      
                     <p style="position:absolute;right:12px;top:76px">
                         <button class="btn btn-info btn-raised btn-xs slide_open"  onclick="passtoSlide(<?php echo $fid2;?>,'<?php echo $oriFilename2;?>',<?php echo $price2;?>,'<?php echo $description2;?>')">
                         Info
                         </button>
                     </p>
+                    @endif
+                    
+                    @if(!$hasSample)
+                        <p style="position:absolute;right:12px;top:89px">
+                            <button class="btn btn-info btn-raised btn-sm slide_open"  onclick="passtoSlide(<?php echo $fid2;?>,'<?php echo $oriFilename2;?>',<?php echo $price2;?>,'<?php echo $description2;?>')">
+                                Info
+                            </button>
+                        </p>
+                    @endif
                 
               </div>
             </div>
