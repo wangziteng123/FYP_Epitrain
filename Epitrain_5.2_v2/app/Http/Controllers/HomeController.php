@@ -7,6 +7,9 @@ use DB;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
+/**
+ * HomeController Class used for generating Home page
+ */
 class HomeController extends Controller
 {
     /**
@@ -77,9 +80,8 @@ class HomeController extends Controller
             flash('There are no books in the shop! Please inform the page admin', 'danger');
             return view('usermanage.updateInfo', compact('users'));
         }
-        
-       
     }
+	
     public function create()
     {
         return view('usermanage.create');

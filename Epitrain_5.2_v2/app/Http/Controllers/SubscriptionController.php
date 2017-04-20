@@ -9,9 +9,19 @@ use DB;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+
+/**
+ * SubscriptionController Class used for subscription function
+ */
 class SubscriptionController extends Controller
 {
-    public function addSubscription(Request $request) {
+    /**
+	* addSubscription function add a new plan of subscription to a certain user
+	*
+	* @para Request $request takes in the user id and the period to subscribe
+	* @return void
+	*/
+	public function addSubscription(Request $request) {
     	$user_id = $request->input('uid');
     	$subscribe_period = $request->input('period');
 
@@ -46,6 +56,12 @@ class SubscriptionController extends Controller
     }
 
 
+	/**
+	* addSubscriptionPlan function add a new plan of subscription in months
+	*
+	* @para Request $request takes in the period of subscription plan in months
+	* @return void
+	*/
     public function addSubscriptionPlan(Request $request) {
         $monthperiod = $request->input('monthperiod');
         $price = $request->input('price');
@@ -57,6 +73,12 @@ class SubscriptionController extends Controller
 
     }
 
+	/**
+	* deleteSubscriptionPlan function add a new plan of subscription in months
+	*
+	* @para Request $request takes in the id of a subscription plan to delete
+	* @return void
+	*/
     public function deleteSubscriptionPlan(Request $request) {
         $id = $request->input('id');
 

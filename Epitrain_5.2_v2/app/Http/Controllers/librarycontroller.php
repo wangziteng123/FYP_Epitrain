@@ -10,10 +10,12 @@ use Carbon\Carbon;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+/**
+ * AboutController Class used to construct user library
+ */
 class LibraryController extends Controller
 {
-    //
-		/**
+/**
      * Create a new controller instance.
      *
      * @return void

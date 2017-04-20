@@ -12,13 +12,26 @@ use App\Http\Controllers\Controller;
 use App\Shoppingcart;
 use App\Fileentry;
 use App\Payment;
-
+/**
+ * ShoppingController Class used for shopping cart. Manages books in shopping cart.
+ */
 class ShoppingController extends Controller
 {
+    /**
+    *direct to shopping cart view page
+    *
+    * @return void
+    */
     public function index() {
         return view('shoppingcart.index');
     }
-
+    /**
+    *add books to shopping cart
+    *
+    *@param Request $request
+    *
+    * @return void
+    */
     public function add(Request $request) {
         $user_id = $request->get('uid');
         $fileentry_id = $request->get('fid');
@@ -29,13 +42,24 @@ class ShoppingController extends Controller
  
         return redirect()->back();
     }
-
+    /**
+    *deprecated. Replaced by delete(Request $request)
+    *
+    *@param Request $request
+    *
+    * @return void
+    */
     public function deleteOne(Request $request) {
-       // $fileentry_id = $request->get('fid');
-        //DB::table('shoppingcarts')->where('fileentry_id', '=', $fileentry_id)->delete();
+
         return redirect()->route('home');  
     }
-
+    /**
+    *delete book from shopping cart
+    *
+    *@param Request $request
+    *
+    * @return void
+    */
     public function delete(Request $request) {
         $fileentry_id = $request->get('fid');
         $user_id = $request->get('uid');
@@ -46,7 +70,13 @@ class ShoppingController extends Controller
         return redirect()->route('shoppingcart');  
     }
 
-
+    /**
+    *add one book to library
+    *
+    *@param Request $request
+    *
+    * @return void
+    */
     public function addToLibraryOne(Request $request) {
         
         $user_id = $request->get('uid');
@@ -138,13 +168,19 @@ class ShoppingController extends Controller
                 ['fileentry_id' => $fileentry_id, 'user_id' => $user_id]
             );
         }
-        
- 
+
  
         return redirect('mylibrary');
     }
 
-// add books to library after payment
+
+    /**
+    *add books to library after payment
+    *
+    *@param Request $request
+    *
+    * @return void
+    */
      public function addToLibrary(Request $request) {
         $user_id = $request->get('uid');
 
@@ -159,14 +195,14 @@ class ShoppingController extends Controller
 
         for($start = 0; $start < $sizeOfFidStrArray-1; $start++ ){
 
-            $fileentry_id = $fidStrArray[$start +1];
+        $fileentry_id = $fidStrArray[$start +1];
 
-            // check if this user is a student in a course that requires this book
-              $coursesOfThisBook = \DB::table('courseMaterial')
+        // check if this user is a student in a course that requires this book
+        $coursesOfThisBook = \DB::table('courseMaterial')
               ->where('fileEntriesID', $fileentry_id)
               ->pluck('courseID');
 
-              $coursesOfThisUser = \DB::table('enrolment')
+        $coursesOfThisUser = \DB::table('enrolment')
               ->where('userID', $user_id)
               ->where('isActive','=',1)
               ->pluck('courseID');
@@ -211,13 +247,18 @@ class ShoppingController extends Controller
                     ->delete();
             }
 
-
          }
 
         return redirect('mylibrary');
 
     }
-
+    /**
+    *checkout books to from shopping cart
+    *
+    *@param Request $request
+    *
+    * @return void
+    */
     public function checkout(Request $request) {
         $user_id = $request->get('uid');
         $count = $request->get('count');
@@ -235,7 +276,14 @@ class ShoppingController extends Controller
         }
         return redirect('mylibrary');
     }
-
+    /**
+    * Deprecated.
+    * For debugging purpose. Redirect users to their own library.
+    *
+    *@param none
+    *
+    * @return void
+    */
     public function test() {
         return redirect('mylibrary');
     }

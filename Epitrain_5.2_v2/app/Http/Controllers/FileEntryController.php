@@ -17,8 +17,16 @@ use Imagick;
 use Crypt;
 use DB;
 
+/**
+ * FileEntryController Class used for ebooks such as adding and deleting
+ */
 class FileEntryController extends Controller
 {
+	/**
+	* redirect user to file entry view
+	*
+	* @return void
+	*/
     public function index()
 	{
 		$entries = Fileentry::orderBy('original_filename', 'asc')->paginate(12);
@@ -26,6 +34,13 @@ class FileEntryController extends Controller
 
 		return view('fileentries.index', compact('entries','mode'));
 	}
+	/**
+	*sort the books in ascending and descending order depending on user's clicks
+	*
+	* @para Request $request takes in the sorting field such as name, category price
+	*
+	* @return void
+	*/
 	public function sort(Request $request)
 	{
 		$sortField = $request->input('sortField');
@@ -49,6 +64,13 @@ class FileEntryController extends Controller
  
 		return view('fileentries.index', compact('entries','mode'));
 	}
+	/**
+	*filter the books according to specific category
+	*
+	* @para Request $request takes in filter category
+	*
+	* @return void
+	*/
  	public function filter(Request $request)
 	{
 		$mode = $request->input('mode');
@@ -66,6 +88,13 @@ class FileEntryController extends Controller
 	
 		return view('fileentries.index', compact('entries','mode'));
 	}
+	/**
+	*Add book, and set the price, description, category for the book. Add preview for the book
+	*
+	* @para Request $request takes in category, price, description, and sample file. Sample file is only a short preview of the book.
+	*
+	* @return string $success- let user know if the book is successfully added
+	*/
 	public function add(Request $request) {
  		
  		$this->validate($request, [
@@ -128,7 +157,13 @@ class FileEntryController extends Controller
 			return redirect('fileentry')->with('failure', "You haven't chosen any file to upload.");
 		}	
 	}
-
+	/**
+	*edit book for its price, description, category for the book
+	*
+	* @para Request $request takes in category, price, description.
+	*
+	* @return String $success- let user know if the book is successfully added
+	*/
 	public function edit(Request $request) {
  		
  		$this->validate($request, [
@@ -145,7 +180,6 @@ class FileEntryController extends Controller
 		$oldFileName = $request->input('oldFileName');
 		
 		$sample = $request->file('samplefile');
-		//exit(var_dump($oldFileName));
 		$entry = Fileentry::where('filename', '=', $oldFileName)->firstOrFail();
 	
 			if($sample != null){
@@ -197,16 +231,14 @@ class FileEntryController extends Controller
 		
 		return redirect('fileentry')->with('success', "File updated successfully!");
 	}
-
+	/**
+	*get book for reading
+	*
+	* @para string $filename .
+	*
+	* @return String $success- let user know if the book is successfully added
+	*/
 	public function get($filename){
-		//$entry = Fileentry::where('filename', '=', $filename)->firstOrFail();
-		//$file = Storage::disk('s3')->get($filename);
-		// $url = "s3".env('S3_REGION')."amazonaws.com/".env('S3_BUCKET')."/ebooks/".$filename;
- 	// 	echo $url;
-		/*return (new Response($file, 200))
-              ->header('Content-Type', $file->getClientMimeType());*/
-        //return redirect($url);
-
         
         //version 3.6
         $entry = Fileentry::where('filename', '=', $filename)->firstOrFail();
@@ -222,6 +254,19 @@ class FileEntryController extends Controller
                ->header('Content-Type', $entry->mime);
 
 	}
+
+
+     /**
+            * Deprecated
+            * Generate a HTTP response to allow users to download ebooks.
+            * No longer used due to change in requirement.
+            *
+            *@param $filename
+            *       name of the file in the database
+            *
+            *@return HTTPResponse with the specified file if found
+            *        HTTPRedirect to previous page if the specified file is not found
+            */
 	public function getDownload($filename)
 	{
 	    //PDF file is stored under project/public/download/info.pdf
@@ -250,7 +295,7 @@ class FileEntryController extends Controller
 	         // Error
 	         exit('Requested file does not exist on our server!');
 	     }
-	  }
+	 }
 	/**
 	 * Respond with a file download.
 	 *
@@ -271,6 +316,13 @@ class FileEntryController extends Controller
 
         return $response;
 	}
+	/**
+	*open the book for reading into pdf viewer
+	*
+	* @para string $filename takes in the name of the book being read.
+	*
+	* @return array $file
+	*/
 	public function getPdfViewer($filename) {
 		$add = "fileentry/get/".$filename;
 		//$baseUrl = "http://localhost:8000/".$add;
@@ -278,12 +330,17 @@ class FileEntryController extends Controller
 		//$pdfUrl = "http://localhost:8000/fileentry/get/php8D98.tmp.pdf";
 		return redirect()->route('pdfreader', array('file' => $baseUrl));
 	}
-    
+	/**
+	*get the sample to see
+	*
+	* @para int $sampleID takes in the name of the book being read.
+	*
+	* @return pdf file
+	*/
     public function getSample($sampleID){
 		//$entry = Fileentry::where('filename', '=', $filename)->firstOrFail();
 		//$file = Storage::disk('s3')->get($filename);
 		// $url = "s3".env('S3_REGION')."amazonaws.com/".env('S3_BUCKET')."/ebooks/".$filename;
- 	// 	echo $url;
 		/*return (new Response($file, 200))
               ->header('Content-Type', $file->getClientMimeType());*/
         //return redirect($url);
@@ -309,16 +366,14 @@ class FileEntryController extends Controller
                ->header('Content-Type', "application/pdf");
 
 	}
-    
-    public function getPreview($filename){
-		// $im = new \Imagick( "" );
-		// $entry = Fileentry::where('filename', '=', $filename)->firstOrFail();
-		// $file = Storage::disk('local')->get($entry->filename);
- 
-		// return (new Response($file, 200))
-  //             ->header('Content-Type', $entry->mime);
-	}
 
+	/**
+	*delete the book
+	*
+	* @para string $filename
+	*
+	* @return void
+	*/
 	public function delete($filename){
 		//$im = new \Imagick( "" );
 		$entry = Fileentry::where('filename', '=', $filename)->firstOrFail();

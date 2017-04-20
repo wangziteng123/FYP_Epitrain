@@ -32,7 +32,9 @@ class MyValueBinder extends PHPExcel_Cell_DefaultValueBinder implements PHPExcel
             return parent::bindValue($cell, $value);
         }
     }
-
+/**
+ * UserController Class used for users management such as creation of users, viewing of users
+ */
 class UserController extends Controller
 {
     /**
@@ -118,7 +120,13 @@ class UserController extends Controller
     }
     
     
-    
+    /**
+    *to create many users in a single csv file in a correct format. Takes in the input name, email and isAdmin.
+    *
+    *@param Request $request
+    *
+    * @return String $success
+    */
     public function csvStore(Request $request){
         $mimes = array('application/vnd.ms-excel','text/plain','text/csv','text/tsv');
         if(in_array($_FILES['filefield']['type'],$mimes)){
@@ -130,20 +138,15 @@ class UserController extends Controller
             $errorDuplicateEmail = array();
             $errorInvalidEmail = array();
             $myValueBinder = new MyValueBinder;
-            //Excel::load($csvFile, function($reader) {});
+
             if(Input::hasFile('filefield')){
                 $path = Input::file('filefield')->getRealPath();
                 $reader = Excel::setValueBinder($myValueBinder)->load(Input::file('filefield'));
-                //dd($reader->load($path)->first()->toArray());
+
                 $data = Excel::load($path, function($reader) {
                 })->get();
                 if(!empty($data) && $data->count()){
-                    /* foreach ($data as $key => $value) {
-                        $this->validate($data, [
-                            'name' => 'required|max:255',
-                            'email' => 'required|email|max:255|unique:users',
-                        ]);
-                    } */
+
                     foreach ($data as $key => $value) {
                     
                         $emailExists = \DB::table('users') 
@@ -202,10 +205,7 @@ class UserController extends Controller
                         //return \View::make('usermanage.create')->with(compact('errorInvalidEmail','errorDuplicateEmail', 'missingEmailField'));
                         //return redirect('createUser')->with(compact('errorInvalidEmail', 'errorDuplicateEmail'));
                     }
-                    /* if(!empty($insert)){
-                        \DB::table('items')->insert($insert);
-                        dd('Insert Record successfully.');
-                    } */
+
                 } else{
                     //return redirect('createUser')->with('emptyFile', "Provided an empty/invalid format file");
                 }
@@ -213,46 +213,31 @@ class UserController extends Controller
         } else {
             
         }
-        
-        
+
 		return \View::make('usermanage.create')-> with('wrongFileFormat', "Please provide only a CSV file.");
             // reader methods
 
         
     }
-		
-		function rand_string( $length ) {
-			$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";	
-			$str = "";
-			$size = strlen( $chars );
-			for( $i = 0; $i < $length; $i++ ) {
-				$str .= $chars[ rand( 0, $size - 1 ) ];
-			}
-
-			return $str;
-		}
-
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+    *create random password to give to user account that are created by admin.
+    *
+    *@param int $length
+    *
+    * @return String $str
+    */
+	function rand_string( $length ) {
+	    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	    $str = "";
+	    $size = strlen( $chars );
+	    for( $i = 0; $i < $length; $i++ ) {
+	        $str .= $chars[ rand( 0, $size - 1 ) ];
+	    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+	    return $str;
+	}
+
+
 
     /**
      * Update the specified resource in storage.
@@ -261,43 +246,33 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-public function update(Request $request, $id)
-        {
-            if(!($request->get('clause'))){
-                return redirect('/update')->with('status', 'Please check the Terms & Conditions box.');
-            }
-          //  return \View::make('usermanage.updateInfo', compact('users'));
-           // return redirect()->back();
-    //return redirect('home');
-          //  return redirect('home');
-            //return \View::make('usermanage.updateInfo');
-            //$validation = Validator::make($input, User::$rules);
+    public function update(Request $request, $id){
+        if(!($request->get('clause'))){
+            return redirect('/update')->with('status', 'Please check the Terms & Conditions box.');
+        }
 
-            $error = "";
-            $this->validate($request, [
-                'name' => 'required'
-            ]);
-             try{
-                     $name = $request->input('name');
-                     $email= $request->input('email');
-                     $password = $request->input('password');
-                     $confirmPassword = $request->input('password_confirmation');
-                     $currentPasswordInput = $request->input('currentPassword'); // current password that is retrieve from the form
-                     //echo $confirmPassword + " confirm pw";
-
-                     $user = User::find($id);
-                    $currentPassword = $request->input('passwordCheck'); //hashed password from db
-
-                     //$user->name = $name;
-                    //$currentPassword = bcrypt('123456');
+        $error = "";
+        $this->validate($request, [
+        'name' => 'required'
+        ]);
+        try{
+            $name = $request->input('name');
+            $email= $request->input('email');
+            $password = $request->input('password');
+            $confirmPassword = $request->input('password_confirmation');
+            $currentPasswordInput = $request->input('currentPassword'); // current password that is retrieve from the form
 
 
-                    if(password_verify($currentPasswordInput,$currentPassword) && $password == $confirmPassword && $password != "" && $confirmPassword !="" && strcmp($user->name,$name) !== 0){
-                     //echo "entered";
-                         $user->password = bcrypt($request->input('password'));
-                         $user->name = $request->input('name');
-                         $error = "changeAll";
-                         $data = array('error'  => $error);
+             $user = User::find($id);
+             $currentPassword = $request->input('passwordCheck'); //hashed password from db
+
+
+              if(password_verify($currentPasswordInput,$currentPassword) && $password == $confirmPassword && $password != "" && $confirmPassword !="" && strcmp($user->name,$name) !== 0){
+
+                    $user->password = bcrypt($request->input('password'));
+                    $user->name = $request->input('name');
+                    $error = "changeAll";
+                    $data = array('error'  => $error);
 
                     } else if (password_verify($currentPasswordInput,$currentPassword) && $password == $confirmPassword && $password != "" && $confirmPassword !=""){
                          $user->password = bcrypt($request->input('password'));;
@@ -317,50 +292,36 @@ public function update(Request $request, $id)
                     }
                      $user->save();
 
-             } catch(\Exception $e){
+              }
+              catch(\Exception $e){
                           $error = "failed";
                           $data = array(
                               'error'  => $error
                           );
-                      }
-                      finally{
-                      if($error == "changeAll"){
+              }
+              finally{
+                    if($error == "changeAll"){
                         flash('Name and Password Changed Successfully!', 'success');
-                      }
+                    }
 
-                      else if($error =="changePW"){
+                    else if($error =="changePW"){
                          flash('Password Changed Successfully!', 'success');
-                      }
-                      else if($error =="changeName"){
+                    }
+                    else if($error =="changeName"){
                          flash('Name Changed Successfully!', 'success');
-                      } 
-                      else if ($error =="noChange") {
+                    }
+                    else if ($error =="noChange") {
                         flash('No changes made to personal info', 'warning');
-                      }
-                      else{
+                    }
+                    else{
                          flash('Update failed! Incorrect current password or mismatch confirmation of new password', 'danger');
-                      }
-                        return redirect('update');
-                      //return redirect('home');
-                      //return \View::make('usermanage.updateInfo', array('error' => $error));
+                    }
+                    return redirect('update');
 
-
-                      }
-
-
+              }
 
 
         }
 
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }
