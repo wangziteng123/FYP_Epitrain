@@ -82,7 +82,7 @@ class Payment extends Authenticatable
 
                 // Set your secret key: remember to change this to your live secret key in production
                 // See your keys here: https://dashboard.stripe.com/account/apikeys
-                \Stripe\Stripe::setApiKey("sk_live_9j8bL2pmeoexO7Ex5yjtchVm ");
+                \Stripe\Stripe::setApiKey("sk_test_wZZaGd7Ztp3yQaOUuScbg6op");
 
                 // Token is created using Stripe.js or Checkout!
                 // Get the payment token submitted by the form:
