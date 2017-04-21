@@ -61,10 +61,10 @@
                 </div>
 								
 								<div class="form-group is-empty is-fileinput">
-                  <label for="sampleFile" class="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Sample</label>   
+                  <label for="sampleFileNewBook" class="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Sample</label>   
                     <div class = "input-group col-md-9">
                       <input type="text" readonly class="form-control" placeholder="Select a sample of the book" style ="font-size:18px">
-                      <input type="file" name="samplefile" value="{{ csrf_token() }}" style="color:black" accept="application/pdf">
+                      <input type="file" name="samplefile" id="sampleFileNewBook" value="{{ csrf_token() }}" style="color:black" accept="application/pdf">
                     </div>
                 </div>
              
@@ -221,7 +221,7 @@
 
         <!-- Add a form inside the edit category modal-->
           <font color='black'> 
-            <form action=<?php echo URL::route('editentry');?> id="editform" method="post" style="max-width: 100%; min-height: 480px;margin:0 auto; border: 0px solid white;" onsubmit="" class="form-horizontal">
+            <form action=<?php echo URL::route('editentry');?> id="editform" method="post" style="max-width: 100%; min-height: 480px;margin:0 auto; border: 0px solid white;" onsubmit="" class="form-horizontal"  enctype="multipart/form-data">
               <legend><strong>Edit book details</strong></legend>
               <div class="form-group">
                 
@@ -261,7 +261,7 @@
                   <label for="sampleFile" class="col-md-2 control-label" style ="color:midnightblue;font-size:14px">Sample</label>   
                     <div class = "input-group col-md-9">
                       <input type="text" readonly class="form-control" placeholder="Select a different sample of the book" style ="font-size:18px">
-                      <input type="file" name="samplefile" value="{{ csrf_token() }}" style="color:black" accept="application/pdf">
+                      <input type="file" name="samplefile" id="sampleFile" value="{{ csrf_token() }}" style="color:black" accept="application/pdf">
                     </div>
                 </div>
                 
