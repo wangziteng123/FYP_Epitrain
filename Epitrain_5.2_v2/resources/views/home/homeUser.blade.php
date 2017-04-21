@@ -202,7 +202,7 @@
                               </form>
                            @endif
                         @else
-                           <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">$<?php echo number_format($price2, 2, '.', '') ?></font></p>
+                           <p style="position:absolute;top:90px;left:7px"><font style="font-size:25px;color:#34495E">$<?php echo number_format($price2, 2, '.', '') ?></font></p>
 
                           @if (count($libraryExist))
                               <form style="position:absolute;right:85px;top:91px;border:none">
@@ -262,7 +262,7 @@
                       @endif
                     <!-- if user is a normal user -->     
                     @else
-                         <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">$<?php echo number_format($price2, 2, '.', '') ;?></font></p>
+                         <p style="position:absolute;top:90px;left:7px"><font style="font-size:25px;color:#34495E">$<?php echo number_format($price2, 2, '.', '') ;?></font></p>
 
                     @if (count($libraryExist))
                         <form style="position:absolute;right:85px;top:91px;border:none">
@@ -461,7 +461,7 @@
                               </form>
                         @endif
                       @else
-                          <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">$<?php echo number_format($price4, 2, '.', '');?></font></p>
+                          <p style="position:absolute;top:90px;left:7px"><font style="font-size:25px;color:#34495E">$<?php echo number_format($price4, 2, '.', '');?></font></p>
 
                           @if (count($libraryExist))
                               <form style="position:absolute;right:85px;top:91px;border:none">
@@ -521,7 +521,7 @@
                     @endif
                 <!--if user is a normal user -->
                  @else
-                      <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">$<?php echo number_format($price4, 2, '.', '') ;?></font></p>
+                      <p style="position:absolute;top:90px;left:7px"><font style="font-size:25px;color:#34495E">$<?php echo number_format($price4, 2, '.', '') ;?></font></p>
 
                   @if (count($libraryExist))
                       <form style="position:absolute;right:85px;top:91px;border:none">
@@ -717,7 +717,7 @@
                               </form>
                         @endif
                       @else
-                        <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">$<?php echo number_format($price4, 2, '.', '') ;?></font></p>
+                        <p style="position:absolute;top:90px;left:7px"><font style="font-size:25px;color:#34495E">$<?php echo number_format($price4, 2, '.', '') ;?></font></p>
 
                         @if (count($libraryExist))
                             <form style="position:absolute;right:85px;top:91px;border:none">
@@ -777,7 +777,7 @@
                     @endif
                   @else
                   <!-- if user is a normal user -->
-                  <p style="position:absolute;top:90px;left:15px"><font style="font-size:25px;color:#34495E">$<?php echo number_format($price4, 2, '.', '');?></font></p>
+                  <p style="position:absolute;top:90px;left:7px"><font style="font-size:25px;color:#34495E">$<?php echo number_format($price4, 2, '.', '');?></font></p>
 
                     @if (count($libraryExist))
                         <form style="position:absolute;right:85px;top:91px;border:none">

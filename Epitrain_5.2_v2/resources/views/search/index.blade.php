@@ -148,9 +148,9 @@ use App\Notifications\SubscriptionExpiring;
                         <font style="">Already Purchased</font>
                     </button>
                   @elseif (!Auth::user()->isAdmin)
-                  <form action=<?php echo url('shoppingcart/addtolibrary');?> method="post">
+                  <form action=<?php echo URL::route('addToLibraryOne');?> method="post">
                       <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
-                      <input type="hidden" name="fidStr" value=<?php echo $id;?>>
+                      <input type="hidden" name="fid" value=<?php echo $id;?>>
                           <button class="btn btn-raised btn-warning">
                               <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                               Add To Library
