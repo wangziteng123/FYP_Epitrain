@@ -37,6 +37,8 @@ Route::group(['middleware' => ['auth','admin']], function() {
 	Route::get('/createUser', 'HomeController@create');
 	Route::get('/viewAllUsers', 'UserController@viewAllUsers');
     Route::post('/csvStore', ['as' => 'csvStore', 'uses' => 'UserController@csvStore']);
+    Route::get('/findUsers', ['as' => 'findUsers', 'uses' => 'UserController@findUsers']);
+    Route::post('/toggleActivation', ['as' => 'toggleActivation', 'uses' => 'UserController@toggleActivation']);
 
 	//file entries (ebook) routes
 	Route::get('fileentry', 'FileEntryController@index');

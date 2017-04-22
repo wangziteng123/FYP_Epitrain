@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Mail;
-
+use DB;
 use PHPExcel_Cell;
 use PHPExcel_Cell_DataType;
 use PHPExcel_Cell_IValueBinder;
@@ -58,6 +58,60 @@ class UserController extends Controller
     }
 
     /**
+     * findUsers function filter users by name or email
+     *
+     * @param Request $request which takes in the name of the users
+     * @return view of all the enrolment of the student
+     */
+    public function findUsers(Request $request) {
+        $filterInput = $request->input('userInput');
+        $users = User::paginate(15);
+
+        // $courseList = \DB::table('course')->get();
+        // $enrolmentList = \DB::table('enrolment')->get();
+        $shortlistedUsers = null;
+
+        //if admin entered something that contains @, assume it's email
+        if (strpos($filterInput,'@') == true) {
+            $shortlistedUsers = User::where('subscribe','=','0')
+                ->where('email','like','%'.$filterInput.'%')
+                ->get();
+        //else, assume it's name
+        } else {
+            $shortlistedUsers = User::where('subscribe','=','0')
+                ->where('name','like','%'.$filterInput.'%')
+                ->get();
+        }
+
+        return view('usermanage.viewAllUsers', compact('users','shortlistedUsers'));
+    }
+
+    /**
+     * toggleActivation deactivates/activates a user
+     *
+     * @param Request $request which takes in the id of a user
+     * @return view of specified users with their changed activation status
+     */
+    public function toggleActivation(Request $request) {
+        $userId = $request->input('userId');
+        $thisUser = DB::table('users')->where('id', $userId)->first();
+        $currIsActive = DB::table('users')
+            ->where('id', '=', $userId)
+            ->value('isActive');
+
+        DB::table('users')
+            ->where('id', '=', $userId)
+            ->update(['isActive' => 1 - $currIsActive]);
+
+        if ($currIsActive == 0) {
+            return redirect('viewAllUsers')->with('success','User with email: '.$thisUser->email.' were successfully activated!');
+        } else {
+            return redirect('viewAllUsers')->with('danger','User with email: '.$thisUser->email.' were successfully deactivated!');
+        }
+        
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -95,7 +149,6 @@ class UserController extends Controller
         $user->email = $request->email;
         $random_password = $this->rand_string(16);
         $user->password = bcrypt($random_password);
-				
 				$isAdmin = $request->input('make-admin');
 				if($isAdmin !== "0") {
 					$user->isAdmin = 1;

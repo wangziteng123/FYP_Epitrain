@@ -124,6 +124,16 @@ class AuthController extends Controller
             $last_activity = time();
 
             $user_record = DB::table('sessions')->where('user_id', $user_id)->first();
+            $thisUser = DB::table('users')->where('id', $user_id)->first();
+
+            if($thisUser->isActive == 0) {
+                auth()->logout();
+                return back()->with('message', 'Your account has been deactivated by admin. Please contact admin for further information.');
+            }
+            if($thisUser->activated == 0) {
+                auth()->logout();
+                return back()->with('message', "You haven't activated your account. Please visit your email and click on the link inside our activation email");
+            }
             if ($user_record == null) {
                 DB::table('sessions')->insert(
                     ['user_id' => $user_id, 'id' => $session_id,'last_activity' => $last_activity, 'loggedIn' => 1]

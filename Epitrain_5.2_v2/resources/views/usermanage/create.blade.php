@@ -180,7 +180,7 @@
     </div>
 </div>
 
-<!--<div class="container">
+<div class="container">
     <div class="row">
         <div class="col-sm-9 col-sm-offset-1">
             <div class="panel panel-default">
@@ -216,6 +216,6 @@
         </div>
     </div>
 </div>
--->
+
 
 @endsection

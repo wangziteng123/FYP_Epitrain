@@ -185,8 +185,8 @@
                                 {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ url('/update') }}"><i class="material-icons">perm_identity</i>Update Personal Info</a></li>
-                                <li><a href="{{ url('/logout') }}"><i class="material-icons">cancel</i>Logout</a></li>
+                                <li><a href="{{ url('/update') }}"><i class="material-icons">perm_identity</i> Update Personal Info</a></li>
+                                <li><a href="{{ url('/logout') }}"><i class="material-icons">cancel</i> Logout</a></li>
                             </ul>
                         </li>
                         <li class="dropdown" style="border-left:solid 1px #85929E;">
@@ -195,15 +195,15 @@
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ url('/fileentry') }}"><i class="material-icons">library_add</i>Manage Library</a></li>
-                                <li><a href="{{ url('/createUser') }}"><i class="material-icons">person_add</i>Create User</a></li>
-                                <li><a href="{{ url('/forumAdmin') }}"><i class="material-icons">speaker_notes</i>Discussion Forum</a></li>
-                                <li><a href="{{ url('/category') }}"><i class="material-icons">settings</i>Customize categories</a></li>
-                                <li><a href="{{ url('/subscriptionplan') }}"><i class="material-icons">subscriptions</i>Customize subscription</a></li>
-                                <li><a href="{{ url('/classmanagement') }}"><i class="material-icons">view_list</i>Class management</a></li>
-                                <li><a href="{{ url('/viewAllUsers') }}"><i class="material-icons">group</i>View All Users</a></li>
-                                <li><a href="{{ url('/adminSettings') }}"><i class="material-icons">perm_data_setting</i>Admin Settings</a></li>
-                                <li><a href="{{ url('/faq') }}"><i class="material-icons">question_answer</i>Manage FAQ</a></li>
+                                <li><a href="{{ url('/fileentry') }}"><i class="material-icons">library_add</i> Manage Library</a></li>
+                                <li><a href="{{ url('/createUser') }}"><i class="material-icons">person_add</i> Create User</a></li>
+                                <li><a href="{{ url('/forumAdmin') }}"><i class="material-icons">speaker_notes</i> Discussion Forum</a></li>
+                                <li><a href="{{ url('/category') }}"><i class="material-icons">settings</i> Customize categories</a></li>
+                                <li><a href="{{ url('/subscriptionplan') }}"><i class="material-icons">subscriptions</i> Customize subscription</a></li>
+                                <li><a href="{{ url('/classmanagement') }}"><i class="material-icons">view_list</i> Class management</a></li>
+                                <li><a href="{{ url('/viewAllUsers') }}"><i class="material-icons">group</i> User Management</a></li>
+                                <li><a href="{{ url('/adminSettings') }}"><i class="material-icons">perm_data_setting</i> Admin Settings</a></li>
+                                <li><a href="{{ url('/faq') }}"><i class="material-icons">question_answer</i> Manage FAQ</a></li>
                             </ul>
                         </li>
                     @else

@@ -552,13 +552,13 @@ class ClassManagementController extends Controller
         }
 
         
-        return redirect('viewAllUsers')->with('success','Students were successfully added to course!');;
+        return redirect('viewAllUsers')->with('success','Students were successfully added to course!');
     }
 
 	/**
-	 * filterStudentsForViewAllUsers function filter one students by name and check for the student's enrolment status
+	 * filterStudentsForViewAllUsers function filter students by name or email and check for the student's enrolment status
 	 *
-	 * @param Request $request which takes in the name of the students
+	 * @param Request $request which takes in the name/email of the students
 	 * @return view of all the enrolment of the student
 	 */
     public function filterStudentsForViewAllUsers(Request $request) {
