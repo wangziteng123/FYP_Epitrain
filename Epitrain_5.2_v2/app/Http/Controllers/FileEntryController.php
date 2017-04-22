@@ -193,12 +193,13 @@ class FileEntryController extends Controller
                     
                     //Storage::disk('local')->delete($sampleEntry->sample_filename.".pdf");
                     //Storage::disk('s3')->delete('/ebooks/'.$entry->samplename.'.'.$sample->getClientOriginalExtension());
-                    Storage::disk('s3')->delete('/ebooks/'.$sampleEntry->sample_filename.'.'."pdf");
+                    if($sampleEntry != null) {
+                    	 Storage::disk('s3')->delete('/ebooks/'.$sampleEntry->sample_filename.'.'."pdf");
                     
-                    DB::table('fileentries_sample')
-                    -> where('sample_id', '=', $entry->sample_id)
-                    -> delete();
-                    
+	                    DB::table('fileentries_sample')
+	                    -> where('sample_id', '=', $entry->sample_id)
+	                    -> delete();
+                    }
 				}
 				$newSamplename = $sample->getFilename();
 				$entry->samplename = $newSamplename;
@@ -209,7 +210,7 @@ class FileEntryController extends Controller
 				Storage::disk('s3')->put('/ebooks/'.$sample->getFilename().'.'.$sample->getClientOriginalExtension(), $samplecontent);
 				
                 DB::table('fileentries_sample')
-                    -> insert(['filename' => $file->getFilename(), 'sample_filename' => $sample->getFilename()]);
+                    -> insert(['filename' => $oldFileName, 'sample_filename' => $sample->getFilename()]);
 				$sampleID = DB::table('fileentries_sample')
                     -> where('sample_filename', '=', $sample->getFilename())
                     -> orderby('sample_id','DESC')
@@ -219,7 +220,7 @@ class FileEntryController extends Controller
                 ->update(['category' => $category,
 											'price' => $price,
 											'description' => $description,
-											'sample_id' => $sampleID->sampled_id]);
+											'sample_id' => $sampleID->sample_id]);
 			} else{
 				DB::table('fileentries')
 							->where('filename', $oldFileName)

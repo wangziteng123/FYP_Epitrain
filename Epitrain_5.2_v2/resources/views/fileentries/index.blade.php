@@ -175,7 +175,7 @@
                     <p style="font-size:14px"><strong>{{$fileName}}</strong></p>
                     @endif
                     <p style="font-size:16px">Category: {{$fileCategory}}</p>
-                    <p style="font-size:16px">Price: ${{$filePrice}}</p>
+                    <p style="font-size:16px">Price: ${{number_format($filePrice, 2, '.', '')}}</p>
                     @if(strpos($fileName,'xls') !== false || strpos($fileName,'xlsx') !== false || strpos($fileName,'xlsm'))
                     <a href="{{route('downloadspreadsheet', $entry->filename)}}" class="btn btn-raised btn-success">Download</a><br/>
                     @else
@@ -233,7 +233,7 @@
                 
                 <div class = "col-md-10">
                     <select name="category" style="font-size:14px" id = "selectCatEdit" class="form-control" placeholder="" required>
-                        <option hidden disabled id="existingCat" selected></option>
+                        <option hidden id="existingCat" selected></option>
                       @foreach($categories as $category)
                           <option value=<?php echo $category->categoryname;?>><font color="black" size = "3"><?php echo $category->categoryname;?></font></option>
                       @endforeach

@@ -179,7 +179,7 @@ body{
                                   
                                   <div class="col-md-6 col-sm-10 col-xs-10 col-xs-offset-1 col-md-offset-3 text-xs-center"><font color="darkblue" style="font-size: 25px;font-weight: bold;"><?php echo $book->original_filename;?></font></div>
                                   
-                                  <div class="col-md-1 hidden-xs hidden-sm col-md-offset-1"><font color="black" style="font-size:28px">S$<?php echo $book->price;?></font>    </div>
+                                  <div class="col-md-1 hidden-xs hidden-sm col-md-offset-1"><font color="black" style="font-size:28px">S$<?php echo number_format($book->price, 2, '.', '');?></font>    </div>
                                 
                               </div>
                               <div class = "row">
@@ -193,7 +193,7 @@ body{
                                   ?></font></div>       
                               </div>
                               <div class = "row center-block">
-                                  <div class="col-xs-12 col-sm-12 visible-xs visible-sm center-block"><font color="black" style="font-size:28px">S$<?php echo $book->price;?></font>    
+                                  <div class="col-xs-12 col-sm-12 visible-xs visible-sm center-block"><font color="black" style="font-size:28px">S$<?php echo number_format($book->price, 2, '.', '');?></font>    
                                   </div>
                               </div>
                               <div class = "row center-block">
@@ -286,7 +286,7 @@ body{
                               
                               <div class="col-md-6 col-sm-10 col-xs-10 col-xs-offset-1 col-md-offset-3 text-xs-center"><font color="darkblue" style="font-size: 25px;font-weight: bold;"><?php echo $book->original_filename;?></font></div>
                               
-                              <div class="col-md-1 hidden-xs hidden-sm col-md-offset-1"><font color="black" style="font-size:28px">S$<?php echo $book->price;?></font>    </div>
+                              <div class="col-md-1 hidden-xs hidden-sm col-md-offset-1"><font color="black" style="font-size:28px">S$<?php echo number_format($book->price, 2, '.', '');?></font>    </div>
                             
                           </div>
                           <div class = "row">
@@ -300,7 +300,7 @@ body{
                               ?></font></div>       
                           </div>
                           <div class = "row center-block">
-                              <div class="col-xs-12 col-sm-12 visible-xs visible-sm center-block"><font color="black" style="font-size:28px">S$<?php echo $book->price;?></font>    
+                              <div class="col-xs-12 col-sm-12 visible-xs visible-sm center-block"><font color="black" style="font-size:28px">S$<?php echo number_format($book->price, 2, '.', '');?></font>    
                               </div>
                           </div>
                           <div class = "row center-block">
