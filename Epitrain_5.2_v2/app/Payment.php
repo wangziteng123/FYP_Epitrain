@@ -142,7 +142,7 @@ class Payment extends Authenticatable
             $token = $value['token'];
             $totalPrice= $value['amount'];
             $userPaymentEmail = $value['receipt_email'];
-            $period = $value['period']." months for subscription";
+            $period = $value['period']." days for subscription";
 
             // Charge the user's card:
             $charge = \Stripe\Charge::create(array(

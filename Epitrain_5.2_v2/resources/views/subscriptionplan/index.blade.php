@@ -2,14 +2,11 @@
 
 @section('content')
 
-
     <?php
 
     $totalPrice = $value["totalPrice"]; //retrieve the total price of the books being purchase
     $uid = $value["uid"];   //retrieve the user id
     $period = $value["period"];
-
-
 
 
         ?>

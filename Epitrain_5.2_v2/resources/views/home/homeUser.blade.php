@@ -882,7 +882,7 @@
         <h4><font color='black'>Choose a subscribtion plan:</font></h4>
       <form action=<?php echo url('/subscribe');?>  method="post">
         @foreach($subscriptionPlans as $plan)
-        <p><input type="radio" onclick="pay()" name="period" id=<?php echo $plan->monthperiod?> value=<?php echo $plan->monthperiod?> checked><font color='black'> <?php echo $plan->monthperiod?> days at $<?php echo $plan->price?></font></p>
+        <p><input type="radio" onclick="pay()" name="period" id=<?php echo $plan->monthperiod?> value=<?php echo $plan->monthperiod?> ><font color='black'> <?php echo $plan->monthperiod?> days at $<?php echo $plan->price?></font></p>
         <!-- <p><input type="radio" name="period" value="1" checked><font color='black'> 1 month</font></p>
         <p><input type="radio" name="period" value="6"><font color='black'> 6 months</font></p>
         <p><input type="radio" name="period" value="12"><font color='black'> 1 year</font></p> -->
@@ -1054,13 +1054,11 @@ $(document).ready(function () {
       		var period = "";
      		var mainUrl = window.location.hostname;
      		var countFinal = 0;
-              console.log("h");
-            var count = <?php echo count($subscriptionPlans)?>;
+             var count = <?php echo count($subscriptionPlans)?>;
      		for(i = 0; i < count; i++) {
      			if(document.getElementById(subscriptionPlans[i].monthperiod).checked) {
      			    price= subscriptionPlans[i].price;
      			    period = subscriptionPlans[i].monthperiod;
-     console.log(price);
 
      			}
      		}
