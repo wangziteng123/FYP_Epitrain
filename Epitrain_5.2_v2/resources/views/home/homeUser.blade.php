@@ -875,14 +875,13 @@
     <?php
       $subscriptionPlans = \DB::table('subscriptionplan')
               ->get();
-
     ?>
 
      <div id="basic" class="well" style="max-width:74em;">
-        <h4><font color='black'>Choose a subscribtion plan:</font></h4>
+        <h4><font color='black'>Choose a subscription plan:</font></h4>
       <form action=<?php echo url('/subscribe');?>  method="post">
         @foreach($subscriptionPlans as $plan)
-        <p><input type="radio" onclick="pay()" name="period" id=<?php echo $plan->monthperiod?> value=<?php echo $plan->monthperiod?> ><font color='black'> <?php echo $plan->monthperiod?> days at $<?php echo $plan->price?></font></p>
+        <p><input type="radio" onclick="pay()" name="period" id=<?php echo $plan->monthperiod?> value=<?php echo $plan->monthperiod;?> ><font color='black'> <?php echo $plan->monthperiod;?> days at $<?php echo $plan->price;?></font></p>
         <!-- <p><input type="radio" name="period" value="1" checked><font color='black'> 1 month</font></p>
         <p><input type="radio" name="period" value="6"><font color='black'> 6 months</font></p>
         <p><input type="radio" name="period" value="12"><font color='black'> 1 year</font></p> -->
@@ -890,10 +889,12 @@
         <input type="hidden" name="uid" value=<?php echo Auth::user()->id;?>>
         <input type="hidden" id="amount" name="amount" value="" />
         <input type="hidden" id="period" name="period" value="" />
-        <button type="submit" class="btn-default btn">Subscribe</button>
-        <button class="basic_close btn btn-default">Cancel</button>
+        <button type="submit" class="btn" style="background-color:#01466f; color:white">Subscribe</button>
+        <button class="basic_close btn" style="background-color:#01466f; color:white">Cancel</button>
       </form>
     </div>
+
+
     <!--end of basic slider-->
 
 
@@ -1001,7 +1002,7 @@ $(document).ready(function () {
         $js_array = json_encode($filenameArr2);
         echo "var filename_array2 = ". $js_array . ";\n";
     ?>
-    var countEntries = <?php echo count($trendingEbooks)?>;        
+    var countEntries = <?php echo count($trendingEbooks);?>;        
     // URL of PDF document
     var mainUrl = window.location.hostname;
               
@@ -1019,7 +1020,7 @@ $(document).ready(function () {
         $js_array = json_encode($filenameArr4);
         echo "var filename_array4 = ". $js_array . ";\n";
     ?>
-    var countEntries = <?php echo count($financialEbooks)?>;        
+    var countEntries = <?php echo count($financialEbooks);?>;        
     // URL of PDF document
     var mainUrl = window.location.hostname;         
            
@@ -1036,7 +1037,7 @@ $(document).ready(function () {
         $js_array = json_encode($filenameArr6);
         echo "var filename_array6 = ". $js_array . ";\n";
     ?>
-    var countEntries = <?php echo count($leadershipEbooks)?>;        
+    var countEntries = <?php echo count($leadershipEbooks);?>;        
     // URL of PDF document
     var mainUrl = window.location.hostname;       
            
@@ -1049,12 +1050,12 @@ $(document).ready(function () {
 
 //to get the price of the selected subscription plan upon clicking
      function pay() {
-     		var subscriptionPlans = <?php echo json_encode($subscriptionPlans)?>;
+     		var subscriptionPlans = <?php echo json_encode($subscriptionPlans);?>;
       		var price = "";
       		var period = "";
      		var mainUrl = window.location.hostname;
      		var countFinal = 0;
-             var count = <?php echo count($subscriptionPlans)?>;
+             var count = <?php echo count($subscriptionPlans);?>;
      		for(i = 0; i < count; i++) {
      			if(document.getElementById(subscriptionPlans[i].monthperiod).checked) {
      			    price= subscriptionPlans[i].price;

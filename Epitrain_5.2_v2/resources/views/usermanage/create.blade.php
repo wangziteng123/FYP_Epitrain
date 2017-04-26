@@ -17,11 +17,9 @@
 @endif
 @if (count($errors) > 0)
     <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+        @foreach ($errors->all() as $error)
+            {{ $error }}
+        @endforeach
     </div>
 @endif
 
@@ -29,7 +27,7 @@
     <div class="alert alert-danger">
         The following emails are invalid: 
         @foreach ($errorInvalidEmail as $error)
-            <li>{{ $error }}</li>
+            {{ $error }}
         @endforeach
     </div>
 @endif
@@ -38,7 +36,7 @@
     <div class="alert alert-danger">
         The following emails already exists: 
         @foreach ($errorDuplicateEmail as $error)
-            <li>{{ $error }}</li>
+            {{ $error }}
         @endforeach
     </div>
 @endif
