@@ -7,7 +7,8 @@ Within the application, platforms of communication among users is provided in th
 <br><br>
 
 ## Technologies Used
-
+<img width="960" alt="techologies" src="https://user-images.githubusercontent.com/17329070/32981904-3041f3b0-ccb6-11e7-9537-f58a7cb27d56.png">
+We are using laravel framework(php) with MYSQL database.
 
 
 
